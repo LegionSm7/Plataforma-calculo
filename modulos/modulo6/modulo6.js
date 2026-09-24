@@ -155,7 +155,17 @@ document.addEventListener('DOMContentLoaded', function() {
         p3.style.marginTop = '15px';
         p3.style.fontStyle = 'italic';
         p3.style.color = '#b3a6cc';
-        p3.innerHTML = '💡 <strong>Observa la gráfica:</strong> La función azul es $f(x)$. La función verde punteada es $F(x)$. Notarás que donde $f(x) = 0$, la antiderivada $F(x)$ tiene un punto crítico (máximo, mínimo o punto de inflexión), ¡porque $F\'(x) = f(x)$!';
+        p3.innerHTML = '💡 <strong>Observa la gráfica:</strong> La función azul es ';
+        renderizarFormula(p3.appendChild(document.createElement('span')), 'f(x)', false);
+        p3.appendChild(document.createTextNode('. La función verde punteada es '));
+        renderizarFormula(p3.appendChild(document.createElement('span')), 'F(x)', false);
+        p3.appendChild(document.createTextNode('. Notarás que donde '));
+        renderizarFormula(p3.appendChild(document.createElement('span')), 'f(x) = 0', false);
+        p3.appendChild(document.createTextNode(', la antiderivada '));
+        renderizarFormula(p3.appendChild(document.createElement('span')), 'F(x)', false);
+        p3.appendChild(document.createTextNode(' tiene un punto crítico (máximo, mínimo o punto de inflexión), ¡porque '));
+        renderizarFormula(p3.appendChild(document.createElement('span')), "F'(x) = f(x)", false);
+        p3.appendChild(document.createTextNode('!'));
         divResultados.appendChild(p3);
 
         // Graficar

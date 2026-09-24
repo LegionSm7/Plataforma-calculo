@@ -100,8 +100,3 @@ De acuerdo con las directrices del curso (Parte II: Desarrollo de Software), se 
 Este proyecto es desarrollado como parte del curso de Cálculo Integral (CB215) de la Universidad Tecnológica de Pereira. El código fuente está disponible para fines educativos y académicos.
 
 ---
-
-> *"Aquí construimos futuro"* 🚀
->
-> Universidad Tecnológica de Pereira
-> Septiembre 2026 - Modalidad Virtual

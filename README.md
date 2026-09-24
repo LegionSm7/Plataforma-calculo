@@ -1,4 +1,4 @@
-Plataforma Web Colaborativa de Cálculo Integral - Fase 1
+qPlataforma Web Colaborativa de Cálculo Integral - Fase 1
 
 **Asignatura:** Cálculo Integral  
 **Programa:** Tecnología en Desarrollo de Software  

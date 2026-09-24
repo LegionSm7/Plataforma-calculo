@@ -1,7 +1,7 @@
 // ===== MÓDULO 3: REGLA DEL PUNTO MEDIO =====
 
 document.addEventListener('DOMContentLoaded', function() {
-    
+
     // 1. Inicializar KaTeX para renderizar las fórmulas matemáticas
     if (typeof renderMathInElement !== 'undefined') {
         renderMathInElement(document.body, {
@@ -44,13 +44,13 @@ document.addEventListener('DOMContentLoaded', function() {
     function reglaPuntoMedio(func, a, b, n) {
         let dx = (b - a) / n;
         let suma = 0;
-        
+
         for (let i = 1; i <= n; i++) {
             // Calcular el punto medio del subintervalo
             let x_medio = a + (i - 0.5) * dx;
             suma += evaluarFuncion(func, x_medio);
         }
-        
+
         return suma * dx;
     }
 
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
             let x1 = a + (i + 1) * dx;
             let x_medio = (x0 + x1) / 2;
             let y_medio = evaluarFuncion(func, x_medio);
-            
+
             // Dibujar cada rectángulo
             xRect.push(x0, x0, x1, x1, null);
             yRect.push(0, y_medio, y_medio, 0, null);
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
             y: yCurva,
             mode: 'lines',
             name: 'f(x) - Curva real',
-            line: { color: '#1a237e', width: 3 }
+            line: { color: '#b388ff', width: 3 }
         };
 
         let trazaRectangulos = {
@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
             name: 'Rectángulos Punto Medio',
             fill: 'tozeroy', // Rellena el área hacia abajo
             opacity: 0.4,
-            line: { color: '#ff9800', width: 1.5 } // Naranja para diferenciar del Trapecio
+            line: { color: '#ffd54f', width: 1.5 } // Naranja para diferenciar del Trapecio
         };
 
         // Trazas para los puntos medios (los "dots" en la curva)
@@ -117,14 +117,18 @@ document.addEventListener('DOMContentLoaded', function() {
             y: yPuntos,
             mode: 'markers',
             name: 'Puntos Medios (x̄ᵢ)',
-            marker: { color: '#d32f2f', size: 10, symbol: 'circle' }
+            marker: { color: '#ff6e8f', size: 10, symbol: 'circle' }
         };
 
         // D) Configurar el diseño (layout) de la gráfica
         let layout = {
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: '#1e1133',
+            font: { color: '#ece6f5', family: "'Segoe UI', sans-serif" },
+            titlefont: { color: '#b388ff' },
             title: `Regla del Punto Medio: f(x) = ${func} en [${a}, ${b}] con n=${n}`,
-            xaxis: { title: 'Eje X', range: [a - 0.5, b + 0.5] },
-            yaxis: { title: 'Eje Y (f(x))', range: [0, Math.max(...yCurva) * 1.2] },
+            xaxis: { gridcolor: '#3d2a66', zerolinecolor: '#4a3570', title: 'Eje X', range: [a - 0.5, b + 0.5] },
+            yaxis: { gridcolor: '#3d2a66', zerolinecolor: '#4a3570', title: 'Eje Y (f(x))', range: [0, Math.max(...yCurva) * 1.2] },
             showlegend: true,
             legend: { x: 0, y: 1 },
             margin: { t: 50, r: 20, b: 50, l: 50 }

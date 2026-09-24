@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
             case 'sqrt(x)': return Math.sqrt(x);
             case 'sin(x)': return Math.sin(x);
             case 'exp(x)': return Math.exp(x);
+            case '1/x': return 1 / x;
             default: return x * x;
         }
     }
@@ -43,11 +44,11 @@ document.addEventListener('DOMContentLoaded', function() {
     function reglaTrapecio(func, a, b, n) {
         let dx = (b - a) / n;
         let suma = evaluarFuncion(func, a) + evaluarFuncion(func, b);
-        
+
         for (let i = 1; i < n; i++) {
             suma += 2 * evaluarFuncion(func, a + i * dx);
         }
-        
+
         return (dx / 2) * suma;
     }
 
@@ -77,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
             let x1 = a + (i + 1) * dx;
             let y0 = evaluarFuncion(func, x0);
             let y1 = evaluarFuncion(func, x1);
-            
+
             // Dibujar cada trapecio como un polígono cerrado
             xTrap.push(x0, x0, x1, x1, null);
             yTrap.push(0, y0, y1, 0, null);
@@ -89,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
             y: yCurva,
             mode: 'lines',
             name: 'f(x) - Curva real',
-            line: { color: '#1a237e', width: 3 }
+            line: { color: '#b388ff', width: 3 }
         };
 
         let trazaTrapecios = {
@@ -99,14 +100,18 @@ document.addEventListener('DOMContentLoaded', function() {
             name: 'Aproximación Trapecios',
             fill: 'tozeroy', // Rellena el área hacia abajo
             opacity: 0.4,
-            line: { color: '#4caf50', width: 1.5 }
+            line: { color: '#69f0ae', width: 1.5 }
         };
 
         // D) Configurar el diseño (layout) de la gráfica
         let layout = {
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: '#1e1133',
+            font: { color: '#ece6f5', family: "'Segoe UI', sans-serif" },
+            titlefont: { color: '#b388ff' },
             title: `Regla del Trapecio: f(x) = ${func} en [${a}, ${b}] con n=${n}`,
-            xaxis: { title: 'Eje X', range: [a - 0.5, b + 0.5] },
-            yaxis: { title: 'Eje Y (f(x))', range: [0, Math.max(...yCurva) * 1.2] },
+            xaxis: { gridcolor: '#3d2a66', zerolinecolor: '#4a3570', title: 'Eje X', range: [a - 0.5, b + 0.5] },
+            yaxis: { gridcolor: '#3d2a66', zerolinecolor: '#4a3570', title: 'Eje Y (f(x))', range: [0, Math.max(...yCurva) * 1.2] },
             showlegend: true,
             legend: { x: 0, y: 1 },
             margin: { t: 50, r: 20, b: 50, l: 50 }

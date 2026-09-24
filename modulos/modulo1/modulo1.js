@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
             case 'sqrt(x)': return Math.sqrt(x);
             case 'sin(x)': return Math.sin(x);
             case 'exp(x)': return Math.exp(x);
+            case '1/x': return 1 / x;
             default: return x * x;
         }
     }
@@ -57,6 +58,14 @@ document.addEventListener('DOMContentLoaded', function() {
         return { suma: suma, puntos: puntos, dx: dx };
     }
 
+    // Utilidad: hex -> rgba con alfa (para rellenos translúcidos)
+    function hexToRgba(hex, alpha) {
+        const r = parseInt(hex.slice(1, 3), 16);
+        const g = parseInt(hex.slice(3, 5), 16);
+        const b = parseInt(hex.slice(5, 7), 16);
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+
     // Graficar con Plotly
     function graficar(func, a, b, n, tipo) {
         // Generar puntos de la curva
@@ -78,91 +87,114 @@ document.addEventListener('DOMContentLoaded', function() {
             y: yCurve,
             mode: 'lines',
             name: 'f(x)',
-            line: { color: '#1a237e', width: 3 }
+            line: { color: '#b388ff', width: 3 }
         });
 
-        if (tipo === 'todas') {
-            // Mostrar las tres sumas
-            const tipos = ['izquierda', 'derecha', 'medio'];
-            const colores = ['#f44336', '#4caf50', '#ff9800'];
-            const nombres = ['Izquierda', 'Derecha', 'Punto Medio'];
+        // Dibujar la suma seleccionada (una sola vez, sin comparar todas juntas)
+        const resultado = calcularRiemann(func, a, b, n, tipo);
+        const xBarras = [];
+        const yBarras = [];
 
-            tipos.forEach((t, idx) => {
-                const resultado = calcularRiemann(func, a, b, n, t);
-                const xBarras = [];
-                const yBarras = [];
+        resultado.puntos.forEach(p => {
+            xBarras.push(p.xi, p.xi, p.xf, p.xf, null);
+            yBarras.push(0, p.y, p.y, 0, null);
+        });
 
-                resultado.puntos.forEach(p => {
-                    xBarras.push(p.xi, p.xi, p.xf, p.xf, null);
-                    yBarras.push(0, p.y, p.y, 0, null);
-                });
+        // Cada tipo conserva su color frío destacado sobre el fondo oscuro
+        const colores = {
+            'izquierda': '#ea80fc',
+            'derecha': '#4dd0e1',
+            'medio': '#b388ff'
+        };
+        const nombres = {
+            'izquierda': 'Izquierda (Lₙ)',
+            'derecha': 'Derecha (Rₙ)',
+            'medio': 'Punto Medio (Mₙ)'
+        };
 
-                traces.push({
-                    x: xBarras,
-                    y: yBarras,
-                    mode: 'lines',
-                    name: nombres[idx],
-                    fill: 'tozeroy',
-                    opacity: 0.3,
-                    line: { color: colores[idx] }
-                });
-            });
-        } else {
-            const resultado = calcularRiemann(func, a, b, n, tipo);
-            const xBarras = [];
-            const yBarras = [];
-
-            resultado.puntos.forEach(p => {
-                xBarras.push(p.xi, p.xi, p.xf, p.xf, null);
-                yBarras.push(0, p.y, p.y, 0, null);
-            });
-
-            const colores = {
-                'izquierda': '#f44336',
-                'derecha': '#4caf50',
-                'medio': '#ff9800'
-            };
-
-            traces.push({
-                x: xBarras,
-                y: yBarras,
-                mode: 'lines',
-                name: tipo,
-                fill: 'tozeroy',
-                opacity: 0.5,
-                line: { color: colores[tipo] }
-            });
-        }
+        traces.push({
+            x: xBarras,
+            y: yBarras,
+            mode: 'lines',
+            name: nombres[tipo],
+            fill: 'tozeroy',
+            fillcolor: hexToRgba(colores[tipo], 0.5),
+            line: { color: colores[tipo], width: 1.5 },
+            opacity: 1
+        });
 
         const layout = {
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: '#1e1133',
+            font: { color: '#ece6f5', family: "'Segoe UI', sans-serif" },
+            titlefont: { color: '#b388ff' },
             title: `Sumas de Riemann: f(x) = ${func} en [${a}, ${b}] con n=${n}`,
-            xaxis: { title: 'x', range: [a - 0.5, b + 0.5] },
-            yaxis: { title: 'f(x)', range: [0, Math.max(...yCurve) * 1.2] },
+            xaxis: { gridcolor: '#3d2a66', zerolinecolor: '#4a3570', title: 'x', range: [a - 0.5, b + 0.5] },
+            yaxis: { gridcolor: '#3d2a66', zerolinecolor: '#4a3570', title: 'f(x)', range: [0, Math.max(...yCurve) * 1.2] },
             showlegend: true,
-            legend: { x: 0, y: 1 }
+            legend: { x: 1, y: 1, xanchor: 'right', bgcolor: 'rgba(30, 17, 51, 0.8)', bordercolor: '#3d2a66', borderwidth: 1 }
         };
 
         Plotly.newPlot('grafico', traces, layout, { responsive: true });
     }
 
-    // Mostrar resultados
+    // Mostrar resultados (tarjetas organizadas + tabla resumen)
     function mostrarResultados(func, a, b, n, tipo) {
         const resultadosDiv = document.getElementById('resultados-content');
-        let html = '<table class="tabla-resultados"><tr><th>Tipo</th><th>Valor Aproximado</th><th>Error</th></tr>';
 
-        const tipos = tipo === 'todas' ? ['izquierda', 'derecha', 'medio'] : [tipo];
-        const nombres = { 'izquierda': 'Lₙ (Izquierda)', 'derecha': 'Rₙ (Derecha)', 'medio': 'Mₙ (Punto Medio)' };
+        const nombres = { 'izquierda': 'Lₙ · Izquierda', 'derecha': 'Rₙ · Derecha', 'medio': 'Mₙ · Punto Medio' };
+        const colores = { 'izquierda': '#ea80fc', 'derecha': '#4dd0e1', 'medio': '#b388ff' };
 
         // Valor exacto (aproximado con n muy grande)
         const valorExacto = calcularRiemann(func, a, b, 10000, 'medio').suma;
 
-        tipos.forEach(t => {
-            const resultado = calcularRiemann(func, a, b, n, t);
-            const error = Math.abs(resultado.suma - valorExacto);
-            html += `<tr><td>${nombres[t]}</td><td>${resultado.suma.toFixed(6)}</td><td>${error.toFixed(6)}</td></tr>`;
+        const resultado = calcularRiemann(func, a, b, n, tipo);
+        const error = Math.abs(resultado.suma - valorExacto);
+        const errorRelativo = valorExacto !== 0 ? (error / Math.abs(valorExacto)) * 100 : 0;
+
+        // Tarjetas de parámetros y resultado
+        const tarjetas = [
+            { etiqueta: 'Función',              valor: `f(x) = ${func}`,            color: '#b388ff' },
+            { etiqueta: 'Intervalo',            valor: `[${a}, ${b}]`,              color: '#4dd0e1' },
+            { etiqueta: 'Subintervalos (n)',    valor: `${n}`,                      color: '#69f0ae' },
+            { etiqueta: 'Ancho Δx',             valor: resultado.dx.toFixed(6),     color: '#82b1ff' },
+            { etiqueta: `Aproximación (${nombres[tipo]})`, valor: resultado.suma.toFixed(6), color: colores[tipo] },
+            { etiqueta: 'Valor exacto (aprox.)', valor: valorExacto.toFixed(6),     color: '#ece6f5' },
+            { etiqueta: 'Error absoluto',       valor: error.toFixed(6),            color: '#ffab70' },
+            { etiqueta: 'Error relativo',       valor: `${errorRelativo.toFixed(4)} %`, color: '#ff6e8f' }
+        ];
+
+        let html = '<div class="resumen-tarjetas">';
+        tarjetas.forEach(t => {
+            html += `
+                <div class="resumen-tarjeta" style="--acento: ${t.color}">
+                    <span class="resumen-etiqueta">${t.etiqueta}</span>
+                    <span class="resumen-valor">${t.valor}</span>
+                </div>`;
+        });
+        html += '</div>';
+
+        // Tabla comparativa de los tres métodos
+        html += `
+            <table class="tabla-resultados">
+                <thead>
+                    <tr><th>Método</th><th>Valor aproximado</th><th>Error absoluto</th></tr>
+                </thead>
+                <tbody>`;
+
+        ['izquierda', 'derecha', 'medio'].forEach(t => {
+            const r = calcularRiemann(func, a, b, n, t);
+            const e = Math.abs(r.suma - valorExacto);
+            const activo = t === tipo ? ' clase="activo"' : '';
+            html += `
+                <tr${activo}>
+                    <td><span class="punto-color" style="background:${colores[t]}"></span>${nombres[t]}</td>
+                    <td class="num">${r.suma.toFixed(6)}</td>
+                    <td class="num">${e.toFixed(6)}</td>
+                </tr>`;
         });
 
-        html += `</table><p><strong>Valor exacto (aproximado):</strong> ${valorExacto.toFixed(6)}</p>`;
+        html += `</tbody></table>`;
         resultadosDiv.innerHTML = html;
     }
 

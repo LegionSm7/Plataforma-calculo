@@ -7,7 +7,7 @@
 }
 
 .placeholder-content {
-    background: white;
+    background: #1e1133;
     padding: 3rem;
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
@@ -16,7 +16,7 @@
 }
 
 .placeholder-content h2 {
-    color: #ff9800;
+    color: #ffd54f;
     margin-bottom: 1rem;
 }
 
@@ -24,14 +24,14 @@
     display: inline-block;
     margin-top: 2rem;
     padding: 0.8rem 2rem;
-    background: #1a237e;
-    color: white;
+    background: #7c4dff;
+    color: #ece6f5;
     text-decoration: none;
     border-radius: 25px;
     transition: all 0.3s;
 }
 
 .btn-volver:hover {
-    background: #3949ab;
+    background: #9575cd;
     transform: translateY(-2px);
 }

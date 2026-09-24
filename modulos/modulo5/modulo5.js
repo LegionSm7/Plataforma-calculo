@@ -78,10 +78,10 @@ document.addEventListener('DOMContentLoaded', function() {
             x: xArea,
             y: yArea,
             mode: 'lines',
-            name: 'Área bajo la curva',
+           name: 'Área bajo la curva',
             fill: 'tozeroy',
             opacity: 0.4,
-            line: { color: '#4caf50', width: 1 }
+            line: { color: '#69f0ae', width: 1 }
         };
 
         let trazaCurva = {
@@ -89,23 +89,27 @@ document.addEventListener('DOMContentLoaded', function() {
             y: yCurva,
             mode: 'lines',
             name: 'f(x) - Función',
-            line: { color: '#1a237e', width: 3 }
+            line: { color: '#b388ff', width: 3 }
         };
 
         let yA = evaluarFuncion(funcStr, a);
         let yB = evaluarFuncion(funcStr, b);
         let trazaLimites = {
-            x: [a, a, null, b, b], 
+            x: [a, a, null, b, b],
             y: [0, yA, null, 0, yB],
             mode: 'lines',
             name: 'Límites [a, b]',
-            line: { color: '#f44336', dash: 'dash', width: 2 }
+            line: { color: '#ff6e8f', dash: 'dash', width: 2 }
         };
 
         let layout = {
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: '#1e1133',
+            font: { color: '#ece6f5', family: "'Segoe UI', sans-serif" },
+            titlefont: { color: '#b388ff' },
             title: `Integral Definida: f(x) = ${funcStr} en [${a}, ${b}]`,
-            xaxis: { title: 'Eje X', range: [xMin, xMax] },
-            yaxis: { title: 'Eje Y (f(x))' },
+            xaxis: { gridcolor: '#3d2a66', zerolinecolor: '#4a3570', title: 'Eje X', range: [xMin, xMax] },
+            yaxis: { gridcolor: '#3d2a66', zerolinecolor: '#4a3570', title: 'Eje Y (f(x))' },
             showlegend: true,
             legend: { x: 0, y: 1 },
             margin: { t: 50, r: 20, b: 50, l: 50 }
@@ -143,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Calcular la integral definida
         const valorIntegral = calcularIntegralDefinida(func, a, b);
-        
+
         // Calcular el área geométrica (siempre positiva)
         const areaGeometrica = Math.abs(valorIntegral);
 
@@ -169,29 +173,29 @@ document.addEventListener('DOMContentLoaded', function() {
         // --- MENSAJE EDUCATIVO SI a > b ---
         if (a > b) {
             const p3 = document.createElement('p');
-            p3.style.color = '#d32f2f';
-            p3.style.background = '#ffebee';
+            p3.style.color = '#ff6e8f';
+            p3.style.background = 'rgba(255,110,143,0.12)';
             p3.style.padding = '10px';
             p3.style.borderRadius = '5px';
             p3.style.marginTop = '10px';
-            
+
             // Texto inicial
             p3.innerHTML = '<strong>️ ¡Propiedad de Inversión de Límites!</strong> Integraste de derecha a izquierda ';
-            
+
             // Fórmula: a > b
             const formula1 = document.createElement('span');
             renderizarFormula(formula1, 'a > b', false);
             p3.appendChild(formula1);
-            
+
             p3.innerHTML += '. Por la propiedad de la integral definida, el signo cambia: ';
-            
+
             // Fórmula: ∫_a^b f(x)dx = -∫_b^a f(x)dx
             const formula2 = document.createElement('span');
             renderizarFormula(formula2, `\\int_{${a}}^{${b}} f(x)\\,dx = -\\int_{${b}}^{${a}} f(x)\\,dx`, false);
             p3.appendChild(formula2);
-            
+
             p3.innerHTML += '. Por eso la integral es negativa, pero el área geométrica sigue siendo positiva.';
-            
+
             divResultados.appendChild(p3);
         } else {
             // Tip normal si a < b

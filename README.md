@@ -83,7 +83,7 @@ plataforma-calculo-fase1/
 1. Clona el repositorio en tu máquina local:
 
 ```bash
-git clone https://github.com/TU_USUARIO/plataforma-calculo-fase1.git
+git clone https://github.com/LegionSm7/Plataforma-calculo.git
 cd plataforma-calculo-fase1
 ```
 
@@ -113,7 +113,7 @@ Luego accede a: `http://localhost:8000`
 4. Tu sitio quedará disponible en:
 
 ```text
-https://TU_USUARIO.github.io/plataforma-calculo-fase1/
+https://github.com/LegionSm7/Plataforma-calculo.git
 ```
 
 ---

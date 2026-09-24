@@ -1,19 +1,20 @@
-#  Plataforma Web Colaborativa de Cálculo Integral - Fase 1
+# 📐 Plataforma Web Colaborativa de Cálculo Integral — Fase 1
 
-**Asignatura:** Cálculo Integral (CB215)  
-**Programa:** Tecnología en Desarrollo de Software  
-**Institución:** Universidad Tecnológica de Pereira (UTP)  
-**Departamento:** Matemáticas - Facultad de Ciencias Básicas  
-**Periodo:** 2026-II  
-**Modalidad:** 100% Virtual  
+**Asignatura:** Cálculo Integral (CB215)
+**Programa:** Tecnología en Desarrollo de Software
+**Institución:** Universidad Tecnológica de Pereira (UTP)
+**Departamento:** Matemáticas - Facultad de Ciencias Básicas
+**Periodo:** 2026-II
+**Modalidad:** 100% Virtual
 
 ---
 
-##  Descripción del Proyecto
+## 📖 Descripción del Proyecto
 
 Esta plataforma web interactiva es una herramienta educativa diseñada para la **visualización y aprendizaje de conceptos de Cálculo Integral y Métodos Numéricos**. Constituye la **Fase 1** de un proyecto semestral colaborativo que, al finalizar el curso, se convertirá en un recurso académico completo compartido en la red para estudiantes de Tecnología en Desarrollo de Software.
 
 ### 🎓 Objetivos de Aprendizaje
+
 - Demostrar competencias en métodos numéricos de aproximación (Riemann, Trapecio, Punto Medio, Simpson).
 - Implementar el Teorema Fundamental del Cálculo de forma visual e interactiva.
 - Aplicar técnicas de integración directa con visualización gráfica.
@@ -25,6 +26,7 @@ Esta plataforma web interactiva es una herramienta educativa diseñada para la *
 ## 🏗️ Arquitectura del Proyecto
 
 ### Estructura Modular
+
 El proyecto sigue una **arquitectura modular** donde cada uno de los 14 contenidos académicos del curso tiene su propio directorio independiente, facilitando el desarrollo colaborativo y el mantenimiento.
 
 ```text
@@ -59,39 +61,65 @@ plataforma-calculo-fase1/
     ├── modulo12/                 # 🔒 Hiperbólicas Inversas (Fase 3 - Próximamente)
     ├── modulo13/                 # 🔒 Trinomio ax² + bx + c (Fase 3 - Próximamente)
     └── modulo14/                 # 🔒 Integración por Partes (Fase 3 - Próximamente)
+```
 
-    🛠️ Tecnologías Utilizadas
-Frontend
-HTML5 - Estructura semántica y accesible.
-CSS3 - Diseño responsive con Grid y Flexbox.
-JavaScript (ES6+) - Lógica interactiva y cálculos matemáticos.
-Librerías Matemáticas y de Visualización
-KaTeX - Renderizado rápido de fórmulas matemáticas (LaTeX).
-Plotly.js - Gráficas interactivas y visualizaciones científicas.
-Herramientas de Desarrollo
-Git & GitHub - Control de versiones y colaboración.
-GitHub Pages - Despliegue y hosting gratuito.
-Qwen Coder - Asistencia en programación (documentado).
-Visual Studio Code - Editor de código.
-Características Técnicas
-✅ Diseño Responsive: Adaptable a móviles, tablets y desktop.
-✅ Renderizado Matemático: Fórmulas en LaTeX con KaTeX.
-✅ Visualización Interactiva: Gráficas dinámicas con Plotly.js.
-✅ Arquitectura Modular: Cada módulo es independiente.
-✅ Código Documentado: Comentarios y estructura clara.
-🤖 Documentación del Uso de Inteligencia Artificial
+---
+
+## 🛠️ Tecnologías Utilizadas
+
+### Frontend
+- **HTML5** - Estructura semántica y accesible.
+- **CSS3** - Diseño responsive con Grid y Flexbox.
+- **JavaScript (ES6+)** - Lógica interactiva y cálculos matemáticos.
+
+### Librerías Matemáticas y de Visualización
+- **KaTeX** - Renderizado rápido de fórmulas matemáticas (LaTeX).
+- **Plotly.js** - Gráficas interactivas y visualizaciones científicas.
+
+### Herramientas de Desarrollo
+- **Git & GitHub** - Control de versiones y colaboración.
+- **GitHub Pages** - Despliegue y hosting gratuito.
+- **Qwen Coder** - Asistencia en programación (documentado).
+- **Visual Studio Code** - Editor de código.
+
+### Características Técnicas
+- ✅ **Diseño Responsive:** Adaptable a móviles, tablets y desktop.
+- ✅ **Renderizado Matemático:** Fórmulas en LaTeX con KaTeX.
+- ✅ **Visualización Interactiva:** Gráficas dinámicas con Plotly.js.
+- ✅ **Arquitectura Modular:** Cada módulo es independiente.
+- ✅ **Código Documentado:** Comentarios y estructura clara.
+
+---
+
+## 🤖 Documentación del Uso de Inteligencia Artificial
+
 De acuerdo con las directrices del curso (Parte II: Desarrollo de Software), se documenta el uso de herramientas de IA:
-Herramienta utilizada: Qwen Coder (Asistente de programación).
-Alcance: Asistencia en la generación de código JavaScript, HTML y CSS, así como en la estructuración de la arquitectura modular.
-Validación: Todo el código fue revisado, comprendido, adaptado y probado manualmente por el estudiante.
-Documentación: Este README y los comentarios en el código son producto del trabajo y comprensión del estudiante.
-👨‍ Autor
-Nombre: [Tu Nombre Completo]
-Código: [Tu Código Estudiantil]
-Email: [Tu Email Institucional]
-GitHub: [Tu Usuario de GitHub]
-Licencia
+
+- **Herramienta utilizada:** Qwen Coder (Asistente de programación).
+- **Alcance:** Asistencia en la generación de código JavaScript, HTML y CSS, así como en la estructuración de la arquitectura modular.
+- **Validación:** Todo el código fue revisado, comprendido, adaptado y probado manualmente por el estudiante.
+- **Documentación:** Este README y los comentarios en el código son producto del trabajo y comprensión del estudiante.
+
+---
+
+## 👨‍💻 Autor
+
+| Campo | Valor |
+|-------|-------|
+| **Nombre** | [Tu Nombre Completo] |
+| **Código** | [Tu Código Estudiantil] |
+| **Email** | [Tu Email Institucional] |
+| **GitHub** | [Tu Usuario de GitHub] |
+
+---
+
+## 📄 Licencia
+
 Este proyecto es desarrollado como parte del curso de Cálculo Integral (CB215) de la Universidad Tecnológica de Pereira. El código fuente está disponible para fines educativos y académicos.
-"Aquí construimos futuro" 🚀
-Universidad Tecnológica de Pereira
-Septiembre 2026 - Modalidad Virtual
+
+---
+
+> *"Aquí construimos futuro"* 🚀
+>
+> Universidad Tecnológica de Pereira
+> Septiembre 2026 - Modalidad Virtual

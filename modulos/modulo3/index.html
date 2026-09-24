@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 3 - Regla del Punto Medio</title>
+    <!-- Estilos globales y específicos del módulo -->
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="modulo3.css">
+    
+    <!-- KaTeX para fórmulas matemáticas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    
+    <!-- Plotly.js para gráficas interactivas -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+</head>
+<body>
+    <!-- ENCABEZADO DEL MÓDULO -->
+    <header class="modulo-header">
+        <div class="container">
+            <a href="../../index.html" class="back-link">← Volver al inicio</a>
+            <h1> Módulo 3: Regla del Punto Medio</h1>
+            <p>Aproximación del área bajo la curva usando rectángulos en el punto medio</p>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <!-- SECCIÓN 1: TEORÍA -->
+        <section class="teoria">
+            <h2>📖 Fundamento Teórico</h2>
+            <p>La <strong>Regla del Punto Medio</strong> es un método de integración numérica que mejora la aproximación de las sumas de Riemann básicas. En lugar de usar el extremo izquierdo o derecho de cada subintervalo, evalúa la función en el <strong>punto medio</strong> de cada subintervalo para determinar la altura del rectángulo.</p>
+
+            <div class="formula-box">
+                <h3>Justificación Geométrica</h3>
+                <p>Al evaluar en el punto medio, el error por exceso en un lado del rectángulo tiende a compensarse con el error por defecto en el otro lado, lo que generalmente produce una aproximación más precisa que las sumas de Riemann izquierda o derecha.</p>
+            </div>
+
+            <div class="formula-box">
+                <h3>Fórmula de la Regla del Punto Medio</h3>
+                <p>$$M_n = \Delta x \sum_{i=1}^{n} f(\bar{x}_i)$$</p>
+                <p>Donde:</p>
+                <p>$$\Delta x = \frac{b - a}{n} \quad \text{y} \quad \bar{x}_i = \frac{x_{i-1} + x_i}{2} = a + \left(i - \frac{1}{2}\right)\Delta x$$</p>
+            </div>
+
+            <div class="nota">
+                <strong>💡 Nota:</strong> La Regla del Punto Medio suele ser aproximadamente el doble de precisa que la Regla del Trapecio para el mismo número de subintervalos $n$.
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: VISUALIZADOR INTERACTIVO -->
+        <section class="visualizador">
+            <h2> Visualizador Interactivo</h2>
+            <p>Ajusta los parámetros para ver cómo los rectángulos de punto medio aproximan el área bajo la curva:</p>
+
+            <div class="controles">
+                <div class="control-group">
+                    <label for="funcion">Función f(x):</label>
+                    <select id="funcion">
+                        <option value="x^2">x²</option>
+                        <option value="x">x</option>
+                        <option value="sqrt(x)">√x</option>
+                        <option value="1/x">1/x</option>
+                        <option value="sin(x)">sin(x)</option>
+                        <option value="exp(x)">eˣ</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="a">Límite inferior (a):</label>
+                    <input type="number" id="a" value="0" step="0.1">
+                </div>
+
+                <div class="control-group">
+                    <label for="b">Límite superior (b):</label>
+                    <input type="number" id="b" value="2" step="0.1">
+                </div>
+
+                <div class="control-group">
+                    <label for="n">Número de rectángulos (n):</label>
+                    <input type="range" id="n" min="1" max="50" value="4">
+                    <span id="n-value">4</span>
+                </div>
+
+                <button id="calcular" class="btn-calcular">🔄 Calcular y Graficar</button>
+            </div>
+
+            <div id="grafico" class="grafico-container"></div>
+
+            <div class="resultados">
+                <h3>📊 Resultados:</h3>
+                <div id="resultados-content">
+                    <p>Haz clic en "Calcular" para ver el resultado.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: EJEMPLOS RESUELTOS -->
+        <section class="ejemplos">
+            <h2>📝 Ejemplos Resueltos Paso a Paso</h2>
+
+            <div class="ejemplo">
+                <h3>Ejemplo 1: Aproximar $\int_0^2 x^2 dx$ usando $n = 4$</h3>
+                
+                <div class="paso">
+                    <h4>Paso 1: Calcular $\Delta x$</h4>
+                    <p>$$\Delta x = \frac{b - a}{n} = \frac{2 - 0}{4} = 0.5$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 2: Identificar los puntos medios $\bar{x}_i$</h4>
+                    <p>Los subintervalos son: $[0, 0.5], [0.5, 1.0], [1.0, 1.5], [1.5, 2.0]$</p>
+                    <p>Puntos medios: $\bar{x}_1 = 0.25, \quad \bar{x}_2 = 0.75, \quad \bar{x}_3 = 1.25, \quad \bar{x}_4 = 1.75$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 3: Evaluar $f(x) = x^2$ en los puntos medios</h4>
+                    <p>$f(0.25) = 0.0625$</p>
+                    <p>$f(0.75) = 0.5625$</p>
+                    <p>$f(1.25) = 1.5625$</p>
+                    <p>$f(1.75) = 3.0625$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 4: Aplicar la fórmula del Punto Medio</h4>
+                    <p>$$M_4 = 0.5 \times [0.0625 + 0.5625 + 1.5625 + 3.0625]$$</p>
+                    <p>$$M_4 = 0.5 \times 5.25 = 2.625$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 5: Comparar con el valor exacto</h4>
+                    <p>$$\int_0^2 x^2 dx = \left[\frac{x^3}{3}\right]_0^2 = \frac{8}{3} \approx 2.6667$$</p>
+                    <p><strong>Error:</strong> $|2.625 - 2.6667| = 0.0417$. ¡Más preciso que el Trapecio (0.0833)!</p>
+                </div>
+            </div>
+
+            <div class="ejemplo">
+                <h3>Ejemplo 2: Aproximar $\int_0^1 e^x dx$ usando $n = 4$</h3>
+                
+                <div class="paso">
+                    <h4>Paso 1: Calcular $\Delta x$</h4>
+                    <p>$$\Delta x = \frac{1 - 0}{4} = 0.25$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 2: Identificar los puntos medios $\bar{x}_i$</h4>
+                    <p>Los subintervalos son: $[0, 0.25], [0.25, 0.5], [0.5, 0.75], [0.75, 1.0]$</p>
+                    <p>Puntos medios: $\bar{x}_1 = 0.125, \quad \bar{x}_2 = 0.375, \quad \bar{x}_3 = 0.625, \quad \bar{x}_4 = 0.875$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 3: Evaluar $f(x) = e^x$ en los puntos medios</h4>
+                    <p>$f(0.125) = e^{0.125} \approx 1.1331$</p>
+                    <p>$f(0.375) = e^{0.375} \approx 1.4550$</p>
+                    <p>$f(0.625) = e^{0.625} \approx 1.8682$</p>
+                    <p>$f(0.875) = e^{0.875} \approx 2.3989$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 4: Aplicar la fórmula</h4>
+                    <p>$$M_4 = 0.25 \times [1.1331 + 1.4550 + 1.8682 + 2.3989]$$</p>
+                    <p>$$M_4 = 0.25 \times 6.8552 \approx 1.7138$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 5: Valor exacto</h4>
+                    <p>$$\int_0^1 e^x dx = [e^x]_0^1 = e - 1 \approx 1.7183$$</p>
+                    <p><strong>Error:</strong> $|1.7138 - 1.7183| = 0.0045$. ¡Excelente precisión!</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- PIE DE PÁGINA -->
+    <footer class="main-footer">
+        <div class="container">
+            <p>© 2026 - UTP | Cálculo Integral - Módulo 3: Regla del Punto Medio</p>
+        </div>
+    </footer>
+
+    <!-- Lógica del Módulo -->
+    <script src="modulo3.js"></script>
+</body>
+</html>

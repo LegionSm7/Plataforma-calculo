@@ -1,0 +1,330 @@
+/* ===== RESET Y VARIABLES ===== */
+:root {
+    --primary: #1a237e;
+    --primary-light: #3949ab;
+    --secondary: #00bcd4;
+    --accent: #ff6f00;
+    --success: #4caf50;
+    --warning: #ff9800;
+    --danger: #f44336;
+    --dark: #212121;
+    --light: #f5f5f5;
+    --white: #ffffff;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.15);
+    --radius: 12px;
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--dark);
+    background: var(--light);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ===== HEADER ===== */
+.main-header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: var(--white);
+    padding: 3rem 0;
+    text-align: center;
+}
+
+.main-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.periodo {
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+    background: rgba(255, 255, 255, 0.2);
+    display: inline-block;
+    padding: 0.3rem 1rem;
+    border-radius: 20px;
+}
+
+/* ===== NAVEGACIÓN ===== */
+.main-nav {
+    background: var(--white);
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-list {
+    display: flex;
+    list-style: none;
+    gap: 1rem;
+    padding: 1rem 0;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.nav-list a {
+    text-decoration: none;
+    color: var(--dark);
+    padding: 0.5rem 1.5rem;
+    border-radius: 25px;
+    transition: var(--transition);
+    font-weight: 500;
+}
+
+.nav-list a:hover,
+.nav-list a.active {
+    background: var(--primary);
+    color: var(--white);
+}
+
+/* ===== HERO ===== */
+.hero {
+    text-align: center;
+    padding: 3rem 0;
+}
+
+.hero h2 {
+    font-size: 2rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+
+.hero p {
+    font-size: 1.1rem;
+    color: #666;
+    max-width: 700px;
+    margin: 0 auto 2rem;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1.5rem;
+    max-width: 600px;
+    margin: 2rem auto;
+}
+
+.stat-card {
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.stat-card h3 {
+    font-size: 2.5rem;
+    color: var(--primary);
+}
+
+/* ===== MÓDULOS GRID ===== */
+.modulos-section {
+    padding: 2rem 0;
+}
+
+.modulos-section h2 {
+    text-align: center;
+    color: var(--primary);
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+.modulos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.modulo-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    text-decoration: none;
+    color: var(--dark);
+    transition: var(--transition);
+    border: 2px solid transparent;
+    display: block;
+}
+
+.modulo-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--secondary);
+}
+
+.modulo-card.placeholder {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.modulo-card.placeholder:hover {
+    transform: none;
+    border-color: transparent;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.numero {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary);
+}
+
+.badge {
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.fase1-badge {
+    background: var(--success);
+    color: var(--white);
+}
+
+.fase2-badge {
+    background: var(--warning);
+    color: var(--white);
+}
+
+.fase3-badge {
+    background: var(--danger);
+    color: var(--white);
+}
+
+.modulo-card h3 {
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.modulo-card p {
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+}
+
+.status {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.disponible {
+    background: #e8f5e9;
+    color: var(--success);
+}
+
+.proximo {
+    background: #fff3e0;
+    color: var(--warning);
+}
+
+/* ===== ABOUT ===== */
+.about-section {
+    padding: 3rem 0;
+    text-align: center;
+}
+
+.about-section h2 {
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+
+.fases-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.fase {
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--primary);
+}
+
+.fase h4 {
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+}
+
+/* ===== FOOTER ===== */
+.main-footer {
+    background: var(--dark);
+    color: var(--white);
+    text-align: center;
+    padding: 2rem 0;
+    margin-top: 3rem;
+}
+
+.slogan {
+    margin-top: 0.5rem;
+    font-style: italic;
+    color: var(--secondary);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .main-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .hero h2 {
+        font-size: 1.5rem;
+    }
+
+    .modulos-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .nav-list {
+        gap: 0.5rem;
+    }
+
+    .nav-list a {
+        padding: 0.4rem 1rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-header {
+        padding: 2rem 0;
+    }
+
+    .main-header h1 {
+        font-size: 1.4rem;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma de Cálculo Integral - UTP</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- KaTeX para fórmulas matemáticas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <!-- Plotly.js para visualizaciones -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <h1>📐 Plataforma de Cálculo Integral</h1>
+            <p class="subtitle">Universidad Tecnológica de Pereira - Tecnología en Desarrollo de Software</p>
+            <p class="periodo">Parcial I - 2026-II | Fase 1</p>
+        </div>
+    </header>
+
+    <nav class="main-nav">
+        <div class="container">
+            <ul class="nav-list">
+                <li><a href="#inicio" class="active">Inicio</a></li>
+                <li><a href="#modulos">Módulos</a></li>
+                <li><a href="#acerca">Acerca de</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section id="inicio" class="hero">
+            <h2>Bienvenido a la Plataforma Interactiva de Integración</h2>
+            <p>Una herramienta colaborativa para visualizar y comprender los métodos numéricos y analíticos del cálculo integral.</p>
+            <div class="stats">
+                <div class="stat-card">
+                    <h3>14</h3>
+                    <p>Módulos</p>
+                </div>
+                <div class="stat-card">
+                    <h3>6</h3>
+                    <p>Activos (Fase 1)</p>
+                </div>
+                <div class="stat-card">
+                    <h3>∞</h3>
+                    <p>Posibilidades</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="modulos" class="modulos-section">
+            <h2>📚 Módulos del Curso</h2>
+            <div class="modulos-grid">
+                <!-- Fase 1 - Completos -->
+                <a href="modulos/modulo1/index.html" class="modulo-card fase1">
+                    <div class="card-header">
+                        <span class="badge fase1-badge">Fase 1</span>
+                        <span class="numero">01</span>
+                    </div>
+                    <h3>Sumas de Riemann</h3>
+                    <p>Aproximación del área mediante sumas izquierda, derecha y punto medio.</p>
+                    <span class="status disponible">✅ Disponible</span>
+                </a>
+
+                <a href="modulos/modulo2/index.html" class="modulo-card fase1">
+                    <div class="card-header">
+                        <span class="badge fase1-badge">Fase 1</span>
+                        <span class="numero">02</span>
+                    </div>
+                    <h3>Regla del Trapecio</h3>
+                    <p>Aproximación del área usando trapecios bajo la curva.</p>
+                    <span class="status disponible">✅ Disponible</span>
+                </a>
+
+                <a href="modulos/modulo3/index.html" class="modulo-card fase1">
+                    <div class="card-header">
+                        <span class="badge fase1-badge">Fase 1</span>
+                        <span class="numero">03</span>
+                    </div>
+                    <h3>Regla del Punto Medio</h3>
+                    <p>Aproximación del área con rectángulos en el punto medio.</p>
+                    <span class="status disponible">✅ Disponible</span>
+                </a>
+
+                <a href="modulos/modulo4/index.html" class="modulo-card fase1">
+                    <div class="card-header">
+                        <span class="badge fase1-badge">Fase 1</span>
+                        <span class="numero">04</span>
+                    </div>
+                    <h3>Regla de Simpson</h3>
+                    <p>Aproximación del área usando parábolas ajustadas.</p>
+                    <span class="status disponible">✅ Disponible</span>
+                </a>
+
+                <a href="modulos/modulo5/index.html" class="modulo-card fase1">
+                    <div class="card-header">
+                        <span class="badge fase1-badge">Fase 1</span>
+                        <span class="numero">05</span>
+                    </div>
+                    <h3>Integral Definida y Área</h3>
+                    <p>Teorema Fundamental del Cálculo y área bajo la curva.</p>
+                    <span class="status disponible">✅ Disponible</span>
+                </a>
+
+                <a href="modulos/modulo6/index.html" class="modulo-card fase1">
+                    <div class="card-header">
+                        <span class="badge fase1-badge">Fase 1</span>
+                        <span class="numero">06</span>
+                    </div>
+                    <h3>Integración Directa</h3>
+                    <p>Fórmulas básicas de integración inmediata.</p>
+                    <span class="status disponible">✅ Disponible</span>
+                </a>
+
+                <!-- Fase 2 - Placeholders -->
+                <div class="modulo-card placeholder">
+                    <div class="card-header">
+                        <span class="badge fase2-badge">Fase 2</span>
+                        <span class="numero">07</span>
+                    </div>
+                    <h3>Sustitución / Potencias</h3>
+                    <p>Integración por cambio de variable.</p>
+                    <span class="status proximo"> Próximamente</span>
+                </div>
+
+                <div class="modulo-card placeholder">
+                    <div class="card-header">
+                        <span class="badge fase2-badge">Fase 2</span>
+                        <span class="numero">08</span>
+                    </div>
+                    <h3>Integrales Exponenciales</h3>
+                    <p>Integración de funciones exponenciales.</p>
+                    <span class="status proximo">🔒 Próximamente</span>
+                </div>
+
+                <div class="modulo-card placeholder">
+                    <div class="card-header">
+                        <span class="badge fase2-badge">Fase 2</span>
+                        <span class="numero">09</span>
+                    </div>
+                    <h3>Integrales Logarítmicas</h3>
+                    <p>Integración de funciones logarítmicas.</p>
+                    <span class="status proximo">🔒 Próximamente</span>
+                </div>
+
+                <div class="modulo-card placeholder">
+                    <div class="card-header">
+                        <span class="badge fase2-badge">Fase 2</span>
+                        <span class="numero">10</span>
+                    </div>
+                    <h3>Integrales Trigonométricas</h3>
+                    <p>Integración de funciones trigonométricas.</p>
+                    <span class="status proximo">🔒 Próximamente</span>
+                </div>
+
+                <!-- Fase 3 - Placeholders -->
+                <div class="modulo-card placeholder">
+                    <div class="card-header">
+                        <span class="badge fase3-badge">Fase 3</span>
+                        <span class="numero">11</span>
+                    </div>
+                    <h3>Trigonométricas Inversas</h3>
+                    <p>Integrales que conducen a funciones inversas.</p>
+                    <span class="status proximo">🔒 Próximamente</span>
+                </div>
+
+                <div class="modulo-card placeholder">
+                    <div class="card-header">
+                        <span class="badge fase3-badge">Fase 3</span>
+                        <span class="numero">12</span>
+                    </div>
+                    <h3>Hiperbólicas Inversas</h3>
+                    <p>Integrales que conducen a funciones hiperbólicas inversas.</p>
+                    <span class="status proximo">🔒 Próximamente</span>
+                </div>
+
+                <div class="modulo-card placeholder">
+                    <div class="card-header">
+                        <span class="badge fase3-badge">Fase 3</span>
+                        <span class="numero">13</span>
+                    </div>
+                    <h3>Trinomio ax² + bx + c</h3>
+                    <p>Integración completando el cuadrado.</p>
+                    <span class="status proximo">🔒 Próximamente</span>
+                </div>
+
+                <div class="modulo-card placeholder">
+                    <div class="card-header">
+                        <span class="badge fase3-badge">Fase 3</span>
+                        <span class="numero">14</span>
+                    </div>
+                    <h3>Integración por Partes</h3>
+                    <p>Método de integración por partes (LIATE).</p>
+                    <span class="status proximo"> Próximamente</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="acerca" class="about-section">
+            <h2>🎯 Acerca del Proyecto</h2>
+            <p>Esta plataforma es parte del proyecto semestral de la asignatura <strong>Cálculo Integral</strong> del programa de <strong>Tecnología en Desarrollo de Software</strong> de la UTP.</p>
+            <p>Al finalizar el semestre, se convertirá en una herramienta completa de visualización matemática compartida en la red académica como insumo de estudio.</p>
+            <div class="fases-info">
+                <div class="fase">
+                    <h4>Fase 1 (Actual)</h4>
+                    <p>Métodos numéricos + Área + Integración Directa</p>
+                </div>
+                <div class="fase">
+                    <h4>Fase 2</h4>
+                    <p>Exponenciales, Logarítmicas, Trigonométricas</p>
+                </div>
+                <div class="fase">
+                    <h4>Fase 3</h4>
+                    <p>Inversas, Trinomios, Partes + Sólidos de revolución</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>© 2026 - Universidad Tecnológica de Pereira | Departamento de Matemáticas</p>
+            <p class="slogan">"Aquí construimos futuro" 🚀</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

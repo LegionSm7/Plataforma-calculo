@@ -1,0 +1,267 @@
+/* ===== MODULO 2: REGLA DEL TRAPECIO - ESTILOS ESPECÍFICOS ===== */
+
+/* Variables de color para este módulo */
+:root {
+    --mod2-primary: #1a237e;
+    --mod2-secondary: #00bcd4;
+    --mod2-accent: #4caf50; /* Verde para los trapecios */
+    --mod2-bg: #f8f9fa;
+    --mod2-text: #212121;
+    --mod2-card-bg: #ffffff;
+}
+
+/* --- ENCABEZADO DEL MÓDULO --- */
+.modulo-header {
+    background: linear-gradient(135deg, var(--mod2-primary) 0%, #283593 100%);
+    color: white;
+    padding: 2.5rem 0;
+    text-align: center;
+    border-bottom: 5px solid var(--mod2-accent);
+}
+
+.modulo-header h1 {
+    font-size: 2.2rem;
+    margin: 0.5rem 0;
+    font-weight: 700;
+}
+
+.modulo-header p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-top: 0;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1.2rem;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 25px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+}
+
+.back-link:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: white;
+    transform: translateX(-3px);
+}
+
+/* --- SECCIONES GENERALES (TARJETAS) --- */
+.teoria, .visualizador, .ejemplos {
+    background: var(--mod2-card-bg);
+    padding: 2rem;
+    margin: 2rem 0;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border-top: 4px solid var(--mod2-secondary);
+}
+
+.teoria h2, .visualizador h2, .ejemplos h2 {
+    color: var(--mod2-primary);
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+}
+
+/* --- CAJAS DE FÓRMULAS --- */
+.formula-box {
+    background: #f1f8e9; /* Fondo verde muy claro */
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-left: 5px solid var(--mod2-accent);
+    margin: 1.5rem 0;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.02);
+}
+
+.formula-box h3 {
+    color: #2e7d32;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+/* Ajuste para que las fórmulas de KaTeX no se desborden en móviles */
+.katex-display {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0.5rem 0;
+}
+
+/* --- NOTA INFORMATIVA --- */
+.nota {
+    background: #fff3e0;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    border-left: 5px solid #ff9800;
+    margin-top: 1.5rem;
+    color: #e65100;
+}
+
+/* --- VISUALIZADOR Y CONTROLES --- */
+.controles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: #f5f5f5;
+    border-radius: 10px;
+    border: 1px solid #e0e0e0;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.control-group label {
+    font-weight: 600;
+    color: var(--mod2-primary);
+    font-size: 0.95rem;
+}
+
+.control-group select,
+.control-group input[type="number"] {
+    padding: 0.6rem;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    background: white;
+    transition: border-color 0.3s;
+}
+
+.control-group select:focus,
+.control-group input[type="number"]:focus {
+    outline: none;
+    border-color: var(--mod2-secondary);
+}
+
+/* Estilo personalizado para el Slider (Range) */
+.control-group input[type="range"] {
+    width: 100%;
+    accent-color: var(--mod2-accent);
+    cursor: pointer;
+}
+
+#n-value {
+    font-weight: bold;
+    color: var(--mod2-accent);
+    font-size: 1.2rem;
+    text-align: center;
+    display: block;
+    margin-top: 0.2rem;
+}
+
+.btn-calcular {
+    grid-column: 1 / -1;
+    padding: 1rem;
+    background: var(--mod2-primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-calcular:hover {
+    background: #283593;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(26, 35, 126, 0.3);
+}
+
+.grafico-container {
+    width: 100%;
+    min-height: 450px;
+    margin: 2rem 0;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.resultados {
+    background: #e8f5e9;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-left: 5px solid var(--mod2-accent);
+    margin-top: 1rem;
+}
+
+.resultados h3 {
+    color: #2e7d32;
+    margin-top: 0;
+}
+
+/* --- EJEMPLOS RESUELTOS --- */
+.ejemplo {
+    background: #fafafa;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    border-radius: 8px;
+    border: 1px solid #eee;
+}
+
+.ejemplo h3 {
+    color: var(--mod2-primary);
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.paso {
+    background: white;
+    padding: 1.2rem;
+    margin: 1rem 0;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+    border-left: 3px solid var(--mod2-secondary);
+}
+
+.paso h4 {
+    color: #00838f;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.05rem;
+}
+
+.paso p {
+    margin: 0.3rem 0;
+    line-height: 1.6;
+}
+
+/* --- FOOTER --- */
+.main-footer {
+    background: #212121;
+    color: white;
+    text-align: center;
+    padding: 1.5rem 0;
+    margin-top: 3rem;
+    font-size: 0.9rem;
+}
+
+/* --- RESPONSIVE (MÓVILES) --- */
+@media (max-width: 768px) {
+    .modulo-header h1 {
+        font-size: 1.6rem;
+    }
+
+    .teoria, .visualizador, .ejemplos {
+        padding: 1.2rem;
+    }
+
+    .controles {
+        grid-template-columns: 1fr;
+    }
+
+    .grafico-container {
+        min-height: 300px;
+    }
+}

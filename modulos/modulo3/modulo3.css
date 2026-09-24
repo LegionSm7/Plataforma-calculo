@@ -1,0 +1,188 @@
+/* Estilos específicos del Módulo 1 */
+.modulo-header {
+    background: linear-gradient(135deg, #1a237e 0%, #3949ab 100%);
+    color: white;
+    padding: 2rem 0;
+    text-align: center;
+}
+
+.back-link {
+    display: inline-block;
+    color: white;
+    text-decoration: none;
+    margin-bottom: 1rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px;
+    transition: all 0.3s;
+}
+
+.back-link:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+.modulo-header h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.teoria, .visualizador, .ejemplos {
+    background: white;
+    padding: 2rem;
+    margin: 2rem 0;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.teoria h2, .visualizador h2, .ejemplos h2 {
+    color: #1a237e;
+    border-bottom: 3px solid #00bcd4;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.formula-box {
+    background: #f5f5f5;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-left: 4px solid #1a237e;
+    margin: 1rem 0;
+}
+
+.tipos-sumas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.tipo {
+    background: #e3f2fd;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-top: 4px solid #00bcd4;
+}
+
+.tipo h3 {
+    color: #1a237e;
+    margin-bottom: 0.5rem;
+}
+
+.nota {
+    background: #fff3e0;
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 4px solid #ff9800;
+    margin-top: 1rem;
+}
+
+.controles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: #f5f5f5;
+    border-radius: 8px;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.control-group label {
+    font-weight: 600;
+    color: #1a237e;
+}
+
+.control-group input,
+.control-group select {
+    padding: 0.5rem;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.control-group input:focus,
+.control-group select:focus {
+    outline: none;
+    border-color: #00bcd4;
+}
+
+.btn-calcular {
+    grid-column: 1 / -1;
+    padding: 1rem;
+    background: #1a237e;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-calcular:hover {
+    background: #3949ab;
+    transform: translateY(-2px);
+}
+
+.grafico-container {
+    width: 100%;
+    min-height: 400px;
+    margin: 2rem 0;
+}
+
+.resultados {
+    background: #e8f5e9;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+.resultados h3 {
+    color: #1a237e;
+    margin-bottom: 1rem;
+}
+
+.ejemplo {
+    background: #fafafa;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    border-radius: 8px;
+    border-left: 4px solid #1a237e;
+}
+
+.ejemplo h3 {
+    color: #1a237e;
+    margin-bottom: 1rem;
+}
+
+.paso {
+    background: white;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.paso h4 {
+    color: #00bcd4;
+    margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .modulo-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .teoria, .visualizador, .ejemplos {
+        padding: 1rem;
+    }
+
+    .controles {
+        grid-template-columns: 1fr;
+    }
+}

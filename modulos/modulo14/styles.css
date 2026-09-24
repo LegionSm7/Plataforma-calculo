@@ -1,0 +1,37 @@
+.placeholder-section {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 0;
+}
+
+.placeholder-content {
+    background: white;
+    padding: 3rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    text-align: center;
+    max-width: 600px;
+}
+
+.placeholder-content h2 {
+    color: #ff9800;
+    margin-bottom: 1rem;
+}
+
+.btn-volver {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 0.8rem 2rem;
+    background: #1a237e;
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    transition: all 0.3s;
+}
+
+.btn-volver:hover {
+    background: #3949ab;
+    transform: translateY(-2px);
+}

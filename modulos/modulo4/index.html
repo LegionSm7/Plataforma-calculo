@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 4 - Regla de Simpson</title>
+    <!-- Estilos globales y específicos del módulo -->
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="modulo4.css">
+    
+    <!-- KaTeX para fórmulas matemáticas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    
+    <!-- Plotly.js para gráficas interactivas -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+</head>
+<body>
+    <!-- ENCABEZADO DEL MÓDULO -->
+    <header class="modulo-header">
+        <div class="container">
+            <a href="../../index.html" class="back-link">← Volver al inicio</a>
+            <h1>📈 Módulo 4: Regla de Simpson</h1>
+            <p>Aproximación del área bajo la curva usando parábolas ajustadas</p>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <!-- SECCIÓN 1: TEORÍA -->
+        <section class="teoria">
+            <h2>📖 Fundamento Teórico</h2>
+            <p>La <strong>Regla de Simpson</strong> (o Regla de Simpson 1/3) es un método de integración numérica que aproxima la integral definida de una función. A diferencia de los métodos anteriores que usaban rectángulos o trapecios (líneas rectas), Simpson utiliza <strong>parábolas</strong> (polinomios de segundo grado) para ajustar la curva en cada par de subintervalos.</p>
+
+            <div class="formula-box">
+                <h3>⚠️ Condición Importante</h3>
+                <p>Para aplicar la Regla de Simpson, el número de subintervalos <strong>$n$ debe ser un número PAR</strong> ($n = 2, 4, 6, \dots$). Esto se debe a que cada parábola necesita 3 puntos para ser definida, cubriendo 2 subintervalos a la vez.</p>
+            </div>
+
+            <div class="formula-box">
+                <h3>Fórmula de la Regla de Simpson</h3>
+                <p>$$S_n = \frac{\Delta x}{3} \left[ f(x_0) + 4f(x_1) + 2f(x_2) + 4f(x_3) + 2f(x_4) + \dots + 4f(x_{n-1}) + f(x_n) \right]$$</p>
+                <p>Donde:</p>
+                <p>$$\Delta x = \frac{b - a}{n} \quad \text{y} \quad x_i = a + i\Delta x$$</p>
+                <p><em>Nota el patrón de los coeficientes: 1, 4, 2, 4, 2, ..., 4, 1</em></p>
+            </div>
+
+            <div class="nota">
+                <strong>💡 Dato Curioso:</strong> La Regla de Simpson es tan precisa que da el <strong>valor exacto</strong> de la integral para cualquier polinomio de grado 3 o menor (como $f(x) = x^3 + 2x^2 - x + 5$), ¡incluso con pocos subintervalos!
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: VISUALIZADOR INTERACTIVO -->
+        <section class="visualizador">
+            <h2>🎮 Visualizador Interactivo</h2>
+            <p>Ajusta los parámetros para ver cómo las parábolas aproximan el área. <em>(Recuerda: $n$ debe ser par)</em></p>
+
+            <div class="controles">
+                <div class="control-group">
+                    <label for="funcion">Función f(x):</label>
+                    <select id="funcion">
+                        <option value="x^2">x²</option>
+                        <option value="x">x</option>
+                        <option value="x^3">x³</option>
+                        <option value="sqrt(x)">√x</option>
+                        <option value="1/x">1/x</option>
+                        <option value="sin(x)">sin(x)</option>
+                        <option value="exp(x)">eˣ</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="a">Límite inferior (a):</label>
+                    <input type="number" id="a" value="0" step="0.1">
+                </div>
+
+                <div class="control-group">
+                    <label for="b">Límite superior (b):</label>
+                    <input type="number" id="b" value="2" step="0.1">
+                </div>
+
+                <div class="control-group">
+                    <label for="n">Número de subintervalos (n, debe ser par):</label>
+                    <input type="range" id="n" min="2" max="50" step="2" value="4">
+                    <span id="n-value">4</span>
+                </div>
+
+                <button id="calcular" class="btn-calcular"> Calcular y Graficar</button>
+            </div>
+
+            <div id="grafico" class="grafico-container"></div>
+
+            <div class="resultados">
+                <h3> Resultados:</h3>
+                <div id="resultados-content">
+                    <p>Haz clic en "Calcular" para ver el resultado.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: EJEMPLOS RESUELTOS -->
+        <section class="ejemplos">
+            <h2> Ejemplos Resueltos Paso a Paso</h2>
+
+            <div class="ejemplo">
+                <h3>Ejemplo 1: Aproximar $\int_0^2 x^2 dx$ usando la Regla de Simpson con $n = 4$</h3>
+                
+                <div class="paso">
+                    <h4>Paso 1: Calcular $\Delta x$</h4>
+                    <p>$$\Delta x = \frac{b - a}{n} = \frac{2 - 0}{4} = 0.5$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 2: Identificar los puntos $x_i$ y evaluar $f(x_i) = x^2$</h4>
+                    <p>$x_0 = 0 \implies f(0) = 0$</p>
+                    <p>$x_1 = 0.5 \implies f(0.5) = 0.25$</p>
+                    <p>$x_2 = 1.0 \implies f(1.0) = 1.00$</p>
+                    <p>$x_3 = 1.5 \implies f(1.5) = 2.25$</p>
+                    <p>$x_4 = 2.0 \implies f(2.0) = 4.00$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 3: Aplicar la fórmula de Simpson (Patrón 1, 4, 2, 4, 1)</h4>
+                    <p>$$S_4 = \frac{0.5}{3} [f(0) + 4f(0.5) + 2f(1.0) + 4f(1.5) + f(2.0)]$$</p>
+                    <p>$$S_4 = \frac{1}{6} [0 + 4(0.25) + 2(1.00) + 4(2.25) + 4.00]$$</p>
+                    <p>$$S_4 = \frac{1}{6} [0 + 1.0 + 2.0 + 9.0 + 4.0] = \frac{16}{6} = \frac{8}{3} \approx 2.6667$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 4: Comparar con el valor exacto</h4>
+                    <p>$$\int_0^2 x^2 dx = \left[\frac{x^3}{3}\right]_0^2 = \frac{8}{3} \approx 2.6667$$</p>
+                    <p><strong>Conclusión:</strong> ¡El error es 0! Como mencionamos en la teoría, Simpson da el valor exacto para polinomios de grado $\le 3$.</p>
+                </div>
+            </div>
+
+            <div class="ejemplo">
+                <h3>Ejemplo 2: Use $S_4$ para aproximar $\int_1^3 \frac{1}{x} dx$</h3>
+                
+                <div class="paso">
+                    <h4>Paso 1: Calcular $\Delta x$</h4>
+                    <p>$$\Delta x = \frac{3 - 1}{4} = \frac{2}{4} = 0.5$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 2: Evaluar $f(x) = \frac{1}{x}$ en los puntos</h4>
+                    <p>$x_0 = 1.0 \implies f(1.0) = 1.0000$</p>
+                    <p>$x_1 = 1.5 \implies f(1.5) = 0.6667$</p>
+                    <p>$x_2 = 2.0 \implies f(2.0) = 0.5000$</p>
+                    <p>$x_3 = 2.5 \implies f(2.5) = 0.4000$</p>
+                    <p>$x_4 = 3.0 \implies f(3.0) = 0.3333$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 3: Aplicar la fórmula</h4>
+                    <p>$$S_4 = \frac{0.5}{3} [1.0000 + 4(0.6667) + 2(0.5000) + 4(0.4000) + 0.3333]$$</p>
+                    <p>$$S_4 = \frac{1}{6} [1.0000 + 2.6668 + 1.0000 + 1.6000 + 0.3333]$$</p>
+                    <p>$$S_4 = \frac{1}{6} [6.6001] \approx 1.1000$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 4: Valor exacto</h4>
+                    <p>$$\int_1^3 \frac{1}{x} dx = [\ln|x|]_1^3 = \ln(3) - \ln(1) \approx 1.0986$$</p>
+                    <p><strong>Error:</strong> $|1.1000 - 1.0986| = 0.0014$. ¡Una aproximación increíblemente buena!</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- PIE DE PÁGINA -->
+    <footer class="main-footer">
+        <div class="container">
+            <p>© 2026 - UTP | Cálculo Integral - Módulo 4: Regla de Simpson</p>
+        </div>
+    </footer>
+
+    <!-- Lógica del Módulo -->
+    <script src="modulo4.js"></script>
+</body>
+</html>

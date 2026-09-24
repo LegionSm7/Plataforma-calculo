@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 5 - Integral Definida y Área</title>
+    <!-- Estilos globales y específicos del módulo -->
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="modulo5.css">
+    
+    <!-- KaTeX para fórmulas matemáticas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    
+    <!-- Plotly.js para gráficas interactivas -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+</head>
+<body>
+    <!-- ENCABEZADO DEL MÓDULO -->
+    <header class="modulo-header">
+        <div class="container">
+            <a href="../../index.html" class="back-link">← Volver al inicio</a>
+            <h1>📐 Módulo 5: Integral Definida y Área</h1>
+            <p>Teorema Fundamental del Cálculo y cálculo exacto de áreas</p>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <!-- SECCIÓN 1: TEORÍA -->
+        <section class="teoria">
+            <h2>📖 Fundamento Teórico</h2>
+            <p>La <strong>Integral Definida</strong> $\int_a^b f(x) dx$ representa el área neta entre la gráfica de $f(x)$ y el eje $x$ en el intervalo $[a, b]$. A diferencia de los métodos numéricos (Riemann, Trapecio, Simpson) que aproximan este valor, el <strong>Teorema Fundamental del Cálculo (TFC)</strong> nos permite calcularlo de forma exacta usando antiderivadas.</p>
+
+            <div class="formula-box">
+                <h3>Teorema Fundamental del Cálculo (Parte 2)</h3>
+                <p>Si $f$ es continua en $[a, b]$ y $F$ es una antiderivada de $f$ (es decir, $F'(x) = f(x)$), entonces:</p>
+                <p>$$\int_a^b f(x) dx = F(b) - F(a)$$</p>
+            </div>
+
+            <div class="formula-box">
+                <h3>Cálculo de Áreas</h3>
+                <p><strong>1. Área bajo la curva:</strong> Si $f(x) \ge 0$ en $[a, b]$, el área es simplemente la integral definida:</p>
+                <p>$$\text{Área} = \int_a^b f(x) dx$$</p>
+                <p>Si la función es negativa en parte del intervalo, debemos usar el valor absoluto:</p>
+                <p>$$\text{Área} = \int_a^b |f(x)| dx$$</p>
+                
+                <p><strong>2. Área entre dos curvas:</strong> El área de la región limitada por $f(x)$ y $g(x)$ entre $x=a$ y $x=b$ es:</p>
+                <p>$$\text{Área} = \int_a^b |f(x) - g(x)| dx$$</p>
+                <p><em>Nota: En la práctica, identificamos cuál función está "arriba" en el intervalo para evitar el valor absoluto.</em></p>
+            </div>
+
+            <div class="nota">
+                <strong>💡 Nota:</strong> Mientras que la integral indefinida $\int f(x) dx$ da como resultado una familia de funciones ($F(x) + C$), la integral definida $\int_a^b f(x) dx$ da como resultado un <strong>número real</strong> (el área exacta).
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: VISUALIZADOR INTERACTIVO -->
+        <section class="visualizador">
+            <h2>🎮 Visualizador Interactivo</h2>
+            <p>Ajusta los límites de integración para ver el área exacta bajo la curva:</p>
+
+            <div class="controles">
+                <div class="control-group">
+                    <label for="funcion">Función f(x):</label>
+                    <select id="funcion">
+                        <option value="x^2">x²</option>
+                        <option value="x">x</option>
+                        <option value="sqrt(x)">√x</option>
+                        <option value="sin(x)">sin(x)</option>
+                        <option value="exp(x)">eˣ</option>
+                        <option value="1/x">1/x</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="a">Límite inferior (a):</label>
+                    <input type="number" id="a" value="0" step="0.1">
+                </div>
+
+                <div class="control-group">
+                    <label for="b">Límite superior (b):</label>
+                    <input type="number" id="b" value="2" step="0.1">
+                </div>
+
+                <button id="calcular" class="btn-calcular">🔄 Calcular Área y Graficar</button>
+            </div>
+
+            <div id="grafico" class="grafico-container"></div>
+
+            <div class="resultados">
+                <h3>📊 Resultados:</h3>
+                <div id="resultados-content">
+                    <p>Haz clic en "Calcular" para ver el resultado.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: EJEMPLOS RESUELTOS -->
+        <section class="ejemplos">
+            <h2>📝 Ejemplos Resueltos Paso a Paso</h2>
+
+            <div class="ejemplo">
+                <h3>Ejemplo 1: Calcular la integral definida $\int_0^2 (3x^2 - 2x + 1) dx$</h3>
+                
+                <div class="paso">
+                    <h4>Paso 1: Encontrar la antiderivada $F(x)$</h4>
+                    <p>Usando las reglas de integración directa (potencia):</p>
+                    <p>$$F(x) = \int (3x^2 - 2x + 1) dx = 3\frac{x^3}{3} - 2\frac{x^2}{2} + x = x^3 - x^2 + x$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 2: Aplicar el Teorema Fundamental del Cálculo</h4>
+                    <p>$$\int_0^2 (3x^2 - 2x + 1) dx = F(2) - F(0)$$</p>
+                    <p>$$F(2) = (2)^3 - (2)^2 + (2) = 8 - 4 + 2 = 6$$</p>
+                    <p>$$F(0) = (0)^3 - (0)^2 + (0) = 0$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 3: Calcular el resultado final</h4>
+                    <p>$$\text{Resultado} = 6 - 0 = 6$$</p>
+                    <p><strong>Conclusión:</strong> El área bajo la curva $y = 3x^2 - 2x + 1$ entre $x=0$ y $x=2$ es exactamente 6 unidades cuadradas.</p>
+                </div>
+            </div>
+
+            <div class="ejemplo">
+                <h3>Ejemplo 2: Determinar el área de la región limitada por $f(x) = x^2$ y $g(x) = 2x$</h3>
+                
+                <div class="paso">
+                    <h4>Paso 1: Encontrar los puntos de intersección (límites de integración)</h4>
+                    <p>Igualamos las funciones: $x^2 = 2x \implies x^2 - 2x = 0 \implies x(x - 2) = 0$</p>
+                    <p>Los puntos de corte son $x = 0$ y $x = 2$. Estos serán nuestros límites $a$ y $b$.</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 2: Identificar qué función está "arriba" en el intervalo $[0, 2]$</h4>
+                    <p>Evaluamos en un punto intermedio, por ejemplo $x = 1$:</p>
+                    <p>$f(1) = 1^2 = 1$ y $g(1) = 2(1) = 2$. Como $g(1) > f(1)$, la recta $g(x) = 2x$ está arriba.</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 3: Plantear la integral del área entre curvas</h4>
+                    <p>$$\text{Área} = \int_0^2 [g(x) - f(x)] dx = \int_0^2 (2x - x^2) dx$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 4: Calcular la antiderivada y evaluar</h4>
+                    <p>$$F(x) = x^2 - \frac{x^3}{3}$$</p>
+                    <p>$$\text{Área} = F(2) - F(0) = \left(2^2 - \frac{2^3}{3}\right) - \left(0^2 - \frac{0^3}{3}\right)$$</p>
+                    <p>$$\text{Área} = 4 - \frac{8}{3} = \frac{12 - 8}{3} = \frac{4}{3} \approx 1.3333$$</p>
+                    <p><strong>Conclusión:</strong> El área de la región encerrada entre la parábola y la recta es $\frac{4}{3}$ unidades cuadradas.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- PIE DE PÁGINA -->
+    <footer class="main-footer">
+        <div class="container">
+            <p>© 2026 - UTP | Cálculo Integral - Módulo 5: Integral Definida y Área</p>
+        </div>
+    </footer>
+
+    <!-- Lógica del Módulo -->
+    <script src="modulo5.js"></script>
+</body>
+</html>

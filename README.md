@@ -3,31 +3,14 @@
 **Asignatura:** Cálculo Integral (CB215)
 **Programa:** Tecnología en Desarrollo de Software
 **Institución:** Universidad Tecnológica de Pereira (UTP)
-**Departamento:** Matemáticas - Facultad de Ciencias Básicas
-**Periodo:** 2026-II
-**Modalidad:** 100% Virtual
 
 ---
 
 ## 📖 Descripción del Proyecto
 
-Esta plataforma web interactiva es una herramienta educativa diseñada para la **visualización y aprendizaje de conceptos de Cálculo Integral y Métodos Numéricos**. Constituye la **Fase 1** de un proyecto semestral colaborativo que, al finalizar el curso, se convertirá en un recurso académico completo compartido en la red para estudiantes de Tecnología en Desarrollo de Software.
-
-### 🎓 Objetivos de Aprendizaje
-
-- Demostrar competencias en métodos numéricos de aproximación (Riemann, Trapecio, Punto Medio, Simpson).
-- Implementar el Teorema Fundamental del Cálculo de forma visual e interactiva.
-- Aplicar técnicas de integración directa con visualización gráfica.
-- Desarrollar una arquitectura de software modular y escalable.
-- Integrar herramientas matemáticas (KaTeX) y de visualización (Plotly.js) en una plataforma web.
-
----
+Esta plataforma web interactiva es una herramienta educativa diseñada para la **visualización y aprendizaje de conceptos de Cálculo Integral y Métodos Numéricos**.
 
 ## 🏗️ Arquitectura del Proyecto
-
-### Estructura Modular
-
-El proyecto sigue una **arquitectura modular** donde cada uno de los 14 contenidos académicos del curso tiene su propio directorio independiente, facilitando el desarrollo colaborativo y el mantenimiento.
 
 ```text
 plataforma-calculo-fase1/
@@ -106,10 +89,9 @@ De acuerdo con las directrices del curso (Parte II: Desarrollo de Software), se 
 
 | Campo | Valor |
 |-------|-------|
-| **Nombre** | [Tu Nombre Completo] |
-| **Código** | [Tu Código Estudiantil] |
-| **Email** | [Tu Email Institucional] |
-| **GitHub** | [Tu Usuario de GitHub] |
+| **Nombre** | Samuel Andres Garcia Nieto |
+| **Email** | samuel.garcia5@utp.edu.co |
+| **GitHub** | LegionSm7 |
 
 ---
 

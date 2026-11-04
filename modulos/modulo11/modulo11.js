@@ -49,11 +49,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 dominioRaiz: [a, Infinity],
                 func: x => 1 / (Math.abs(x) * Math.sqrt(Math.max(x * x - a2, 1e-12))),
                 F: x => (1 / a) * Math.acos(Math.min(1, Math.max(-1, a / Math.abs(x)))), // = (1/a)·arcsec(|x|/a)
-                resultadoTex: `\\int \\frac{dx}{x\\sqrt{x^2-${a2}}} = \\frac{1}{${a}}\\,\\arcsec\\left(\\frac{|x|}{${a}}\\right) + C`,
+                resultadoTex: `\\int \\frac{dx}{x\\sqrt{x^2-${a2}}} = \\frac{1}{${a}}\\,\\operatorname{arcsec}\\left(\\frac{|x|}{${a}}\\right) + C`,
                 pasos: [
                     ['Paso 1 — Identificar la plantilla:', `f(x) = \\frac{1}{x\\sqrt{x^2-a^2}}\\quad \\text{con} \\quad a = ${a}`],
-                    ['Paso 2 — Aplicar la fórmula de la arcosecante:', `\\int \\frac{dx}{x\\sqrt{x^2-a^2}} = \\frac{1}{a}\\,\\arcsec\\left(\\frac{|x|}{a}\\right)+C`],
-                    ['Paso 3 — Sustituir a = ' + a + ':', `\\int \\frac{dx}{x\\sqrt{x^2-${a2}}} = \\frac{1}{${a}}\\,\\arcsec\\left(\\frac{|x|}{${a}}\\right)+C`]
+                    ['Paso 2 — Aplicar la fórmula de la arcosecante:', `\\int \\frac{dx}{x\\sqrt{x^2-a^2}} = \\frac{1}{a}\\,\\operatorname{arcsec}\\left(\\frac{|x|}{a}\\right)+C`],
+                    ['Paso 3 — Sustituir a = ' + a + ':', `\\int \\frac{dx}{x\\sqrt{x^2-${a2}}} = \\frac{1}{${a}}\\,\\operatorname{arcsec}\\left(\\frac{|x|}{${a}}\\right)+C`]
                 ]
             }
         };

@@ -26,7 +26,7 @@
 
         <section class="teoria">
             <h2>📖 Las Tres Fórmulas Clásicas</h2>
-            <p>Recuerda las derivadas inversas: $\frac{d}{dx}(\arcsin x) = \frac{1}{\sqrt{1-x^2}}$, $\frac{d}{dx}(\arctan x) = \frac{1}{1+x^2}$ y $\frac{d}{dx}(\arcsec x) = \frac{1}{|x|\sqrt{x^2-1}}$. Integrando en ambas direcciones obtenemos las tres plantillas fundamentales:</p>
+            <p>Recuerda las derivadas inversas: $\frac{d}{dx}(\arcsin x) = \frac{1}{\sqrt{1-x^2}}$, $\frac{d}{dx}(\arctan x) = \frac{1}{1+x^2}$ y $\frac{d}{dx}(\operatorname{arcsec} x) = \frac{1}{|x|\sqrt{x^2-1}}$. Integrando en ambas direcciones obtenemos las tres plantillas fundamentales:</p>
 
             <div class="formula-card">
                 $$\int \frac{du}{\sqrt{a^2-u^2}} = \arcsin\!\left(\frac{u}{a}\right) + C$$
@@ -39,7 +39,7 @@
             </div>
 
             <div class="formula-card">
-                $$\int \frac{du}{u\sqrt{u^2-a^2}} = \frac{1}{a}\,\arcsec\!\left(\frac{|u|}{a}\right) + C$$
+                $$\int \frac{du}{u\sqrt{u^2-a^2}} = \frac{1}{a}\,\operatorname{arcsec}\!\left(\frac{|u|}{a}\right) + C$$
                 <p class="formula-nota">Aplica con raíz de diferencia $u^2 - a^2$ y un factor $u$ extra.</p>
             </div>
 
@@ -47,14 +47,14 @@
                 <h3>🪜 Método de Reconocimiento</h3>
                 <ol>
                     <li><strong>Completa cuadrados</strong> si el denominador es un trinomio: $x^2 + 2x + 5 = (x+1)^2 + 4$.</li>
-                    <li><strong>Identifica la plantilla:</strong> ¿suma de cuadrados ($\arctan$), raíz con diferencia ($\arcsin$) o raíz con $u$ afuera ($\arcsec$)?</li>
+                    <li><strong>Identifica la plantilla:</strong> ¿suma de cuadrados ($\arctan$), raíz con diferencia ($\arcsin$) o raíz con $u$ afuera ($\operatorname{arcsec}$)?</li>
                     <li><strong>Haz la sustitución</strong> $u = g(x)$ y ajusta constantes para que aparezca $du$.</li>
                     <li><strong>Simplifica el argumento</strong> $\frac{u}{a}$ y verifica derivando tu respuesta.</li>
                 </ol>
             </div>
 
             <div class="nota">
-                <strong>💡 Ojo con el factor 1/a:</strong> en $\arctan$ y $\arcsec$ la constante $\frac{1}{a}$ multiplica toda la respuesta. Es el error más común en exámenes.
+                <strong>💡 Ojo con el factor 1/a:</strong> en $\arctan$ y $\operatorname{arcsec}$ la constante $\frac{1}{a}$ multiplica toda la respuesta. Es el error más común en exámenes.
             </div>
         </section>
 

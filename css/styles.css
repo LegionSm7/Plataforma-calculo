@@ -238,21 +238,6 @@ body {
     color: #13081f;
 }
 
-.fase1-badge {
-    background: var(--success);
-    color: #0a2416;
-}
-
-.fase2-badge {
-    background: var(--secondary);
-    color: #062a30;
-}
-
-.fase3-badge {
-    background: var(--primary);
-    color: #1d0b3a;
-}
-
 .modulo-card h3 {
     color: var(--primary);
     margin-bottom: 0.5rem;
@@ -296,30 +281,10 @@ body {
     margin-bottom: 1rem;
 }
 
-.fases-info {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-    margin-top: 2rem;
-}
-
-.fase {
-    background: var(--surface);
-    padding: 1.5rem;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
-    border-left: 4px solid var(--primary-deep);
-    text-align: left;
-}
-
-.fase h4 {
-    color: var(--primary);
-    margin-bottom: 0.5rem;
-}
-
-.fase p {
+.about-section p {
     color: var(--text-muted);
+    max-width: 720px;
+    margin: 0 auto 1rem;
 }
 
 /* ===== FOOTER ===== */

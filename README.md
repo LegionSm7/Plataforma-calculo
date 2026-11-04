@@ -1,4 +1,4 @@
-# 📐 Plataforma Web Colaborativa de Cálculo Integral — Fase 1
+# 📐 Plataforma Web Colaborativa de Cálculo Integral
 
 **Asignatura:** Cálculo Integral (CB215)
 **Programa:** Tecnología en Desarrollo de Software
@@ -15,7 +15,7 @@ Esta plataforma web interactiva está diseñada para la enseñanza y visualizaci
 ## 🏗️ Arquitectura del Proyecto
 
 ```text
-plataforma-calculo-fase1/
+Plataforma-calculo/
 │
 ├── index.html                    # Página principal con navegación a 14 módulos
 ├── README.md                     # Documentación técnica del proyecto
@@ -27,25 +27,25 @@ plataforma-calculo-fase1/
 │   └── main.js                   # Lógica JavaScript global
 │
 └── modulos/
-    ├── modulo1/                  # ✅ Sumas de Riemann (Fase 1 - Activo)
+    ├── modulo1/                  # ✅ Sumas de Riemann
     │   ├── index.html
     │   ├── modulo1.css
     │   └── modulo1.js
     │
-    ├── modulo2/                  # ✅ Regla del Trapecio (Fase 1 - Activo)
-    ├── modulo3/                  # ✅ Regla del Punto Medio (Fase 1 - Activo)
-    ├── modulo4/                  # ✅ Regla de Simpson (Fase 1 - Activo)
-    ├── modulo5/                  # ✅ Integral Definida y Área (Fase 1 - Activo)
-    ├── modulo6/                  # ✅ Integración Directa (Fase 1 - Activo)
+    ├── modulo2/                  # ✅ Regla del Trapecio
+    ├── modulo3/                  # ✅ Regla del Punto Medio
+    ├── modulo4/                  # ✅ Regla de Simpson
+    ├── modulo5/                  # ✅ Integral Definida y Área
+    ├── modulo6/                  # ✅ Integración Directa
     │
-    ├── modulo7/                  # ✅ Sustitución/Potencias (Fase 2)
-    ├── modulo8/                  # ✅ Integrales Exponenciales (Fase 2)
-    ├── modulo9/                  # ✅ Integrales Logarítmicas (Fase 2)
-    ├── modulo10/                 # ✅ Integrales Trigonométricas (Fase 2)
-    ├── modulo11/                 # ✅ Integrales Trigonométricas Inversas (Fase 3)
-    ├── modulo12/                 # ✅ Sustitución Trigonométrica (Fase 3)
-    ├── modulo13/                 # ✅ Fracciones Parciales (Fase 3)
-    └── modulo14/                 # ✅ Integración por Partes (Fase 3)
+    ├── modulo7/                  # ✅ Sustitución/Potencias
+    ├── modulo8/                  # ✅ Integrales Exponenciales
+    ├── modulo9/                  # ✅ Integrales Logarítmicas
+    ├── modulo10/                 # ✅ Integrales Trigonométricas
+    ├── modulo11/                 # ✅ Integrales Trigonométricas Inversas
+    ├── modulo12/                 # ✅ Sustitución Trigonométrica
+    ├── modulo13/                 # ✅ Fracciones Parciales
+    └── modulo14/                 # ✅ Integración por Partes
 ```
 
 ---
@@ -84,7 +84,7 @@ plataforma-calculo-fase1/
 
 ```bash
 git clone https://github.com/LegionSm7/Plataforma-calculo.git
-cd plataforma-calculo-fase1
+cd Plataforma-calculo
 ```
 
 2. Abre el archivo `index.html` directamente en tu navegador web.
@@ -120,7 +120,7 @@ https://github.com/LegionSm7/Plataforma-calculo.git
 
 ## 🤝 Cómo Contribuir
 
-Este proyecto está pensado para crecer a lo largo del semestre. Si deseas colaborar en las Fases 2 y 3:
+Este proyecto está pensado para crecer a lo largo del semestre. Si deseas colaborar:
 
 1. Haz un fork de este repositorio.
 2. Crea una rama para tu módulo o mejora:

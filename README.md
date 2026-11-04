@@ -1,7 +1,7 @@
 # 📐 Plataforma Web Colaborativa de Cálculo Integral — Fase 1
 
-**Asignatura:** Cálculo Integral (CB215)  
-**Programa:** Tecnología en Desarrollo de Software  
+**Asignatura:** Cálculo Integral (CB215)
+**Programa:** Tecnología en Desarrollo de Software
 **Institución:** Universidad Tecnológica de Pereira (UTP)
 
 ---
@@ -38,14 +38,14 @@ plataforma-calculo-fase1/
     ├── modulo5/                  # ✅ Integral Definida y Área (Fase 1 - Activo)
     ├── modulo6/                  # ✅ Integración Directa (Fase 1 - Activo)
     │
-    ├── modulo7/                  # 🔒 Sustitución/Potencias (Fase 2 - Próximamente)
-    ├── modulo8/                  # 🔒 Integrales Exponenciales (Fase 2 - Próximamente)
-    ├── modulo9/                  # 🔒 Integrales Logarítmicas (Fase 2 - Próximamente)
-    ├── modulo10/                 # 🔒 Integrales Trigonométricas (Fase 2 - Próximamente)
-    ├── modulo11/                 # 🔒 Trigonométricas Inversas (Fase 3 - Próximamente)
-    ├── modulo12/                 # 🔒 Hiperbólicas Inversas (Fase 3 - Próximamente)
-    ├── modulo13/                 # 🔒 Trinomio ax² + bx + c (Fase 3 - Próximamente)
-    └── modulo14/                 # 🔒 Integración por Partes (Fase 3 - Próximamente)
+    ├── modulo7/                  # ✅ Sustitución/Potencias (Fase 2)
+    ├── modulo8/                  # ✅ Integrales Exponenciales (Fase 2)
+    ├── modulo9/                  # ✅ Integrales Logarítmicas (Fase 2)
+    ├── modulo10/                 # ✅ Integrales Trigonométricas (Fase 2)
+    ├── modulo11/                 # ✅ Sustitución Trigonométrica (Fase 3)
+    ├── modulo12/                 # ✅ Fracciones Parciales (Fase 3)
+    ├── modulo13/                 # ✅ Tabla de Integrales (Fase 3)
+    └── modulo14/                 # ✅ Integración por Partes (Fase 3)
 ```
 
 ---

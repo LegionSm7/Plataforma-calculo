@@ -3,29 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Módulo X - Próximamente</title>
+    <title>Módulo 9 - Integrales Logarítmicas</title>
+    <!-- Estilos globales y específicos del módulo -->
     <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="modulo9.css">
+
+    <!-- KaTeX para fórmulas matemáticas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Plotly.js para gráficas interactivas -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
 </head>
 <body>
+    <!-- ENCABEZADO DEL MÓDULO -->
     <header class="modulo-header">
         <div class="container">
             <a href="../../index.html" class="back-link">← Volver al inicio</a>
-            <h1>🔒 Módulo X: [Nombre del Módulo]</h1>
+            <h1>🧮 Módulo 9: Integrales Logarítmicas</h1>
+            <p>Cuando la antiderivada es un logaritmo natural: ∫ du/u y sus variantes</p>
         </div>
     </header>
 
     <main class="container">
-        <section class="placeholder-section">
-            <div class="placeholder-content">
-                <h2>🚧 Próximamente - Fase 2/3</h2>
-                <p>Este módulo está en desarrollo y estará disponible en las siguientes fases del proyecto.</p>
-                <div class="fase-info">
-                    <p><strong>Fase prevista:</strong> [2 o 3]</p>
-                    <p><strong>Contenido:</strong> [Descripción del módulo]</p>
-                </div>
-                <a href="../../index.html" class="btn-volver">Volver al inicio</a>
+
+        <!-- SECCIÓN 1: TEORÍA -->
+        <section class="teoria">
+            <h2>📖 Fundamento Teórico</h2>
+            <p>La derivada de $\ln|x|$ es $1/x$, lo que produce la segunda fórmula más importante de la integración (después de la regla de la potencia):</p>
+
+            <div class="formula-box">
+                <h3>Fórmulas Clave con Logaritmos</h3>
+                <p>$$\int \frac{du}{u} = \ln|u| + C$$</p>
+                <p>$$\int \frac{g'(x)}{g(x)} \, dx = \ln|g(x)| + C$$</p>
+                <p>$$\int \tan u \, du = -\ln|\cos u| + C = \ln|\sec u| + C$$</p>
+                <p>$$\int \cot u \, du = \ln|\sin u| + C$$</p>
+            </div>
+
+            <div class="pasos-metodo">
+                <h3>🪜 ¿Cuándo aparece el logaritmo?</h3>
+                <ol>
+                    <li><strong>Razón derivada sobre función:</strong> si el numerador es (proporcional a) la derivada del denominador, el resultado es un logaritmo.</li>
+                    <li><strong>Regla de la potencia fallida:</strong> $\int x^{-1}dx$ escapa de $\frac{x^{n+1}}{n+1}$ porque $n=-1$ divide por cero; el "agujero" lo llena $\ln|x|$.</li>
+                    <li><strong>Sustitución lineal:</strong> $\int \frac{dx}{ax+b} = \frac{1}{a}\ln|ax+b| + C$.</li>
+                    <li><strong>Valor absoluto:</strong> indispensable para integrales que cruzan valores donde $u&lt;0$.</li>
+                </ol>
+            </div>
+
+            <div class="nota">
+                <strong>💡 Dato histórico:</strong> $\int_1^x \frac{dt}{t} = \ln x$ es literalmente la <em>definición</em> del logaritmo natural como área bajo la hipérbola $1/t$: la puedes explorar moviendo los límites en el visualizador.
+            </div>
+
+            <div class="nota nota-cian">
+                <strong>⚠️ Ojo con $\ln x$ como integrando:</strong> $\int \ln x \, dx$ no es una "integral logarítmica" en el sentido de esta lista — se resuelve por partes y da $x\ln x - x + C$ (lo verás en el Módulo 14).
             </div>
         </section>
+
+        <!-- SECCIÓN 2: VISUALIZADOR INTERACTIVO -->
+        <section class="visualizador">
+            <h2>🎮 Visualizador Interactivo: El Nacimiento del Logaritmo</h2>
+            <p>Mueve los límites de integración y observa cómo el área bajo $1/u$ construye $\ln$. La gráfica muestra el integrando (morado), el área calculada (sombreada) y la antiderivada $F(x)$ (cian punteada).</p>
+
+            <div class="controles">
+                <div class="control-group">
+                    <label for="integral">Integral a resolver $\displaystyle\int_a^b (\ldots)\,dx$:</label>
+                    <select id="integral">
+                        <option value="hiperbola">∫ 1/x dx &nbsp;(área bajo la hipérbola)</option>
+                        <option value="lineal">∫ 1/(2x + 1) dx &nbsp;(sustitución lineal)</option>
+                        <option value="cociente">∫ (2x+3)/(x²+3x−4) dx &nbsp;(g′/g exacto)</option>
+                        <option value="tangente">∫ tan(x) dx &nbsp;(log trigonométrico)</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="param-k">Parámetro k:</label>
+                    <input type="number" id="param-k" value="1" step="0.1">
+                </div>
+
+                <div class="control-group">
+                    <label for="a">Límite inferior (a):</label>
+                    <input type="number" id="a" value="1" step="0.1">
+                </div>
+
+                <div class="control-group">
+                    <label for="b">Límite superior (b):</label>
+                    <input type="number" id="b" value="3" step="0.1">
+                </div>
+
+                <button id="calcular" class="btn-calcular">🔄 Resolver Integral</button>
+            </div>
+
+            <div id="grafico" class="grafico-container"></div>
+
+            <div class="resultados">
+                <h3>📊 Resultado del Cálculo:</h3>
+                <div id="resultados-content">
+                    <p>Haz clic en "Resolver" para ver el procedimiento paso a paso.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: EJEMPLOS RESUELTOS -->
+        <section class="ejemplos">
+            <h2>📝 Ejemplos Resueltos Paso a Paso</h2>
+
+            <div class="ejemplo">
+                <h3>Ejemplo 1: Sustitución lineal $\displaystyle \int \frac{5}{3-2x} \, dx$</h3>
+
+                <div class="paso">
+                    <h4>Paso 1: Elegir la sustitución</h4>
+                    <p>El denominador es la parte "incómoda": $$u = 3-2x \quad \Rightarrow \quad du = -2\,dx \quad \Rightarrow \quad dx = -\frac{du}{2}$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 2: Reescribir e integrar</h4>
+                    <p>$$\int \frac{5}{u}\left(-\frac{du}{2}\right) = -\frac{5}{2}\int \frac{du}{u} = -\frac{5}{2}\ln|u| + C$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 3: Regresar a $x$ y verificar</h4>
+                    <p>$$\int \frac{5}{3-2x}\,dx = -\frac{5}{2}\ln|3-2x| + C \qquad \checkmark \text{ pues } \frac{d}{dx}\left[-\tfrac{5}{2}\ln|3-2x|\right] = \tfrac{5}{3-2x}$$</p>
+                </div>
+            </div>
+
+            <div class="ejemplo">
+                <h3>Ejemplo 2: La tangente como logaritmo $\displaystyle \int \tan x \, dx$</h3>
+
+                <div class="paso">
+                    <h4>Paso 1: Reescribir con sen/cos</h4>
+                    <p>$$\int \tan x \, dx = \int \frac{\sin x}{\cos x}\,dx$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 2: Sustituir $u = \cos x$</h4>
+                    <p>$$du = -\sin x\,dx \quad \Rightarrow \quad \int \frac{-du}{u} = -\ln|u| + C$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 3: Resultado final</h4>
+                    <p>$$\int \tan x \, dx = -\ln|\cos x| + C = \ln|\sec x| + C$$</p>
+                </div>
+            </div>
+        </section>
+
     </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>© 2026 - Universidad Tecnológica de Pereira | Departamento de Matemáticas</p>
+            <p class="slogan">"Aquí construimos futuro" 🚀</p>
+        </div>
+    </footer>
+
+    <script src="modulo9.js"></script>
 </body>
 </html>

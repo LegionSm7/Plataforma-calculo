@@ -3,29 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Módulo X - Próximamente</title>
+    <title>Módulo 11 - Sustitución Trigonométrica</title>
     <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="modulo11.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
 </head>
 <body>
     <header class="modulo-header">
         <div class="container">
             <a href="../../index.html" class="back-link">← Volver al inicio</a>
-            <h1>🔒 Módulo X: [Nombre del Módulo]</h1>
+            <h1>⛰️ Módulo 11: Sustitución Trigonométrica</h1>
+            <p>Raíces de la forma √(a²−x²), √(a²+x²) y √(x²−a²): el triángulo rectángulo como herramienta</p>
         </div>
     </header>
 
     <main class="container">
-        <section class="placeholder-section">
-            <div class="placeholder-content">
-                <h2>🚧 Próximamente - Fase 2/3</h2>
-                <p>Este módulo está en desarrollo y estará disponible en las siguientes fases del proyecto.</p>
-                <div class="fase-info">
-                    <p><strong>Fase prevista:</strong> [2 o 3]</p>
-                    <p><strong>Contenido:</strong> [Descripción del módulo]</p>
-                </div>
-                <a href="../../index.html" class="btn-volver">Volver al inicio</a>
+
+        <section class="teoria">
+            <h2>📖 Fundamento Teórico</h2>
+            <p>Cuando el integrando contiene raíces cuadradas de trinomios cuadráticos, una sustitución trigonométrica basada en las identidades pitagóricas <em>elimina la raíz</em>:</p>
+
+            <div class="formula-box">
+                <h3>Las Tres Sustituciones Clásicas</h3>
+                <p>$$\sqrt{a^2-x^2} \;\Rightarrow\; x = a\sin\theta,\quad dx = a\cos\theta\,d\theta \qquad (\sqrt{a^2-a^2\sin^2\theta}=a\cos\theta)$$</p>
+                <p>$$\sqrt{a^2+x^2} \;\Rightarrow\; x = a\tan\theta,\quad dx = a\sec^2\theta\,d\theta \qquad (\sqrt{a^2+a^2\tan^2\theta}=a\sec\theta)$$</p>
+                <p>$$\sqrt{x^2-a^2} \;\Rightarrow\; x = a\sec\theta,\quad dx = a\sec\theta\tan\theta\,d\theta \qquad (\sqrt{a^2\sec^2\theta-a^2}=a\tan\theta)$$</p>
+            </div>
+
+            <div class="pasos-metodo">
+                <h3>🪜 Protocolo de Solución</h3>
+                <ol>
+                    <li><strong>Reconoce la forma</strong> del radicando e identifica $a$.</li>
+                    <li><strong>Sustituye</strong> $x$ y $dx$ por su expresión trigonométrica; la raíz se simplifica usando la identidad pitagórica.</li>
+                    <li><strong>Integra</strong> la expresión trigonométrica resultante (Módulo 10).</li>
+                    <li><strong>Regresa a $x$</strong> con un triángulo rectángulo auxiliar: lee sen, tan o sec del ángulo y deduce las demás funciones.</li>
+                </ol>
+            </div>
+
+            <div class="nota">
+                <strong>💡 El triángulo auxiliar:</strong> si $x=a\sin\theta$, dibuja un triángulo con cateto opuesto $x$, hipotenusa $a$ y cateto adyacente $\sqrt{a^2-x^2}$; entonces $\cos\theta=\frac{\sqrt{a^2-x^2}}{a}$ sin despejar ángulos.
+            </div>
+
+            <div class="nota nota-cian">
+                <strong>⚠️ Geometría oculta:</strong> $\int_0^{a}\sqrt{a^2-x^2}\,dx$ es el área de un cuarto de círculo de radio $a$, que debe dar $\pi a^2/4$. ¡Verifícalo en el visualizador!
             </div>
         </section>
+
+        <section class="visualizador">
+            <h2>🎮 Visualizador Interactivo</h2>
+            <p>Ajusta el parámetro $a$ (radio) y los límites $[0,b]$ con $b \le a$. La gráfica compara el integrando con la semicircunferencia $y=\sqrt{a^2-x^2}$ y muestra el procedimiento con $x=a\sin\theta$.</p>
+
+            <div class="controles">
+                <div class="control-group">
+                    <label for="integral">Forma del radicando:</label>
+                    <select id="integral">
+                        <option value="circulo">√(a² − x²) → x = a·sen(θ)</option>
+                        <option value="inversa">x²·√(a² − x²) → x = a·sen(θ)</option>
+                        <option value="hiperbola">√(a² + x²) → x = a·tan(θ)</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="param-k">Parámetro a:</label>
+                    <input type="number" id="param-k" value="3" step="0.5" min="0.5">
+                </div>
+
+                <div class="control-group">
+                    <label for="a">Límite inferior (a):</label>
+                    <input type="number" id="a" value="0" step="0.1">
+                </div>
+
+                <div class="control-group">
+                    <label for="b">Límite superior (b):</label>
+                    <input type="number" id="b" value="3" step="0.1">
+                </div>
+
+                <button id="calcular" class="btn-calcular">🔄 Resolver Integral</button>
+            </div>
+
+            <div id="grafico" class="grafico-container"></div>
+
+            <div class="resultados">
+                <h3>📊 Resultado del Cálculo:</h3>
+                <div id="resultados-content">
+                    <p>Haz clic en "Resolver" para ver el procedimiento paso a paso.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="ejemplos">
+            <h2>📝 Ejemplos Resueltos Paso a Paso</h2>
+
+            <div class="ejemplo">
+                <h3>Ejemplo 1: $\displaystyle \int \sqrt{9-x^2} \, dx$</h3>
+
+                <div class="paso">
+                    <h4>Paso 1: Sustitución con $a=3$</h4>
+                    <p>$$x = 3\sin\theta,\quad dx = 3\cos\theta\,d\theta,\quad \sqrt{9-x^2} = 3\cos\theta$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 2: Integral trigonométrica</h4>
+                    <p>$$\int 3\cos\theta \cdot 3\cos\theta\,d\theta = 9\int\cos^2\theta\,d\theta = 9\left(\frac{\theta}{2} + \frac{\sin 2\theta}{4}\right) + C$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 3: Regresar con el triángulo ($\theta=\arcsen(x/3)$, $\sin\theta = x/3$)</h4>
+                    <p>$$\int \sqrt{9-x^2}\,dx = \frac{9}{2}\arcsen\!\left(\frac{x}{3}\right) + \frac{x\sqrt{9-x^2}}{2} + C$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>✔ Verificación geométrica</h4>
+                    <p>$$\int_0^3 \sqrt{9-x^2}\,dx = \frac{9\pi}{4} \approx 7.0686 \qquad \text{(¡cuarto de círculo de radio 3!)}$$</p>
+                </div>
+            </div>
+
+            <div class="ejemplo">
+                <h3>Ejemplo 2: $\displaystyle \int \frac{dx}{\sqrt{4+x^2}}$</h3>
+
+                <div class="paso">
+                    <h4>Paso 1: Forma $a^2+x^2$ con $a=2$: tangente</h4>
+                    <p>$$x = 2\tan\theta,\quad dx = 2\sec^2\theta\,d\theta,\quad \sqrt{4+x^2} = 2\sec\theta$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 2: Simplificar e integrar</h4>
+                    <p>$$\int \frac{2\sec^2\theta}{2\sec\theta}\,d\theta = \int \sec\theta\,d\theta = \ln|\sec\theta + \tan\theta| + C$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 3: Triángulo auxiliar ($\tan\theta = x/2$, $\sec\theta = \frac{\sqrt{4+x^2}}{2}$)</h4>
+                    <p>$$\int \frac{dx}{\sqrt{4+x^2}} = \ln\left|x + \sqrt{4+x^2}\right| + C$$</p>
+                </div>
+            </div>
+        </section>
+
     </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>© 2026 - Universidad Tecnológica de Pereira | Departamento de Matemáticas</p>
+            <p class="slogan">"Aquí construimos futuro" 🚀</p>
+        </div>
+    </footer>
+
+    <script src="modulo11.js"></script>
 </body>
 </html>

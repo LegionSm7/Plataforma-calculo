@@ -3,29 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Módulo X - Próximamente</title>
+    <title>Módulo 14 - Integración por Partes</title>
     <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="modulo14.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
 </head>
 <body>
     <header class="modulo-header">
         <div class="container">
             <a href="../../index.html" class="back-link">← Volver al inicio</a>
-            <h1>🔒 Módulo X: [Nombre del Módulo]</h1>
+            <h1>🔄 Módulo 14: Integración por Partes</h1>
+            <p>La regla del producto invertida: ∫u dv = uv − ∫v du</p>
         </div>
     </header>
 
     <main class="container">
-        <section class="placeholder-section">
-            <div class="placeholder-content">
-                <h2>🚧 Próximamente - Fase 2/3</h2>
-                <p>Este módulo está en desarrollo y estará disponible en las siguientes fases del proyecto.</p>
-                <div class="fase-info">
-                    <p><strong>Fase prevista:</strong> [2 o 3]</p>
-                    <p><strong>Contenido:</strong> [Descripción del módulo]</p>
-                </div>
-                <a href="../../index.html" class="btn-volver">Volver al inicio</a>
+
+        <section class="teoria">
+            <h2>📖 Fundamento Teórico</h2>
+            <p>Partes es la inversa de la <strong>regla del producto</strong>. Si $d[uv] = u\,dv + v\,du$, entonces al despejar e integrar:</p>
+
+            <div class="formula-box">
+                <h3>Fórmula de Integración por Partes</h3>
+                <p>$$\int u \, dv = uv - \int v \, du$$</p>
+                <p>$$\int_a^b u\,dv = \Big[uv\Big]_a^b - \int_a^b v\,du \qquad \text{(versión definida)}</p>
+            </div>
+
+            <div class="pasos-metodo">
+                <h3>🪜 Regla LIATE (elegir $u$)</h3>
+                <ol>
+                    <li><strong>L</strong> — Logarítmicas ($\ln x$)</li>
+                    <li><strong>I</strong> — Inversas trigonométricas ($\arctan x$)</li>
+                    <li><strong>A</strong> — Algebraicas ($x^2$, polinomios)</li>
+                    <li><strong>T</strong> — Trigonométricas ($\sen x$)</li>
+                    <li><strong>E</strong> — Exponenciales ($e^x$)</li>
+                </ol>
+                <p>Elige como $u$ el tipo que aparezca primero en la lista; lo demás (junto con $dx$) forma $dv$. Así la nueva integral $\int v\,du$ es <em>más simple</em> que la original.</p>
+            </div>
+
+            <div class="nota">
+                <strong>💡 Tabla DI (D/I):</strong> para productos polinomio × (exp o trig), columnas D (derivar hasta 0) e I (integrar), con signos alternados +−+−. Es partes repetidas en formato mecánico.
+            </div>
+
+            <div class="nota nota-cian">
+                <strong>⚠️ Casos especiales:</strong> $\int e^{ax}\sin bx\,dx$ requiere partes <em>dos veces</em> y luego despejar algebraicamente la integral original ("efecto boomerang"). $\int \ln x\,dx$ usa $u=\ln x$, $dv=dx$.
             </div>
         </section>
+
+        <section class="visualizador">
+            <h2>🎮 Visualizador Interactivo</h2>
+            <p>Selecciona un producto típico de partes, ajusta los límites y observa las tres piezas de la fórmula: $uv$, $\int v\,du$ y el resultado final evaluado con Simpson.</p>
+
+            <div class="controles">
+                <div class="control-group">
+                    <label for="integral">Integral a resolver $\displaystyle\int_a^b (\ldots)\,dx$:</label>
+                    <select id="integral">
+                        <option value="pol-exp">∫ x·eᵏˣ dx &nbsp;(A antes que E)</option>
+                        <option value="log">∫ k·ln(x) dx &nbsp;(L primero)</option>
+                        <option value="pol-sen">∫ x·sen(kx) dx &nbsp;(A antes que T)</option>
+                        <option value="boomerang">∫ eˣ·sen(kx) dx &nbsp;(partes dobles)</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="param-k">Parámetro k:</label>
+                    <input type="number" id="param-k" value="1" step="0.1">
+                </div>
+
+                <div class="control-group">
+                    <label for="a">Límite inferior (a):</label>
+                    <input type="number" id="a" value="0" step="0.1">
+                </div>
+
+                <div class="control-group">
+                    <label for="b">Límite superior (b):</label>
+                    <input type="number" id="b" value="2" step="0.1">
+                </div>
+
+                <button id="calcular" class="btn-calcular">🔄 Resolver Integral</button>
+            </div>
+
+            <div id="grafico" class="grafico-container"></div>
+
+            <div class="resultados">
+                <h3>📊 Resultado del Cálculo:</h3>
+                <div id="resultados-content">
+                    <p>Haz clic en "Resolver" para ver el procedimiento paso a paso.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="ejemplos">
+            <h2>📝 Ejemplos Resueltos Paso a Paso</h2>
+
+            <div class="ejemplo">
+                <h3>Ejemplo 1: $\displaystyle \int x\,e^{3x} \, dx$</h3>
+
+                <div class="paso">
+                    <h4>Paso 1: Elegir según LIATE</h4>
+                    <p>Algebraica vs exponencial ⇒ $$u = x,\ dv = e^{3x}dx \quad\Rightarrow\quad du = dx,\ v = \frac{e^{3x}}{3}$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 2: Aplicar la fórmula</h4>
+                    <p>$$\int x e^{3x}dx = \frac{x e^{3x}}{3} - \int \frac{e^{3x}}{3}\,dx$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 3: Integral restante directa</h4>
+                    <p>$$= \frac{x e^{3x}}{3} - \frac{e^{3x}}{9} + C = \frac{e^{3x}(3x-1)}{9} + C$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>✔ Verificación</h4>
+                    <p>$$\frac{d}{dx}\left[\frac{e^{3x}(3x-1)}{9}\right] = \frac{3e^{3x}(3x-1)+9e^{3x}}{9}\cdot\frac{1}{1} \cdot \frac{1}{1} = x e^{3x}\quad ✓$$</p>
+                </div>
+            </div>
+
+            <div class="ejemplo">
+                <h3>Ejemplo 2: Boomerang $\displaystyle \int e^{x}\cos x \, dx$</h3>
+
+                <div class="paso">
+                    <h4>Paso 1: Primera ronda de partes</h4>
+                    <p>$$I = e^x\cos x + \int e^x \sin x\,dx$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 2: Segunda ronda (¡aparece I!)</h4>
+                    <p>$$\int e^x\sin x\,dx = e^x\sin x - \underbrace{\int e^x\cos x\,dx}_{I}$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 3: Despejar algebraicamente</h4>
+                    <p>$$I = e^x\cos x + e^x\sin x - I \;\Rightarrow\; 2I = e^x(\cos x+\sin x)$$</p>
+                    <p>$$\int e^x\cos x\,dx = \frac{e^x(\sin x + \cos x)}{2} + C$$</p>
+                </div>
+            </div>
+        </section>
+
     </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>© 2026 - Universidad Tecnológica de Pereira | Departamento de Matemáticas</p>
+            <p class="slogan">"Aquí construimos futuro" 🚀</p>
+        </div>
+    </footer>
+
+    <script src="modulo14.js"></script>
 </body>
 </html>

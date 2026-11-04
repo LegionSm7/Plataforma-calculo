@@ -3,29 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Módulo X - Próximamente</title>
+    <title>Módulo 13 - Tabla de Integrales</title>
     <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="modulo13.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
 </head>
 <body>
     <header class="modulo-header">
         <div class="container">
             <a href="../../index.html" class="back-link">← Volver al inicio</a>
-            <h1>🔒 Módulo X: [Nombre del Módulo]</h1>
+            <h1>📚 Módulo 13: Tabla de Integrales</h1>
+            <p>Tu biblioteca de referencia: consulta, verifica y visualiza las fórmulas esenciales</p>
         </div>
     </header>
 
     <main class="container">
-        <section class="placeholder-section">
-            <div class="placeholder-content">
-                <h2>🚧 Próximamente - Fase 2/3</h2>
-                <p>Este módulo está en desarrollo y estará disponible en las siguientes fases del proyecto.</p>
-                <div class="fase-info">
-                    <p><strong>Fase prevista:</strong> [2 o 3]</p>
-                    <p><strong>Contenido:</strong> [Descripción del módulo]</p>
-                </div>
-                <a href="../../index.html" class="btn-volver">Volver al inicio</a>
+
+        <section class="teoria">
+            <h2>📖 Cómo Usar Esta Tabla</h2>
+            <p>La tabla de integrales es para la integración lo que la tabla de derivadas es para la diferenciación: un repertorio de patrones reconocibles. En los exámenes suele permitirse una tabla — pero <strong>saber usarla exige saber reconocer formas</strong>.</p>
+
+            <div class="pasos-metodo">
+                <h3>🪜 Estrategia de Consulta</h3>
+                <ol>
+                    <li><strong>Identifica la estructura</strong> del integrando: ¿polinomio, racional, exponencial, trigonométrico, con raíz?</li>
+                    <li><strong>Normaliza:</strong> lleva la expresión a la forma de la tabla mediante álgebra (factoriza constantes, completa cuadrados).</li>
+                    <li><strong>Busca por familia</strong> usando el filtro; usa el buscador si recuerdas parte de la fórmula.</li>
+                    <li><strong>Verifica siempre:</strong> deriva tu resultado; debe devolver el integrando original.</li>
+                </ol>
+            </div>
+
+            <div class="nota">
+                <strong>💡 Consejo:</strong> haz clic en cualquier fila de la tabla para graficar la integral y comprobar numéricamente la fórmula con límites que tú elijas.
             </div>
         </section>
+
+        <!-- BUSCADOR Y FILTROS -->
+        <section class="visualizador">
+            <h2>🔍 Explorador de la Tabla</h2>
+
+            <div class="controles">
+                <div class="control-group">
+                    <label for="buscador">Buscar fórmula:</label>
+                    <input type="text" id="buscador" placeholder="ej: ln, sen, x²...">
+                </div>
+
+                <div class="control-group">
+                    <label for="filtro-categoria">Categoría:</label>
+                    <select id="filtro-categoria">
+                        <option value="todas">Todas</option>
+                        <option value="basicas">Básicas</option>
+                        <option value="racionales">Racionales</option>
+                        <option value="trigonometricas">Trigonométricas</option>
+                        <option value="exponenciales">Exponenciales y Log</option>
+                        <option value="raices">Con raíces</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="tabla-wrapper">
+                <table class="tabla-integrales" id="tabla-integrales">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Integral</th>
+                            <th>Resultado</th>
+                            <th>Condición</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-body"></tbody>
+                </table>
+            </div>
+
+            <div id="panel-verificador" class="panel-verificador" style="display:none;">
+                <h3 id="verificador-titulo">✅ Verificador Visual</h3>
+                <div class="controles">
+                    <div class="control-group">
+                        <label for="v-a">Límite inferior:</label>
+                        <input type="number" id="v-a" value="1" step="0.1">
+                    </div>
+                    <div class="control-group">
+                        <label for="v-b">Límite superior:</label>
+                        <input type="number" id="v-b" value="2" step="0.1">
+                    </div>
+                    <button id="v-calcular" class="btn-calcular">🔄 Verificar Fórmula</button>
+                    <button id="v-cerrar" class="btn-calcular btn-cerrar">✖ Cerrar</button>
+                </div>
+                <div id="v-grafico" class="grafico-container"></div>
+                <div id="v-resultado" class="resultados" style="display:none;">
+                    <h3>Comprobación:</h3>
+                    <div id="v-resultado-content"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="ejemplos">
+            <h2>📝 Ejemplo de Uso de la Tabla</h2>
+
+            <div class="ejemplo">
+                <h3>Calcular $\displaystyle \int \frac{dx}{4-x^2}$</h3>
+
+                <div class="paso">
+                    <h4>Paso 1: Reconocer la forma tabular</h4>
+                    <p>Es $\int \frac{du}{a^2-u^2}$ con $u=x$ y $a=2$ (fila "Racionales").</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 2: Aplicar la fórmula</h4>
+                    <p>$$\int \frac{du}{a^2-u^2} = \frac{1}{2a}\ln\left|\frac{a+u}{a-u}\right| + C \;\Rightarrow\; \frac{1}{4}\ln\left|\frac{2+x}{2-x}\right| + C$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>✔ Paso 3: Verificar derivando</h4>
+                    <p>$$\frac{d}{dx}\left[\frac{1}{4}(\ln|2+x|-\ln|2-x|)\right] = \frac{1}{4}\left(\frac{1}{2+x}+\frac{1}{2-x}\right) = \frac{1}{4-x^2} \quad ✓$$</p>
+                </div>
+            </div>
+        </section>
+
     </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>© 2026 - Universidad Tecnológica de Pereira | Departamento de Matemáticas</p>
+            <p class="slogan">"Aquí construimos futuro" 🚀</p>
+        </div>
+    </footer>
+
+    <script src="modulo13.js"></script>
 </body>
 </html>

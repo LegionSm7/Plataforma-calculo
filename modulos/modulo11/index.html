@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Módulo 11 - Sustitución Trigonométrica</title>
+    <title>Módulo 11 - Integrales Trigonométricas Inversas</title>
     <link rel="stylesheet" href="../../css/styles.css">
     <link rel="stylesheet" href="modulo11.css">
 
@@ -17,138 +17,118 @@
     <header class="modulo-header">
         <div class="container">
             <a href="../../index.html" class="back-link">← Volver al inicio</a>
-            <h1>⛰️ Módulo 11: Sustitución Trigonométrica</h1>
-            <p>Raíces de la forma √(a²−x²), √(a²+x²) y √(x²−a²): el triángulo rectángulo como herramienta</p>
+            <h1>🧭 Módulo 11: Integrales Trigonométricas Inversas</h1>
+            <p>Cuando la derivada de una función inversa aparece "al revés" en el integrando</p>
         </div>
     </header>
 
     <main class="container">
 
         <section class="teoria">
-            <h2>📖 Fundamento Teórico</h2>
-            <p>Cuando el integrando contiene raíces cuadradas de trinomios cuadráticos, una sustitución trigonométrica basada en las identidades pitagóricas <em>elimina la raíz</em>:</p>
+            <h2>📖 Las Tres Fórmulas Clásicas</h2>
+            <p>Recuerda las derivadas inversas: $\frac{d}{dx}(\arcsin x) = \frac{1}{\sqrt{1-x^2}}$, $\frac{d}{dx}(\arctan x) = \frac{1}{1+x^2}$ y $\frac{d}{dx}(\arcsec x) = \frac{1}{|x|\sqrt{x^2-1}}$. Integrando en ambas direcciones obtenemos las tres plantillas fundamentales:</p>
 
-            <div class="formula-box">
-                <h3>Las Tres Sustituciones Clásicas</h3>
-                <p>$$\sqrt{a^2-x^2} \;\Rightarrow\; x = a\sin\theta,\quad dx = a\cos\theta\,d\theta \qquad (\sqrt{a^2-a^2\sin^2\theta}=a\cos\theta)$$</p>
-                <p>$$\sqrt{a^2+x^2} \;\Rightarrow\; x = a\tan\theta,\quad dx = a\sec^2\theta\,d\theta \qquad (\sqrt{a^2+a^2\tan^2\theta}=a\sec\theta)$$</p>
-                <p>$$\sqrt{x^2-a^2} \;\Rightarrow\; x = a\sec\theta,\quad dx = a\sec\theta\tan\theta\,d\theta \qquad (\sqrt{a^2\sec^2\theta-a^2}=a\tan\theta)$$</p>
+            <div class="formula-card">
+                $$\int \frac{du}{\sqrt{a^2-u^2}} = \arcsin\!\left(\frac{u}{a}\right) + C$$
+                <p class="formula-nota">Aplica cuando el denominador tiene una raíz de diferencia: $a^2 - u^2$.</p>
+            </div>
+
+            <div class="formula-card">
+                $$\int \frac{du}{a^2+u^2} = \frac{1}{a}\arctan\!\left(\frac{u}{a}\right) + C$$
+                <p class="formula-nota">Aplica con suma de cuadrados en el denominador (sin raíz).</p>
+            </div>
+
+            <div class="formula-card">
+                $$\int \frac{du}{u\sqrt{u^2-a^2}} = \frac{1}{a}\,\arcsec\!\left(\frac{|u|}{a}\right) + C$$
+                <p class="formula-nota">Aplica con raíz de diferencia $u^2 - a^2$ y un factor $u$ extra.</p>
             </div>
 
             <div class="pasos-metodo">
-                <h3>🪜 Protocolo de Solución</h3>
+                <h3>🪜 Método de Reconocimiento</h3>
                 <ol>
-                    <li><strong>Reconoce la forma</strong> del radicando e identifica $a$.</li>
-                    <li><strong>Sustituye</strong> $x$ y $dx$ por su expresión trigonométrica; la raíz se simplifica usando la identidad pitagórica.</li>
-                    <li><strong>Integra</strong> la expresión trigonométrica resultante (Módulo 10).</li>
-                    <li><strong>Regresa a $x$</strong> con un triángulo rectángulo auxiliar: lee sen, tan o sec del ángulo y deduce las demás funciones.</li>
+                    <li><strong>Completa cuadrados</strong> si el denominador es un trinomio: $x^2 + 2x + 5 = (x+1)^2 + 4$.</li>
+                    <li><strong>Identifica la plantilla:</strong> ¿suma de cuadrados ($\arctan$), raíz con diferencia ($\arcsin$) o raíz con $u$ afuera ($\arcsec$)?</li>
+                    <li><strong>Haz la sustitución</strong> $u = g(x)$ y ajusta constantes para que aparezca $du$.</li>
+                    <li><strong>Simplifica el argumento</strong> $\frac{u}{a}$ y verifica derivando tu respuesta.</li>
                 </ol>
             </div>
 
             <div class="nota">
-                <strong>💡 El triángulo auxiliar:</strong> si $x=a\sin\theta$, dibuja un triángulo con cateto opuesto $x$, hipotenusa $a$ y cateto adyacente $\sqrt{a^2-x^2}$; entonces $\cos\theta=\frac{\sqrt{a^2-x^2}}{a}$ sin despejar ángulos.
-            </div>
-
-            <div class="nota nota-cian">
-                <strong>⚠️ Geometría oculta:</strong> $\int_0^{a}\sqrt{a^2-x^2}\,dx$ es el área de un cuarto de círculo de radio $a$, que debe dar $\pi a^2/4$. ¡Verifícalo en el visualizador!
+                <strong>💡 Ojo con el factor 1/a:</strong> en $\arctan$ y $\arcsec$ la constante $\frac{1}{a}$ multiplica toda la respuesta. Es el error más común en exámenes.
             </div>
         </section>
 
+        <!-- VISUALIZADOR -->
         <section class="visualizador">
-            <h2>🎮 Visualizador Interactivo</h2>
-            <p>Ajusta el parámetro $a$ (radio) y los límites $[0,b]$ con $b \le a$. La gráfica compara el integrando con la semicircunferencia $y=\sqrt{a^2-x^2}$ y muestra el procedimiento con $x=a\sin\theta$.</p>
+            <h2>📊 Visualizador Interactivo</h2>
+            <p>Ajusta $a$ y observa la función $f(u)$ junto con su antiderivada $F(u)$ (que crece como una función trigonométrica inversa escalada).</p>
 
             <div class="controles">
-                <div class="control-group">
-                    <label for="integral">Forma del radicando:</label>
-                    <select id="integral">
-                        <option value="circulo">√(a² − x²) → x = a·sen(θ)</option>
-                        <option value="inversa">x²·√(a² − x²) → x = a·sen(θ)</option>
-                        <option value="hiperbola">√(a² + x²) → x = a·tan(θ)</option>
+                <div class="control-grupo">
+                    <label for="selForma">Plantilla de integral:</label>
+                    <select id="selForma">
+                        <option value="arcsin">∫ du/√(a²−u²) → arcsin</option>
+                        <option value="arctan" selected>∫ du/(a²+u²) → arctan</option>
+                        <option value="arcsec">∫ du/(u√(u²−a²)) → arcsec</option>
                     </select>
                 </div>
-
-                <div class="control-group">
-                    <label for="param-k">Parámetro a:</label>
-                    <input type="number" id="param-k" value="3" step="0.5" min="0.5">
+                <div class="control-grupo slider-grupo">
+                    <label for="valA">Valor de a: <span id="lblA">2</span></label>
+                    <input type="range" id="valA" min="0.5" max="4" step="0.5" value="2">
                 </div>
-
-                <div class="control-group">
-                    <label for="a">Límite inferior (a):</label>
-                    <input type="number" id="a" value="0" step="0.1">
-                </div>
-
-                <div class="control-group">
-                    <label for="b">Límite superior (b):</label>
-                    <input type="number" id="b" value="3" step="0.1">
-                </div>
-
-                <button id="calcular" class="btn-calcular">🔄 Resolver Integral</button>
-            </div>
-
-            <div id="grafico" class="grafico-container"></div>
-
-            <div class="resultados">
-                <h3>📊 Resultado del Cálculo:</h3>
-                <div id="resultados-content">
-                    <p>Haz clic en "Resolver" para ver el procedimiento paso a paso.</p>
+                <div class="control-grupo slider-grupo">
+                    <label for="valN">Subintervalos n: <span id="lblN">20</span></label>
+                    <input type="range" id="valN" min="4" max="100" step="2" value="20">
                 </div>
             </div>
+
+            <div id="graficaTrigInv" class="grafica-container"></div>
+
+            <div id="resultadoTrigInv" class="resultado-box">
+                <p>Selecciona una plantilla y pulsa <strong>Graficar</strong>.</p>
+            </div>
+
+            <button id="btnGraficar" class="btn-principal">🎨 Graficar</button>
         </section>
 
+        <!-- EJEMPLOS -->
         <section class="ejemplos">
-            <h2>📝 Ejemplos Resueltos Paso a Paso</h2>
+            <h2>✏️ Ejemplos Resueltos</h2>
 
-            <div class="ejemplo">
-                <h3>Ejemplo 1: $\displaystyle \int \sqrt{9-x^2} \, dx$</h3>
-
-                <div class="paso">
-                    <h4>Paso 1: Sustitución con $a=3$</h4>
-                    <p>$$x = 3\sin\theta,\quad dx = 3\cos\theta\,d\theta,\quad \sqrt{9-x^2} = 3\cos\theta$$</p>
-                </div>
-
-                <div class="paso">
-                    <h4>Paso 2: Integral trigonométrica</h4>
-                    <p>$$\int 3\cos\theta \cdot 3\cos\theta\,d\theta = 9\int\cos^2\theta\,d\theta = 9\left(\frac{\theta}{2} + \frac{\sin 2\theta}{4}\right) + C$$</p>
-                </div>
-
-                <div class="paso">
-                    <h4>Paso 3: Regresar con el triángulo ($\theta=\arcsin(x/3)$, $\sin\theta = x/3$)</h4>
-                    <p>$$\int \sqrt{9-x^2}\,dx = \frac{9}{2}\arcsin\!\left(\frac{x}{3}\right) + \frac{x\sqrt{9-x^2}}{2} + C$$</p>
-                </div>
-
-                <div class="paso">
-                    <h4>✔ Verificación geométrica</h4>
-                    <p>$$\int_0^3 \sqrt{9-x^2}\,dx = \frac{9\pi}{4} \approx 7.0686 \qquad \text{(¡cuarto de círculo de radio 3!)}$$</p>
+            <div class="ejemplo-card">
+                <h3>Ejemplo 1: Completar cuadrados</h3>
+                <p class="ejemplo-enunciado">$$\int \frac{dx}{x^2 + 4x + 13}$$</p>
+                <div class="ejemplo-pasos">
+                    <p><strong>Paso 1:</strong> Completar cuadrados en el denominador.</p>
+                    <p>$$x^2 + 4x + 13 = (x+2)^2 + 9 = u^2 + 3^2, \quad u = x+2,\; du = dx$$</p>
+                    <p><strong>Paso 2:</strong> Aplicar la plantilla de $\arctan$ con $a = 3$.</p>
+                    <p>$$\int \frac{du}{u^2 + 3^2} = \frac{1}{3}\arctan\!\left(\frac{u}{3}\right) + C$$</p>
+                    <p><strong>Resultado:</strong></p>
+                    <p class="resultado-final">$$\int \frac{dx}{x^2+4x+13} = \frac{1}{3}\arctan\!\left(\frac{x+2}{3}\right) + C$$</p>
                 </div>
             </div>
 
-            <div class="ejemplo">
-                <h3>Ejemplo 2: $\displaystyle \int \frac{dx}{\sqrt{4+x^2}}$</h3>
-
-                <div class="paso">
-                    <h4>Paso 1: Forma $a^2+x^2$ con $a=2$: tangente</h4>
-                    <p>$$x = 2\tan\theta,\quad dx = 2\sec^2\theta\,d\theta,\quad \sqrt{4+x^2} = 2\sec\theta$$</p>
-                </div>
-
-                <div class="paso">
-                    <h4>Paso 2: Simplificar e integrar</h4>
-                    <p>$$\int \frac{2\sec^2\theta}{2\sec\theta}\,d\theta = \int \sec\theta\,d\theta = \ln|\sec\theta + \tan\theta| + C$$</p>
-                </div>
-
-                <div class="paso">
-                    <h4>Paso 3: Triángulo auxiliar ($\tan\theta = x/2$, $\sec\theta = \frac{\sqrt{4+x^2}}{2}$)</h4>
-                    <p>$$\int \frac{dx}{\sqrt{4+x^2}} = \ln\left|x + \sqrt{4+x^2}\right| + C$$</p>
+            <div class="ejemplo-card">
+                <h3>Ejemplo 2: Sustitución con arcseno</h3>
+                <p class="ejemplo-enunciado">$$\int \frac{dx}{\sqrt{4 - 9x^2}}$$</p>
+                <div class="ejemplo-pasos">
+                    <p><strong>Paso 1:</strong> Reescribir como diferencia de cuadrados.</p>
+                    <p>$$\sqrt{4 - 9x^2} = \sqrt{2^2 - (3x)^2} \;\Rightarrow\; u = 3x,\; du = 3\,dx$$</p>
+                    <p><strong>Paso 2:</strong> Ajustar la constante y aplicar la plantilla $\arcsin$ con $a=2$.</p>
+                    <p>$$\frac{1}{3}\int \frac{du}{\sqrt{2^2 - u^2}} = \frac{1}{3}\arcsin\!\left(\frac{u}{2}\right) + C$$</p>
+                    <p><strong>Resultado:</strong></p>
+                    <p class="resultado-final">$$\int \frac{dx}{\sqrt{4-9x^2}} = \frac{1}{3}\arcsin\!\left(\frac{3x}{2}\right) + C$$</p>
                 </div>
             </div>
         </section>
 
     </main>
 
-    <footer class="main-footer">
+    <footer class="modulo-footer">
         <div class="container">
-            <p>© 2026 - Universidad Tecnológica de Pereira | Departamento de Matemáticas</p>
-            <p class="slogan">"Aquí construimos futuro" 🚀</p>
+            <a href="../modulo10/index.html">← Módulo 10: Trigonométricas</a>
+            <span>Módulo 11 de 14</span>
+            <a href="../modulo12/index.html">Módulo 12: Sustitución Trigonométrica →</a>
         </div>
     </footer>
 

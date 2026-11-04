@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 18 - Productos de Seno y Coseno</title>
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="modulo18.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+</head>
+<body>
+    <header class="modulo-header">
+        <div class="container">
+            <a href="../../index.html" class="back-link">← Volver al inicio</a>
+            <h1>🌊 Módulo 18: Productos de Seno y Coseno</h1>
+            <p>Potencias e identidades que transforman productos en integrales triviales</p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <section class="teoria">
+            <h2>📖 Fundamento Teórico</h2>
+            <p>Las integrales con productos de potencias de seno y coseno, $\int \sin^m x\,\cos^n x\,dx$, se resuelven con dos herramientas según la paridad de los exponentes.</p>
+
+            <div class="formula-box">
+                <h3>Identidades Clave (Potencias Pares)</h3>
+                <p>$$\sin^2 x = \frac{1-\cos 2x}{2}, \qquad \cos^2 x = \frac{1+\cos 2x}{2}$$</p>
+                <p>$$\sin x\cos x = \frac{\sin 2x}{2}, \qquad \sin^2 x\cos^2 x = \frac{\sin^2 2x}{4} = \frac{1-\cos 4x}{8}$$</p>
+            </div>
+
+            <div class="pasos-metodo">
+                <h3>🪜 Estrategia según la Paridad</h3>
+                <ol>
+                    <li><strong>Al menos un exponente impar:</strong> separa un factor y usa $\sin^2 x + \cos^2 x = 1$. Si $n$ es impar, guarda $\cos x\,dx$ y sustituye $u=\sin x$; si $m$ es impar, guarda $\sin x\,dx$ y sustituye $u=\cos x$.</li>
+                    <li><strong>Ambos pares:</strong> aplica las identidades de ángulo doble para bajar los grados hasta términos de la forma $\cos(kx)$, cuya integral es inmediata.</li>
+                    <li><strong>Frecuencias distintas</strong> ($\sin ax\cos bx$): usa la identidad producto–suma $\sin A\cos B = \tfrac12[\sin(A+B)+\sin(A-B)]$.</li>
+                </ol>
+            </div>
+
+            <div class="nota">
+                <strong>💡 Regla práctica:</strong> cada identidad de ángulo doble <em>baja a la mitad</em> la frecuencia del término cuadrático. Por eso $\int \sin^2 x\,dx$ produce $\cos 2x$, y $\int \sin^2 x\cos^2 x\,dx$ produce $\cos 4x$.
+            </div>
+
+            <div class="nota nota-cian">
+                <strong>⚠️ Trampa común:</strong> $\int \sin^2 x\,dx \neq -\frac{\cos^3 x}{3}$ — esa "regla" solo vale cuando hay un factor $\sin x$ disponible para la sustitución. Con exponente par, SIEMPRE identidad primero.
+            </div>
+        </section>
+
+        <section class="visualizador">
+            <h2>🎮 Visualizador Interactivo</h2>
+            <p>Selecciona una familia de productos de seno y coseno, ajusta el parámetro $k$ y observa la resolución paso a paso con verificación numérica.</p>
+
+            <div class="controles">
+                <div class="control-group">
+                    <label for="integral">Integral a resolver:</label>
+                    <select id="integral">
+                        <option value="sen2">∫ sen²(k·x) dx &nbsp;(potencia par)</option>
+                        <option value="senxcos">∫ sen(k·x)·cos(k·x) dx &nbsp;(producto mixto)</option>
+                        <option value="sen3cos2">∫ sen³(x)·cos²(x) dx &nbsp;(seno impar)</option>
+                        <option value="prodsum">∫ sen(k·x)·cos(2·x) dx &nbsp;(frecuencias distintas)</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="param-k">Parámetro k:</label>
+                    <input type="number" id="param-k" value="1" step="0.1">
+                </div>
+
+                <div class="control-group">
+                    <label for="a">Límite inferior (a):</label>
+                    <input type="number" id="a" value="0" step="0.1">
+                </div>
+
+                <div class="control-group">
+                    <label for="b">Límite superior (b):</label>
+                    <input type="number" id="b" value="3.14159" step="0.1">
+                </div>
+
+                <button id="calcular" class="btn-calcular">🔄 Resolver Integral</button>
+            </div>
+
+            <div id="grafico" class="grafico-container"></div>
+
+            <div class="resultados">
+                <h3>📊 Resultado del Cálculo:</h3>
+                <div id="resultados-content">
+                    <p>Haz clic en "Resolver" para ver la estrategia y el procedimiento paso a paso.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="ejemplos">
+            <h2>📝 Ejemplos Resueltos Paso a Paso</h2>
+
+            <div class="ejemplo">
+                <h3>Ejemplo 1: Potencia par $\displaystyle \int \sin^2 x\,\cos^2 x\,dx$</h3>
+
+                <div class="paso">
+                    <h4>Paso 1: Identidad producto–suma</h4>
+                    <p>$$\sin^2 x\cos^2 x = \left(\frac{\sin 2x}{2}\right)^2 = \frac{\sin^2 2x}{4}$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 2: Bajar grado otra vez</h4>
+                    <p>$$\frac{\sin^2 2x}{4} = \frac{1}{4}\cdot\frac{1-\cos 4x}{2} = \frac{1-\cos 4x}{8}$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 3: Integrar término a término</h4>
+                    <p>$$\int \sin^2 x\cos^2 x\,dx = \frac{x}{8} - \frac{\sin 4x}{32} + C$$</p>
+                </div>
+            </div>
+
+            <div class="ejemplo">
+                <h3>Ejemplo 2: Seno impar $\displaystyle \int \sin^3 x\,\cos^2 x\,dx$</h3>
+
+                <div class="paso">
+                    <h4>Paso 1: Separar un factor seno</h4>
+                    <p>$$\sin^3 x\cos^2 x = \sin^2 x\,\cos^2 x\,\sin x = (1-\cos^2 x)\cos^2 x\,\sin x$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 2: Sustitución $u=\cos x$, $du=-\sin x\,dx$</h4>
+                    <p>$$-\int (1-u^2)u^2\,du = \int (u^4 - u^2)\,du = \frac{u^5}{5}-\frac{u^3}{3}+C$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 3: Regresar</h4>
+                    <p>$$\int \sin^3 x\cos^2 x\,dx = \frac{\cos^5 x}{5}-\frac{\cos^3 x}{3}+C$$</p>
+                </div>
+            </div>
+
+            <div class="ejemplo">
+                <h3>Ejemplo 3: Frecuencias distintas $\displaystyle \int \sin 3x\,\cos 2x\,dx$</h3>
+
+                <div class="paso">
+                    <h4>Paso 1: Identidad producto–suma</h4>
+                    <p>$$\sin 3x\cos 2x = \frac{1}{2}\left[\sin(3x+2x)+\sin(3x-2x)\right] = \frac{\sin 5x + \sin x}{2}$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 2: Integrar cada seno</h4>
+                    <p>$$\frac{1}{2}\left[-\frac{\cos 5x}{5}-\cos x\right]+C$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 3: Resultado</h4>
+                    <p>$$\int \sin 3x\cos 2x\,dx = -\frac{\cos 5x}{10}-\frac{\cos x}{2}+C$$</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Curso de Integrales · Módulo 18: Productos de Seno y Coseno 🌊</p>
+        </div>
+    </footer>
+
+    <script src="modulo18.js"></script>
+</body>
+</html>

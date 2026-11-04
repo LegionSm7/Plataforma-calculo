@@ -17,7 +17,7 @@ Esta plataforma web interactiva está diseñada para la enseñanza y visualizaci
 ```text
 Plataforma-calculo/
 │
-├── index.html                    # Página principal con navegación a 15 módulos
+├── index.html                    # Página principal con navegación a 17 módulos
 ├── README.md                     # Documentación técnica del proyecto
 │
 ├── css/
@@ -43,10 +43,12 @@ Plataforma-calculo/
     ├── modulo9/                  # ✅ Integrales Logarítmicas
     ├── modulo10/                 # ✅ Integrales Trigonométricas
     ├── modulo11/                 # ✅ Integrales Trigonométricas Inversas
-    ├── modulo12/                 # ✅ Sustitución Trigonométrica
-    ├── modulo13/                 # ✅ Fracciones Parciales
-    ├── modulo14/                 # ✅ Integración por Partes
-    └── modulo15/                 # ✅ Integrales con ax²+bx+c (completar la cuadrada)
+    ├── modulo12/                 # ✅ Funciones Hiperbólicas Inversas
+    ├── modulo13/                 # ✅ Integración por Partes
+    ├── modulo14/                 # ✅ Integrales con ax²+bx+c (completar la cuadrada)
+    ├── modulo15/                 # ✅ Sustitución Trigonométrica
+    ├── modulo16/                 # ✅ Fracciones Parciales
+    └── modulo17/                 # ✅ Fracciones Irracionales
 ```
 
 ---

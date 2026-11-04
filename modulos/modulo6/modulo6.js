@@ -91,18 +91,22 @@ document.addEventListener('DOMContentLoaded', function() {
         // Trazas de Plotly
         let trazaF = {
             x: xVals, y: yF, mode: 'lines', name: 'f(x) - Función original',
-            line: { color: '#1a237e', width: 3 }
+            line: { color: '#b388ff', width: 3 }
         };
 
         let trazaAntiderivada = {
             x: xVals, y: yAntiderivada, mode: 'lines', name: 'F(x) - Antiderivada (C=0)',
-            line: { color: '#4caf50', width: 3, dash: 'dash' }
+            line: { color: '#69f0ae', width: 3, dash: 'dash' }
         };
 
         let layout = {
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: '#1e1133',
+            font: { color: '#ece6f5', family: "'Segoe UI', sans-serif" },
+            titlefont: { color: '#b388ff' },
             title: `Gráfica de f(x) y su Antiderivada F(x)`,
-            xaxis: { title: 'Eje X', range: [xMin, xMax] },
-            yaxis: { title: 'Eje Y' },
+            xaxis: { gridcolor: '#3d2a66', zerolinecolor: '#4a3570', title: 'Eje X', range: [xMin, xMax] },
+            yaxis: { gridcolor: '#3d2a66', zerolinecolor: '#4a3570', title: 'Eje Y' },
             showlegend: true,
             legend: { x: 0, y: 1 },
             margin: { t: 50, r: 20, b: 50, l: 50 }
@@ -150,8 +154,18 @@ document.addEventListener('DOMContentLoaded', function() {
         const p3 = document.createElement('p');
         p3.style.marginTop = '15px';
         p3.style.fontStyle = 'italic';
-        p3.style.color = '#555';
-        p3.innerHTML = '💡 <strong>Observa la gráfica:</strong> La función azul es $f(x)$. La función verde punteada es $F(x)$. Notarás que donde $f(x) = 0$, la antiderivada $F(x)$ tiene un punto crítico (máximo, mínimo o punto de inflexión), ¡porque $F\'(x) = f(x)$!';
+        p3.style.color = '#b3a6cc';
+        p3.innerHTML = '💡 <strong>Observa la gráfica:</strong> La función azul es ';
+        renderizarFormula(p3.appendChild(document.createElement('span')), 'f(x)', false);
+        p3.appendChild(document.createTextNode('. La función verde punteada es '));
+        renderizarFormula(p3.appendChild(document.createElement('span')), 'F(x)', false);
+        p3.appendChild(document.createTextNode('. Notarás que donde '));
+        renderizarFormula(p3.appendChild(document.createElement('span')), 'f(x) = 0', false);
+        p3.appendChild(document.createTextNode(', la antiderivada '));
+        renderizarFormula(p3.appendChild(document.createElement('span')), 'F(x)', false);
+        p3.appendChild(document.createTextNode(' tiene un punto crítico (máximo, mínimo o punto de inflexión), ¡porque '));
+        renderizarFormula(p3.appendChild(document.createElement('span')), "F'(x) = f(x)", false);
+        p3.appendChild(document.createTextNode('!'));
         divResultados.appendChild(p3);
 
         // Graficar

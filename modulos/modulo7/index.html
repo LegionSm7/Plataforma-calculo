@@ -3,29 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Módulo X - Próximamente</title>
+    <title>Módulo 7 - Sustitución / Potencias</title>
+    <!-- Estilos globales y específicos del módulo -->
     <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="modulo7.css">
+
+    <!-- KaTeX para fórmulas matemáticas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Plotly.js para gráficas interactivas -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
 </head>
 <body>
+    <!-- ENCABEZADO DEL MÓDULO -->
     <header class="modulo-header">
         <div class="container">
             <a href="../../index.html" class="back-link">← Volver al inicio</a>
-            <h1>🔒 Módulo X: [Nombre del Módulo]</h1>
+            <h1>🔁 Módulo 7: Sustitución / Potencias</h1>
+            <p>Integración por cambio de variable (método de sustitución)</p>
         </div>
     </header>
 
     <main class="container">
-        <section class="placeholder-section">
-            <div class="placeholder-content">
-                <h2>🚧 Próximamente - Fase 2/3</h2>
-                <p>Este módulo está en desarrollo y estará disponible en las siguientes fases del proyecto.</p>
-                <div class="fase-info">
-                    <p><strong>Fase prevista:</strong> [2 o 3]</p>
-                    <p><strong>Contenido:</strong> [Descripción del módulo]</p>
+
+        <!-- SECCIÓN 1: TEORÍA -->
+        <section class="teoria">
+            <h2>📖 Fundamento Teórico</h2>
+            <p>La <strong>integración por sustitución</strong> es el inverso de la <em>regla de la cadena</em> para derivar. La idea es cambiar la variable de integración: si en la integral aparece una función compuesta $f(g(x))$ multiplicada por la derivada interna $g'(x)$, podemos simplificarla definiendo $u = g(x)$, de modo que $du = g'(x)\,dx$.</p>
+
+            <div class="formula-box">
+                <h3>Fórmula General de Sustitución</h3>
+                <p>$$\int f(g(x)) \cdot g'(x) \, dx = \int f(u) \, du \Big|_{u=g(x)} = F(g(x)) + C$$</p>
+                <p><strong>Caso más común — potencias (regla de la potencia generalizada):</strong></p>
+                <p>$$\int [g(x)]^n \cdot g'(x) \, dx = \frac{[g(x)]^{n+1}}{n+1} + C, \quad (n \neq -1)$$</p>
+            </div>
+
+            <div class="pasos-metodo">
+                <h3>🪜 Pasos del Método</h3>
+                <ol>
+                    <li><strong>Identifica $u$:</strong> elige la "parte interna" de la función compuesta (el radicando, el denominador, el exponente...).</li>
+                    <li><strong>Calcula $du$:</strong> deriva $u$ respecto a $x$ y despeja $dx$ o el producto $g'(x)dx$.</li>
+                    <li><strong>Sustituye:</strong> reescribe toda la integral en términos de $u$ (¡no debe quedar ninguna $x$!).</li>
+                    <li><strong>Integra:</strong> aplica las fórmulas directas de integración en $u$.</li>
+                    <li><strong>Regresa a $x$:</strong> reemplaza $u$ por su expresión original en $x$ y agrega $+C$.</li>
+                </ol>
+            </div>
+
+            <div class="nota">
+                <strong>💡 Truco práctico:</strong> Si tu integral tiene un factor que es (o es proporcional a) la derivada de otra parte del integrando, ¡esa es tu sustitución! Por ejemplo, en $\int 2x(x^2+1)^5 dx$, notamos que $2x$ es la derivada de $x^2+1$: tomamos $u = x^2+1$.
+            </div>
+
+            <div class="nota nota-cian">
+                <strong>⚠️ Integral definida:</strong> Al usar sustitución en integrales definidas, puedes transformar también los límites: si $u = g(x)$, entonces $\int_a^b f(g(x))g'(x)dx = \int_{g(a)}^{g(b)} f(u)du$. En el visualizador usamos esta vía y verificamos con el Teorema Fundamental del Cálculo.
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: VISUALIZADOR INTERACTIVO -->
+        <section class="visualizador">
+            <h2>🎮 Visualizador Interactivo: Sustitución $u = g(x)$ Paso a Paso</h2>
+            <p>Elige una integral, define el límite de integración y observa cómo la sustitución convierte una integral complicada en $x$ en una integral inmediata en $u$. La gráfica muestra el integrando original (morado) y el integrando transformado en $u$ (cian): <strong>¡ambas áreas son iguales!</strong></p>
+
+            <div class="controles">
+                <div class="control-group">
+                    <label for="integral">Integral a resolver $\displaystyle\int_a^b (\ldots)\,dx$:</label>
+                    <select id="integral">
+                        <option value="polinomio">∫ 2x·(x² + 1)⁵ dx &nbsp;(u = x² + 1)</option>
+                        <option value="radical">∫ 3x²·√(x³ + 2) dx &nbsp;(u = x³ + 2)</option>
+                        <option value="trig">∫ sen(x)·cos²(x) dx &nbsp;(u = cos x)</option>
+                        <option value="log">∫ eˣ·(eˣ + 4)³ dx &nbsp;(u = eˣ + 4)</option>
+                    </select>
                 </div>
-                <a href="../../index.html" class="btn-volver">Volver al inicio</a>
+
+                <div class="control-group">
+                    <label for="a">Límite inferior (a):</label>
+                    <input type="number" id="a" value="0" step="0.1">
+                </div>
+
+                <div class="control-group">
+                    <label for="b">Límite superior (b):</label>
+                    <input type="number" id="b" value="2" step="0.1">
+                </div>
+
+                <button id="calcular" class="btn-calcular">🔄 Resolver por Sustitución</button>
+            </div>
+
+            <div id="grafico" class="grafico-container"></div>
+
+            <div class="resultados">
+                <h3>📊 Resultado de la Sustitución:</h3>
+                <div id="resultados-content">
+                    <p>Haz clic en "Resolver" para ver el procedimiento paso a paso.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: EJEMPLOS RESUELTOS -->
+        <section class="ejemplos">
+            <h2>📝 Ejemplos Resueltos Paso a Paso</h2>
+
+            <div class="ejemplo">
+                <h3>Ejemplo 1: Potencia de un polinomio $\displaystyle \int (x^2+1)^5 \cdot 2x \, dx$</h3>
+
+                <div class="paso">
+                    <h4>Paso 1: Elegir la sustitución</h4>
+                    <p>La parte interna de la potencia es $x^2+1$, y su derivada $2x$ aparece como factor:</p>
+                    <p>$$u = x^2 + 1 \quad \Rightarrow \quad du = 2x \, dx$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 2: Reescribir la integral en términos de $u$</h4>
+                    <p>$$\int \underbrace{(x^2+1)^5}_{u^5} \cdot \underbrace{2x \, dx}_{du} = \int u^5 \, du$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 3: Integrar con la regla de la potencia</h4>
+                    <p>$$\int u^5 \, du = \frac{u^6}{6} + C$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 4: Regresar a la variable original</h4>
+                    <p>$$\frac{(x^2+1)^6}{6} + C$$</p>
+                    <p><strong>Verificación:</strong> Derivando con la regla de la cadena: $\frac{d}{dx}\left[\frac{(x^2+1)^6}{6}\right] = (x^2+1)^5 \cdot 2x$ ✓</p>
+                </div>
+            </div>
+
+            <div class="ejemplo">
+                <h3>Ejemplo 2: Ajuste de constantes $\displaystyle \int 3x^2\sqrt{x^3+2}\,dx$</h3>
+
+                <div class="paso">
+                    <h4>Paso 1: Identificar $u$ y calcular $du$</h4>
+                    <p>$$u = x^3 + 2 \quad \Rightarrow \quad du = 3x^2 \, dx$$</p>
+                    <p>¡Perfecto! El factor $3x^2 dx$ aparece exactamente en la integral.</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 2: Sustituir e integrar</h4>
+                    <p>$$\int \sqrt{u}\,du = \int u^{1/2}\,du = \frac{u^{3/2}}{3/2} + C = \frac{2}{3}u^{3/2} + C$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 3: Regresar a $x$</h4>
+                    <p>$$\frac{2}{3}(x^3+2)^{3/2} + C$$</p>
+                </div>
+            </div>
+
+            <div class="ejemplo">
+                <h3>Ejemplo 3: Cuando falta una constante $\displaystyle \int x\,e^{x^2}\,dx$</h3>
+
+                <div class="paso">
+                    <h4>Paso 1: Sustitución y ajuste</h4>
+                    <p>Tomamos $u = x^2$, entonces $du = 2x\,dx$, es decir $x\,dx = \frac{du}{2}$:</p>
+                    <p>$$\int x \, e^{x^2} dx = \int e^u \cdot \frac{du}{2} = \frac{1}{2}\int e^u \, du$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 2: Integrar en $u$</h4>
+                    <p>$$\frac{1}{2}\int e^u \, du = \frac{1}{2}e^u + C$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 3: Regresar a $x$</h4>
+                    <p>$$\frac{1}{2}e^{x^2} + C$$</p>
+                    <p><strong>Conclusión:</strong> Las constantes pueden entrar y salir de la integral; basta con que el integrando contenga $g'(x)$ <em>proporcional</em> al diferencial necesario.</p>
+                </div>
             </div>
         </section>
     </main>
+
+    <!-- PIE DE PÁGINA -->
+    <footer class="main-footer">
+        <div class="container">
+            <p>© 2026 - UTP | Cálculo Integral - Módulo 7: Sustitución / Potencias</p>
+        </div>
+    </footer>
+
+    <!-- Lógica del Módulo -->
+    <script src="modulo7.js"></script>
 </body>
 </html>

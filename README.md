@@ -38,7 +38,7 @@ plataforma-calculo-fase1/
     ├── modulo5/                  # ✅ Integral Definida y Área (Fase 1 - Activo)
     ├── modulo6/                  # ✅ Integración Directa (Fase 1 - Activo)
     │
-    ├── modulo7/                  # 🔒 Sustitución/Potencias (Fase 2 - Próximamente)
+    ├── modulo7/                  # ✅ Sustitución/Potencias (Fase 2 - Activo)
     ├── modulo8/                  # 🔒 Integrales Exponenciales (Fase 2 - Próximamente)
     ├── modulo9/                  # 🔒 Integrales Logarítmicas (Fase 2 - Próximamente)
     ├── modulo10/                 # 🔒 Integrales Trigonométricas (Fase 2 - Próximamente)

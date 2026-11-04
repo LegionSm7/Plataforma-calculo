@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 resultadoTex: `\\int e^{x}\\sin(${k}x)dx = \\frac{e^{x}(\\sin(${k}x) - ${k}\\cos(${k}x))}{1+${k * k}} + C`,
                 pasos: [
                     ['Paso 1 — Primera ronda:', `I = -\\frac{e^x\\cos(${k}x)}{${k}} + \\frac{1}{${k}}\\int e^x\\cos(${k}x)dx`],
-                    ['Paso 2 — Segunda ronda aparece I original:', `\\int e^x\\cos(${k}x)dx = \\frac{e^x\\sin(${k}x)}{1} - \\int e^x \\sin... \\;$(boomerang)`],
+                    ['Paso 2 — Segunda ronda aparece I original:', `\\int e^x\\cos(${k}x)dx = \\frac{e^x\\sin(${k}x)}{1} + \\frac{1}{${k}}\\int e^x\\sin(${k}x)dx \\;\\longleftarrow\\; \\text{¡reaparece } I!`],
                     ['Paso 3 — Despejar algebraicamente:', `I\\left(1 + \\frac{1}{${k * k}}\\right) = \\frac{e^x\\sin(${k}x)}{${k}} + \\frac{e^x\\cos(${k}x)}{${k * k}} \\Rightarrow \\text{resultado final}`]
                 ]
             }

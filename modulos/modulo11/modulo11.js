@@ -27,12 +27,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 dominioRaiz: [-a, a],
                 func: x => Math.sqrt(Math.max(a2 - x * x, 0)),
                 F: x => (a2 / 2) * Math.asin(Math.min(1, Math.max(-1, x / a))) + (x * Math.sqrt(Math.max(a2 - x * x, 0))) / 2,
-                texF: `\\frac{${a2}}{2}\\arcsen\\left(\\frac{x}{${a}}\\right) + \\frac{x\\sqrt{${a2}-x^2}}{2}`,
-                resultadoTex: `\\int \\sqrt{${a2}-x^2}\\,dx = \\frac{${a2}}{2}\\arcsen\\left(\\frac{x}{${a}}\\right) + \\frac{x\\sqrt{${a2}-x^2}}{2} + C`,
+                texF: `\\frac{${a2}}{2}\\arcsin\\left(\\frac{x}{${a}}\\right) + \\frac{x\\sqrt{${a2}-x^2}}{2}`,
+                resultadoTex: `\\int \\sqrt{${a2}-x^2}\\,dx = \\frac{${a2}}{2}\\arcsin\\left(\\frac{x}{${a}}\\right) + \\frac{x\\sqrt{${a2}-x^2}}{2} + C`,
                 pasos: [
                     ['Paso 1 — Sustitución x = a·sen θ:', `x = ${a}\\sin\\theta,\\quad dx = ${a}\\cos\\theta\\,d\\theta,\\quad \\sqrt{${a2}-x^2} = ${a}\\cos\\theta`],
                     ['Paso 2 — Integral trigonométrica:', `\\int ${a}\\cos\\theta \\cdot ${a}\\cos\\theta\\,d\\theta = ${a2}\\int\\cos^2\\theta\\,d\\theta = ${a2}\\left(\\frac{\\theta}{2}+\\frac{\\sin 2\\theta}{4}\\right)+C`],
-                    ['Paso 3 — Regresar con el triángulo (θ = arcsen(x/a)):', `\\frac{${a2}}{2}\\arcsen\\left(\\frac{x}{${a}}\\right) + \\frac{x\\sqrt{${a2}-x^2}}{2} + C`]
+                    ['Paso 3 — Regresar con el triángulo (θ = sin⁻¹(x/a)):', `\\frac{${a2}}{2}\\arcsin\\left(\\frac{x}{${a}}\\right) + \\frac{x\\sqrt{${a2}-x^2}}{2} + C`]
                 ]
             },
             inversa: {
@@ -43,12 +43,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     return (a2 * a2 / 8) * (2 * t - Math.sin(4 * t) / 2 - Math.sin(2 * t));
                 },
                 texF: `\\frac{${a2 * a2}}{8}\\left(2\\theta - \\frac{\\sin 4\\theta}{2} - \\sin 2\\theta\\right)`,
-                resultadoTex: `\\int x^2\\sqrt{${a2}-x^2}\\,dx = \\frac{${a2 * a2}}{8}\\left(2\\arcsen\\tfrac{x}{${a}} - \\frac{x\\sqrt{${a2}-x^2}\,(2x^2-a^2)}{...}\\right)` ,
-                extraTex: `\\text{Forma final: } \\frac{${a2 * a2}}{4}\\arcsen\\left(\\frac{x}{${a}}\\right) - \\frac{x(2x^2-a^2)\\sqrt{${a2}-x^2}}{8} + C`,
+                resultadoTex: `\\int x^2\\sqrt{${a2}-x^2}\\,dx = \\frac{${a2 * a2}}{8}\\left(2\\arcsin\\tfrac{x}{${a}} - \\frac{x\\sqrt{${a2}-x^2}\,(2x^2-a^2)}{...}\\right)` ,
+                extraTex: `\\text{Forma final: } \\frac{${a2 * a2}}{4}\\arcsin\\left(\\frac{x}{${a}}\\right) - \\frac{x(2x^2-a^2)\\sqrt{${a2}-x^2}}{8} + C`,
                 pasos: [
                     ['Paso 1 — Sustitución x = a·sen θ:', `x^2 = ${a2}\\sin^2\\theta,\\quad \\sqrt{${a2}-x^2}=${a}\\cos\\theta,\\quad dx=${a}\\cos\\theta\\,d\\theta`],
                     ['Paso 2 — Potencias trigonométricas:', `${a2 * a2}\\int \\sin^2\\theta\\cos^2\\theta\\,d\\theta = ${a2 * a2}\\int \\frac{\\sin^2 2\\theta}{4}\\,d\\theta = \\frac{${a2 * a2}}{4}\\int\\frac{1-\\cos 4\\theta}{2}\\,d\\theta`],
-                    ['Paso 3 — Integrar y regresar con el triángulo:', `\\frac{${a2 * a2}}{8}\\left(2\\theta - \\frac{\\sin 4\\theta}{2}\\right)+C = \\frac{${a2 * a2}}{4}\\arcsen\\left(\\frac{x}{${a}}\\right) - \\frac{x(2x^2-${a2})\\sqrt{${a2}-x^2}}{8}+C`]
+                    ['Paso 3 — Integrar y regresar con el triángulo:', `\\frac{${a2 * a2}}{8}\\left(2\\theta - \\frac{\\sin 4\\theta}{2}\\right)+C = \\frac{${a2 * a2}}{4}\\arcsin\\left(\\frac{x}{${a}}\\right) - \\frac{x(2x^2-${a2})\\sqrt{${a2}-x^2}}{8}+C`]
                 ]
             },
             hiperbola: {

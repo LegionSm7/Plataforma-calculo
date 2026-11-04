@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
           f: x => 1/(4-x*x), F: x => 0.25*Math.log(Math.abs((2+x)/(2-x))),
           demo: ['\\int_0^1 \\frac{dx}{4-x^2}', 0, 1], dom: [-1.9, 1.9] },
         { cat: 'raices', cond: 'u²<a²',
-          texI: '\\int \\frac{du}{\\sqrt{a^2-u^2}}', texR: '\\arcsen(u/a)+C',
+          texI: '\\int \\frac{du}{\\sqrt{a^2-u^2}}', texR: '\\arcsin(u/a)+C',
           f: x => 1/Math.sqrt(4-x*x), F: x => Math.asin(x/2),
           demo: ['\\int_0^1 \\frac{dx}{\\sqrt{4-x^2}} = \\frac{\\pi}{6}', 0, 1], dom: [-1.99, 1.99] },
         { cat: 'raices', cond: '',

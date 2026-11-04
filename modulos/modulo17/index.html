@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 17 - Integrales de Fracciones Irracionales</title>
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="modulo17.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+</head>
+<body>
+    <header class="modulo-header">
+        <div class="container">
+            <a href="../../index.html" class="back-link">← Volver al inicio</a>
+            <h1>🌿 Módulo 17: Fracciones Irracionales</h1>
+            <p>Raíces en el denominador: sustituciones que racionalizan la integral</p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <section class="teoria">
+            <h2>📖 Fundamento Teórico</h2>
+            <p>Una <strong>fracción irracional</strong> es una razón $P(x)/Q(x)$ cuyo numerador o denominador contiene radicales (típicamente $\sqrt{x}$). La idea maestra es <em>eliminar la raíz</em> con un cambio de variable adecuado, convirtiendo la integral en una fracción racional ordinaria.</p>
+
+            <div class="formula-box">
+                <h3>Las Tres Sustituciones Racionalizantes</h3>
+                <p>$$\text{Raíz monomio } \sqrt[n]{ax+b}: \quad t=\sqrt[n]{ax+b} \;\Rightarrow\; x=\frac{t^n-b}{a},\; dx=\frac{n\,t^{\,n-1}}{a}\,dt$$</p>
+                <p>$$\text{Raíces varias } \sqrt[n_1]{\;},\sqrt[n_2]{\;}: \quad t=(ax+b)^{1/\mathrm{mcm}(n_1,n_2)} \quad \text{(una sola vez basta para todas)}$$</p>
+                <p>$$\text{Trinomio bajo raíz } \sqrt{ax^2+bx+c}: \quad \sqrt{ax^2+bx+c}=\sqrt{a}\,x+t \;\;\text{(sustitución de Euler)}$$</p>
+            </div>
+
+            <div class="pasos-metodo">
+                <h3>🪜 Protocolo General</h3>
+                <ol>
+                    <li><strong>Identificar el radical dominante:</strong> ¿es $\sqrt[n]{ax+b}$, hay varios índices, o es un trinomio?</li>
+                    <li><strong>Elegir la sustitución racionalizante</strong> ($t=\sqrt[n]{ax+b}$ o Euler) y despejar $x$ y $dx$ en términos de $t$.</li>
+                    <li><strong>Sustituir todo:</strong> la integral debe quedar como razón de polinomios en $t$.</li>
+                    <li><strong>Integrar la fracción racional</strong> en $t$ (aquí entran división polinomial y fracciones parciales — Módulo 16).</li>
+                    <li><strong>Deshacer la sustitución:</strong> regresar de $t$ a $x$ y añadir $+C$.</li>
+                </ol>
+            </div>
+
+            <div class="nota">
+                <strong>💡 Caso estrella $\int \frac{dx}{\sqrt{(x-\alpha)(\beta-x)}}$: </strong>el trinomo bajo la raíz abre hacia abajo ($A=-1<0$), así que se integra por <em>completar cuadrado</em> directo a arco seno, sin necesidad de Euler: $$\int \frac{dx}{\sqrt{(x-\alpha)(\beta-x)}} = 2\,\arcsin\sqrt{\frac{x-\alpha}{\beta-\alpha}} + C$$
+            </div>
+
+            <div class="nota nota-cian">
+                <strong>⚠️ Trampa común:</strong> si aparece $\sqrt[3]{ax+b}$ junto con $\sqrt{ax+b}$, NO uses dos sustituciones: toma $t=(ax+b)^{1/6}$ (mcd mínimo común múltiplo de los índices) y ambas raíces quedan como potencias enteras de $t$.
+            </div>
+        </section>
+
+        <section class="visualizador">
+            <h2>🎮 Visualizador Interactivo</h2>
+            <p>Selecciona una familia de fracciones irracionales, ajusta sus parámetros y observa la sustitución racionalizante paso a paso, con verificación numérica del resultado.</p>
+
+            <div class="controles">
+                <div class="control-group">
+                    <label for="integral">Integral a resolver:</label>
+                    <select id="integral">
+                        <option value="raizlineal">∫ k·dx/(p·√(x−α)) &nbsp;(raíz lineal)</option>
+                        <option value="arcoseno">∫ k·dx/√((x−α)(β−x)) &nbsp;(arco seno)</option>
+                        <option value="linealsobreRaiz">∫ k·(x+n)·dx/√(x²+p·x+q) &nbsp;(lineal / raíz)</option>
+                        <option value="cocienteRaiz">∫ k·√x/(√x+s) dx &nbsp;(cociente con raíz)</option>
+                        <option value="potenciaFracc">∫ k·(x−α)^{5/2} dx &nbsp;(potencia fraccionaria)</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="param-k">Parámetro k:</label>
+                    <input type="number" id="param-k" value="1" step="0.1">
+                </div>
+
+                <div class="control-group">
+                    <label for="param-p">Parámetro p:</label>
+                    <input type="number" id="param-p" value="2" step="0.1">
+                </div>
+
+                <div class="control-group">
+                    <label for="param-n">Parámetro n:</label>
+                    <input type="number" id="param-n" value="0" step="0.1">
+                </div>
+
+                <div class="control-group">
+                    <label for="param-s">Parámetro s:</label>
+                    <input type="number" id="param-s" value="1" step="0.1">
+                </div>
+
+                <div class="control-group">
+                    <label for="alpha">α (inicio):</label>
+                    <input type="number" id="alpha" value="1" step="0.1">
+                </div>
+
+                <div class="control-group">
+                    <label for="beta">β (fin):</label>
+                    <input type="number" id="beta" value="4" step="0.1">
+                </div>
+
+                <div class="control-group">
+                    <label for="a">Límite inferior (a):</label>
+                    <input type="number" id="a" value="1.25" step="0.05">
+                </div>
+
+                <div class="control-group">
+                    <label for="b">Límite superior (b):</label>
+                    <input type="number" id="b" value="5" step="0.05">
+                </div>
+
+                <button id="calcular" class="btn-calcular">🔄 Resolver Integral</button>
+            </div>
+
+            <div id="grafico" class="grafico-container"></div>
+
+            <div class="resultados">
+                <h3>📊 Resultado del Cálculo:</h3>
+                <div id="resultados-content">
+                    <p>Haz clic en "Resolver" para ver la sustitución y el procedimiento paso a paso.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="ejemplos">
+            <h2>📝 Ejemplos Resueltos Paso a Paso</h2>
+
+            <div class="ejemplo">
+                <h3>Ejemplo 1: Raíz lineal en el denominador $\displaystyle \int \frac{dx}{2\sqrt{x-1}}$</h3>
+
+                <div class="paso">
+                    <h4>Paso 1: Identificar y sustituir</h4>
+                    <p>$$t=\sqrt{x-1} \;\Rightarrow\; x=t^2+1,\quad dx=2t\,dt$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 2: Racionalizar</h4>
+                    <p>$$\int \frac{2t\,dt}{2t} = \int dt = t + C$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 3: Regresar</h4>
+                    <p>$$\int \frac{dx}{2\sqrt{x-1}} = \sqrt{x-1} + C$$</p>
+                </div>
+            </div>
+
+            <div class="ejemplo">
+                <h3>Ejemplo 2: Cociente con raíz $\displaystyle \int \frac{\sqrt{x}}{\sqrt{x}+1}\,dx$</h3>
+
+                <div class="paso">
+                    <h4>Paso 1: Sustitución $t=\sqrt{x}$</h4>
+                    <p>$$x=t^2,\quad dx=2t\,dt \;\Rightarrow\; \int \frac{t}{t+1}\,2t\,dt = 2\int \frac{t^2}{t+1}\,dt$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 2: División polinomial</h4>
+                    <p>$$\frac{t^2}{t+1}=t-1+\frac{1}{t+1} \;\Rightarrow\; 2\left(\frac{t^2}{2}-t+\ln|t+1|\right)+C$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 3: Regresar ($t=\sqrt{x}$)</h4>
+                    <p>$$\int \frac{\sqrt{x}}{\sqrt{x}+1}\,dx = x-2\sqrt{x}+2\ln\!\left(\sqrt{x}+1\right)+C$$</p>
+                </div>
+            </div>
+
+            <div class="ejemplo">
+                <h3>Ejemplo 3: Trinomio bajo raíz (arco seno) $\displaystyle \int \frac{dx}{\sqrt{(x-1)(4-x)}}$</h3>
+
+                <div class="paso">
+                    <h4>Paso 1: Completar cuadrado</h4>
+                    <p>$$(x-1)(4-x) = -x^2+5x-4 = \frac{9}{4}-\left(x-\frac{5}{2}\right)^2$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 2: Fórmula de arco seno</h4>
+                    <p>$$\int \frac{du}{\sqrt{k^2-u^2}}=\arcsin\frac{u}{k}+C, \quad u=x-\tfrac52,\; k=\tfrac32$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 3: Resultado</h4>
+                    <p>$$\int \frac{dx}{\sqrt{(x-1)(4-x)}} = \arcsin\!\left(\frac{2x-5}{3}\right)+C$$</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Curso de Integrales · Módulo 17: Fracciones Irracionales 🌿</p>
+        </div>
+    </footer>
+
+    <script src="modulo17.js"></script>
+</body>
+</html>

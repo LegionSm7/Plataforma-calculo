@@ -48,7 +48,8 @@ Plataforma-calculo/
     ├── modulo14/                 # ✅ Integrales con ax²+bx+c (completar la cuadrada)
     ├── modulo15/                 # ✅ Sustitución Trigonométrica
     ├── modulo16/                 # ✅ Fracciones Parciales
-    └── modulo17/                 # ✅ Fracciones Irracionales
+    ├── modulo17/                 # ✅ Fracciones Irracionales
+    └── modulo18/                 # ✅ Productos de Seno y Coseno
 ```
 
 ---

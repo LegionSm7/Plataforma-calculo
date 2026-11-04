@@ -1,4 +1,4 @@
-// ===== MÓDULO 12: FRACCIONES PARCIALES =====
+// ===== MÓDULO 14: INTEGRACIÓN POR PARTES =====
 
 document.addEventListener('DOMContentLoaded', function() {
 
@@ -19,69 +19,59 @@ document.addEventListener('DOMContentLoaded', function() {
     const btnCalcular = document.getElementById('calcular');
     const divResultados = document.getElementById('resultados-content');
 
-    // k es un multiplicador externo del integrando.
     function construirConfig(clave, k) {
         const configs = {
-            lineales: {
-                texIntegrando: `\\frac{${k}}{(x-1)(x+2)}`,
-                func: x => k / ((x - 1) * (x + 2)),
-                F: x => (k / 3) * Math.log(Math.abs(x - 1)) - (k / 3) * Math.log(Math.abs(x + 2)),
-                texF: `\\frac{${k}}{3}\\ln|x-1| - \\frac{${k}}{3}\\ln|x+2|`,
-                resultadoTex: `\\int \\frac{${k}}{(x-1)(x+2)}dx = \\frac{${k}}{3}\\ln\\left|\\frac{x-1}{x+2}\\right| + C`,
-                componentes: [
-                    { nombre: 'A/(x−1):', f: x => (k / 3) / (x - 1), color: '#4dd0e1' },
-                    { nombre: 'B/(x+2):', f: x => (-k / 3) / (x + 2), color: '#ffd54f' }
-                ],
-                singularidades: [1, -2],
+            'pol-exp': {
+                texIntegrando: `x\\,e^{${k}x}`,
+                func: x => x * Math.exp(k * x),
+                F: x => Math.exp(k * x) * (k * x - 1) / (k * k),
+                uv: x => x * Math.exp(k * x) / k,
+                texF: `\\frac{e^{${k}x}(${k}x-1)}{${k * k}}`,
+                resultadoTex: `\\int x e^{${k}x}dx = \\frac{e^{${k}x}(${k}x-1)}{${k * k}} + C`,
                 pasos: [
-                    ['Paso 1 — Plantilla:', `\\frac{${k}}{(x-1)(x+2)} = \\frac{A}{x-1} + \\frac{B}{x+2}`],
-                    ['Paso 2 — Coeficientes (evaluar en raíces):', `${k} = A(x+2)+B(x-1) \\quad x=1 \\Rightarrow A=\\frac{${k}}{3}; \\quad x=-2 \\Rightarrow B=-\\frac{${k}}{3}`],
-                    ['Paso 3 — Integrar cada parcial:', `\\frac{${k}}{3}\\ln|x-1| - \\frac{${k}}{3}\\ln|x+2| + C`]
+                    ['Paso 1 — LIATE: u algebraica:', `u = x,\\quad dv = e^{${k}x}dx \\quad\\Rightarrow\\quad du = dx,\\quad v = \\frac{e^{${k}x}}{${k}}`],
+                    ['Paso 2 — Aplicar ∫u dv = uv − ∫v du:', `\\frac{x e^{${k}x}}{${k}} - \\int \\frac{e^{${k}x}}{${k}}dx`],
+                    ['Paso 3 — Integral exponencial restante:', `\\frac{x e^{${k}x}}{${k}} - \\frac{e^{${k}x}}{${k * k}} + C = \\frac{e^{${k}x}(${k}x-1)}{${k * k}} + C`]
                 ]
             },
-            repetido: {
-                texIntegrando: `\\frac{${k}}{(x+1)^2(x+3)}`,
-                func: x => k / ((x + 1) * (x + 1) * (x + 3)),
-                F: x => (-k / 4) / (x + 1) + (k / 4) * Math.log(Math.abs(x + 1)) - (k / 4) * Math.log(Math.abs(x + 3)),
-                texF: `-\\frac{${k}}{4(x+1)} + \\frac{${k}}{4}\\ln|x+1| - \\frac{${k}}{4}\\ln|x+3|`,
-                resultadoTex: `\\int \\frac{${k}}{(x+1)^2(x+3)}dx = -\\frac{${k}}{4(x+1)} + \\frac{${k}}{4}\\ln\\left|\\frac{x+1}{x+3}\\right| + C`,
-                componentes: [],
-                singularidades: [-1, -3],
+            log: {
+                texIntegrando: `${k}\\ln(x)`,
+                func: x => k * Math.log(x),
+                F: x => k * (x * Math.log(x) - x),
+                uv: x => k * x * Math.log(x),
+                texF: `${k}(x\\ln x - x)`,
+                resultadoTex: `\\int ${k}\\ln(x)dx = ${k}(x\\ln x - x) + C`,
+                requierePositivo: true,
                 pasos: [
-                    ['Paso 1 — Plantilla con factor repetido:', `\\frac{${k}}{(x+1)^2(x+3)} = \\frac{A}{x+1} + \\frac{B}{(x+1)^2} + \\frac{C}{x+3}`],
-                    ['Paso 2 — Coeficientes:', `${k} = A(x+1)(x+3)+B(x+3)+C(x+1)^2 \\Rightarrow A=\\frac{${k}}{4},\\; B=\\frac{${k}}{2},\\; C=-\\frac{${k}}{4}`],
-                    ['Paso 3 — Integrar (ojo: B da potencia −2):', `\\frac{${k}}{4}\\ln|x+1| - \\frac{${k}}{2(x+1)} - \\frac{${k}}{4}\\ln|x+3| + C`]
+                    ['Paso 1 — LIATE: L es primera:', `u = \\ln x,\\quad dv = ${k}dx \\quad\\Rightarrow\\quad du = \\frac{${k}}{x}dx,\\quad v = ${k}x`],
+                    ['Paso 2 — Fórmula de partes:', `${k}x\\ln x - \\int ${k}x \\cdot \\frac{${k}/x}{${k}}dx = ${k}x\\ln x - \\int ${k}\\,dx`],
+                    ['Paso 3 — Integral trivial restante:', `${k}x\\ln x - ${k}x + C = ${k}(x\\ln x - x) + C`]
                 ]
             },
-            cuadratico: {
-                texIntegrando: `\\frac{${k}}{x(x^2+4)}`,
-                func: x => k / (x * (x * x + 4)),
-                F: x => (k / 4) * Math.log(Math.abs(x)) - (k / 8) * Math.log(x * x + 4),
-                texF: `\\frac{${k}}{4}\\ln|x| - \\frac{${k}}{8}\\ln(x^2+4)`,
-                resultadoTex: `\\int \\frac{${k}}{x(x^2+4)}dx = \\frac{${k}}{4}\\ln|x| - \\frac{${k}}{8}\\ln(x^2+4) + C`,
-                componentes: [
-                    { nombre: 'A/x:', f: x => (k / 4) / x, color: '#4dd0e1' },
-                    { nombre: '(Bx+C)/(x²+4):', f: x => (-k / 4 * x) / (x * x + 4), color: '#ffd54f' }
-                ],
-                singularidades: [0],
+            'pol-sen': {
+                texIntegrando: `x\\sin(${k}x)`,
+                func: x => x * Math.sin(k * x),
+                F: x => (Math.sin(k * x) - k * x * Math.cos(k * x)) / (k * k),
+                uv: x => -x * Math.cos(k * x) / k,
+                texF: `\\frac{\\sin(${k}x) - ${k}x\\cos(${k}x)}{${k * k}}`,
+                resultadoTex: `\\int x\\sin(${k}x)dx = \\frac{\\sin(${k}x) - ${k}x\\cos(${k}x)}{${k * k}} + C`,
                 pasos: [
-                    ['Paso 1 — Plantilla (cuadrático ⇒ numerador Ax+B):', `\\frac{${k}}{x(x^2+4)} = \\frac{A}{x} + \\frac{Bx+C}{x^2+4}`],
-                    ['Paso 2 — Sistema:', `${k} = A(x^2+4)+(Bx+C)x \\Rightarrow 4A=${k},\\; A+B=0,\\; C=0 \\Rightarrow A=\\frac{${k}}{4},\\; B=-\\frac{${k}}{4},\\; C=0`],
-                    ['Paso 3 — Integrar (el segundo es ln por ser derivada interna):', `\\frac{${k}}{4}\\ln|x| - \\frac{${k}}{8}\\ln(x^2+4) + C`]
+                    ['Paso 1 — LIATE: A antes que T:', `u = x,\\quad dv = \\sin(${k}x)dx \\Rightarrow\\quad v = -\\frac{\\cos(${k}x)}{${k}}`],
+                    ['Paso 2 — Partes:', `-\\frac{x\\cos(${k}x)}{${k}} + \\int \\frac{\\cos(${k}x)}{${k}}dx`],
+                    ['Paso 3 — Integrar el coseno:', `-\\frac{x\\cos(${k}x)}{${k}} + \\frac{\\sin(${k}x)}{${k * k}} + C`]
                 ]
             },
-            impropia: {
-                texIntegrando: `\\frac{${k}x}{x^2+1}`,
-                func: x => k * x / (x * x + 1),
-                F: x => (k / 2) * Math.log(x * x + 1),
-                texF: `\\frac{${k}}{2}\\ln(x^2+1)`,
-                resultadoTex: `\\int \\frac{${k}x}{x^2+1}dx = \\frac{${k}}{2}\\ln(x^2+1) + C`,
-                componentes: [],
-                singularidades: [],
+            boomerang: {
+                texIntegrando: `e^{x}\\sin(${k}x)`,
+                func: x => Math.exp(x) * Math.sin(k * x),
+                F: x => Math.exp(x) * (Math.sin(k * x) - k * Math.cos(k * x)) / (1 + k * k),
+                uv: x => -Math.exp(x) * Math.cos(k * x) / k,
+                texF: `\\frac{e^{x}(\\sin(${k}x) - ${k}\\cos(${k}x))}{1+${k * k}}`,
+                resultadoTex: `\\int e^{x}\\sin(${k}x)dx = \\frac{e^{x}(\\sin(${k}x) - ${k}\\cos(${k}x))}{1+${k * k}} + C`,
                 pasos: [
-                    ['Paso 1 — Atajo: el numerador es (½)·derivada del denominador:', `u = x^2+1, \\quad du = 2x\\,dx \\quad\\Rightarrow\\quad \\frac{${k}}{2}\\int \\frac{du}{u}`],
-                    ['Paso 2 — Integrar directamente (sin fracciones parciales):', `\\frac{${k}}{2}\\ln|u| + C`],
-                    ['Paso 3 — Regresar:', `\\frac{${k}}{2}\\ln(x^2+1) + C \\qquad (x^2+1>0, no hace falta valor absoluto)`]
+                    ['Paso 1 — Primera ronda:', `I = -\\frac{e^x\\cos(${k}x)}{${k}} + \\frac{1}{${k}}\\int e^x\\cos(${k}x)dx`],
+                    ['Paso 2 — Segunda ronda aparece I original:', `\\int e^x\\cos(${k}x)dx = \\frac{e^x\\sin(${k}x)}{1} + \\frac{1}{${k}}\\int e^x\\sin(${k}x)dx \\;\\longleftarrow\\; \\text{¡reaparece } I!`],
+                    ['Paso 3 — Despejar algebraicamente:', `I\\left(1 + \\frac{1}{${k * k}}\\right) = \\frac{e^x\\sin(${k}x)}{${k}} + \\frac{e^x\\cos(${k}x)}{${k * k}} \\Rightarrow \\text{resultado final}`]
                 ]
             }
         };
@@ -122,36 +112,33 @@ document.addEventListener('DOMContentLoaded', function() {
         const xs = [], ys = [];
         for (let i = 0; i <= n; i++) {
             const x = a + (b - a) * i / n;
-            const y = cfg.func(x);
             xs.push(x);
-            ys.push(isFinite(y) ? y : null);
+            ys.push(cfg.func(x));
         }
-
         const trazas = [{
-            x: xs, y: ys, mode: 'lines', name: 'f(x) racional', connectgaps: false,
+            x: xs, y: ys, mode: 'lines', name: 'f(x) = u·dv/dx',
             line: { color: '#ea80fc', width: 3 }, fill: 'tozeroy',
             fillcolor: 'rgba(234,128,252,0.30)'
         }];
-
-        cfg.componentes.forEach(comp => {
-            const xc = [], yc = [];
+        if (cfg.uv) {
+            const xu = [], yu = [];
             for (let i = 0; i <= n; i++) {
                 const x = a + (b - a) * i / n;
-                const y = comp.f(x);
-                xc.push(x);
-                yc.push(isFinite(y) ? y : null);
+                const y = cfg.uv(x);
+                xu.push(x);
+                yu.push(isFinite(y) ? y : null);
             }
             trazas.push({
-                x: xc, y: yc, mode: 'lines', name: comp.nombre, connectgaps: false,
-                line: { color: comp.color, width: 2, dash: 'dash' }
+                x: xu, y: yu, mode: 'lines', name: 'uv (término de partes)', connectgaps: false,
+                line: { color: '#ffd54f', width: 2, dash: 'dash' }
             });
-        });
+        }
 
         const layout = {
             paper_bgcolor: 'rgba(0,0,0,0)',
             plot_bgcolor: '#1e1133',
             font: { color: '#ece6f5', family: "'Segoe UI', sans-serif" },
-            title: { text: 'La función racional (orquídea) y sus piezas parciales (punteadas)', font: { color: '#b388ff' } },
+            title: { text: '∫u dv = uv − ∫v du: la curva orquídea y su término uv dorado', font: { color: '#b388ff' } },
             xaxis: { title: 'x', gridcolor: '#3d2a66', zerolinecolor: '#4a3570', linecolor: '#3d2a66' },
             yaxis: { title: 'y', gridcolor: '#3d2a66', zerolinecolor: '#4a3570', linecolor: '#3d2a66' },
             showlegend: true,
@@ -200,7 +187,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const nota = document.createElement('p');
         nota.className = 'nota-educativa';
-        nota.textContent = '💡 Comprueba siempre tu descomposición sumando las parciales: deben reconstruir exactamente la fracción original.';
+        nota.textContent = '💡 Comprueba siempre derivando tu respuesta con la regla del producto: d[uv]/dx debe devolver el integrando original.';
         divResultados.appendChild(nota);
     }
 
@@ -225,10 +212,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const cfg = construirConfig(clave, k);
 
-        const lo = Math.min(a, b), hi = Math.max(a, b);
-        const cruza = (cfg.singularidades || []).some(s => lo <= s && s <= hi);
-        if (cruza) {
-            alert(`El intervalo cruza una asíntota vertical (${(cfg.singularidades).join(' o x = ')}). Cambia los límites.`);
+        if (cfg.requierePositivo && Math.min(a, b) <= 0) {
+            alert('Para ln(x) ambos límites deben ser positivos.');
             return;
         }
 

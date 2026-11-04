@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Módulo 16 - Integrales con Funciones Hiperbólicas Inversas</title>
+    <title>Módulo 16 - Integración por Fracciones Parciales</title>
     <link rel="stylesheet" href="../../css/styles.css">
     <link rel="stylesheet" href="modulo16.css">
 
@@ -17,8 +17,8 @@
     <header class="modulo-header">
         <div class="container">
             <a href="../../index.html" class="back-link">← Volver al inicio</a>
-            <h1>🌀 Módulo 16: Funciones Hiperbólicas Inversas</h1>
-            <p>Las gemelas logarítmicas del seno y coseno hiperbólico: $\operatorname{arsinh}$, $\operatorname{arcosh}$, $\operatorname{artanh}$</p>
+            <h1>🧩 Módulo 16: Integración por Fracciones Parciales</h1>
+            <p>Descomponer funciones racionales complejas en piezas simples integrables</p>
         </div>
     </header>
 
@@ -26,68 +26,64 @@
 
         <section class="teoria">
             <h2>📖 Fundamento Teórico</h2>
-            <p>Las funciones hiperbólicas inversas son en realidad <strong>logaritmos disfrazados</strong>. Sus derivadas tienen la misma silueta que las trigonométricas inversas, pero con signos dictados por la identidad fundamental $\cosh^2 t - \sinh^2 t = 1$:</p>
+            <p>Toda función racional $\frac{P(x)}{Q(x)}$ (con grado de $P$ menor que el de $Q$) puede descomponerse en una suma de fracciones elementales que se integran con logaritmos y arctangentes.</p>
 
             <div class="formula-box">
-                <h3>Derivadas de las inversas hiperbólicas (¡recuérdalas como logaritmos!)</h3>
-                <p>$$\frac{d}{dx}\operatorname{arsinh}\frac{x}{a} = \frac{1}{\sqrt{x^2+a^2}} \qquad \frac{d}{dx}\operatorname{arcosh}\frac{x}{a} = \frac{1}{\sqrt{x^2-a^2}} \qquad \frac{d}{dx}\operatorname{artanh}\frac{x}{a} = \frac{1}{a}\cdot\frac{1}{1-(x/a)^2} = \frac{a}{a^2-x^2}$$</p>
-                <p>Formas logarítmicas equivalentes:</p>
-                <p>$$\operatorname{arsinh}x = \ln\!\left(x+\sqrt{x^2+1}\right), \qquad \operatorname{arcosh}x = \ln\!\left(x+\sqrt{x^2-1}\right), \qquad \operatorname{artanh}x = \tfrac{1}{2}\ln\frac{1+x}{1-x}$$</p>
+                <h3>Los Cuatro Casos de Descomposición</h3>
+                <p>$$\text{Factor lineal simple: } \frac{A}{ax+b} \;\Rightarrow\; \int = \frac{A}{a}\ln|ax+b|$$</p>
+                <p>$$\text{Factor lineal repetido: } \frac{A_1}{(ax+b)} + \frac{A_2}{(ax+b)^2} + \cdots$$</p>
+                <p>$$\text{Factor cuadrático irred. simple: } \frac{Ax+B}{ax^2+bx+c} \;\Rightarrow\; \ln + \arctan$$</p>
+                <p>$$\text{Factor cuadrático repetido: } \frac{A_1x+B_1}{ax^2+bx+c} + \frac{A_2x+B_2}{(ax^2+bx+c)^2} + \cdots$$</p>
             </div>
 
             <div class="pasos-metodo">
-                <h3>🪜 Estrategia general</h3>
+                <h3>🪜 Protocolo</h3>
                 <ol>
-                    <li><strong>Reconocer la silueta:</strong> $\sqrt{x^2+a^2} \to \operatorname{arsinh}$; &nbsp; $\sqrt{x^2-a^2} \to \operatorname{arcosh}$; &nbsp; $a^2-x^2 \to \operatorname{artanh}$.</li>
-                    <li><strong>Alinear el argumento:</strong> si viene $kx$ en lugar de $x$, factoriza la constante ($\int \frac{dx}{\sqrt{4x^2+9}} = \frac12 \operatorname{arsinh}\frac{2x}{3}$).</li>
-                    <li><strong>Completar la cuadrada primero</strong> si el polinomio tiene término lineal: $u = x + \frac{b}{2a}$ reduce todo a las tres siluetas anteriores (puente con el Módulo 15).</li>
-                    <li><strong>Numerador presente:</strong> si aparece $f'(x)$ arriba, usa $\int \operatorname{arcosh}(u)\,du = u\,\operatorname{arcosh}u - \sqrt{u^2-1} + C$ análogamente para $\operatorname{arsinh}$.</li>
+                    <li><strong>Verificar propia:</strong> si grado($P$) ≥ grado($Q$), divide primero polinomialmente.</li>
+                    <li><strong>Factorizar $Q(x)$</strong> en factores lineales y cuadráticos irreducibles.</li>
+                    <li><strong>Escribir la plantilla</strong> con coeficientes desconocidos según los casos.</li>
+                    <li><strong>Determinar coeficientes:</strong> multiplica por $Q$, iguala potencias o sustituye raíces convenientes.</li>
+                    <li><strong>Integrar pieza por pieza</strong> ($\int \frac{dx}{ax+b}$ da logaritmo; completar cuadrado + arctan para lo demás).</li>
                 </ol>
             </div>
 
             <div class="nota">
-                <strong>💡 Dato clave:</strong> $\operatorname{arsinh}$ está definida en todo $\mathbb{R}$ (su gráfica es una curva suave tipo "S"), $\operatorname{arcosh}$ solo existe para $|x|\ge 1$ (dominio restringido), y $\operatorname{artanh}$ solo para $|x|&lt;1$ — sus asíntotas verticales en $x=\pm a$ hacen que muchas integrales definidas diverjan. El visualizador te avisa.
+                <strong>💡 Atajo de la raíz:</strong> multiplica por el denominador común y evalúa en cada raíz: si $Q=(x-1)(x+2)$, entonces $A=\left.\frac{P}{x+2}\right|_{x=1}$. Rápido para factores lineales distintos.
             </div>
 
             <div class="nota nota-cian">
-                <strong>⚠️ Signos opuestos entre familias:</strong> observa que $\sqrt{x^2 - a^2}$ pide $\operatorname{arcosh}$ (fuera del intervalo $[-a,a]$) mientras que $\sqrt{a^2 - x^2}$ pide $\arcsin$ (dentro). Un signo menos mal colocado cambia por completo la antiderivada.
+                <strong>⚠️ Trampa común:</strong> olvidar que un numerador sobre cuadrático irreducible es $Ax+B$ (¡dos incógnitas!), no solo $A$.
             </div>
         </section>
 
         <section class="visualizador">
             <h2>🎮 Visualizador Interactivo</h2>
-            <p>Elige una familia, ajusta los parámetros $a$ y $k$ (el argumento es $kx$) y observa la función, su antiderivada y el área bajo el integrando.</p>
+            <p>Selecciona una función racional ya descompuesta, ajusta los límites y observa cómo cada parcial se integra por separado. La gráfica muestra la función original y sus componentes parciales.</p>
 
             <div class="controles">
                 <div class="control-group">
-                    <label for="integral">Integral a resolver $\displaystyle\int_a^b (\ldots)\,dx$:</label>
+                    <label for="integral">Función racional $\displaystyle\int_a^b (\ldots)\,dx$:</label>
                     <select id="integral">
-                        <option value="arsinh">∫ dx/√(k²x²+a²) &nbsp;(→ arsinh)</option>
-                        <option value="arcosh">∫ dx/√(k²x²−a²) &nbsp;(→ arcosh)</option>
-                        <option value="artanh">∫ dx/(a²−k²x²) &nbsp;(→ artanh)</option>
-                        <option value="arcoth">∫ dx/(k²x²−a²) &nbsp;(→ arcoth)</option>
-                        <option value="num-arcosh">∫ k·arcosh(kx) dx &nbsp;(numerador inverso)</option>
+                        <option value="lineales">∫ 1/((x−1)(x+2)) dx &nbsp;(3 lineales)</option>
+                        <option value="repetido">∫ 1/((x+1)²(x+3)) dx &nbsp;(lineal repetido)</option>
+                        <option value="cuadratico">∫ 1/(x(x²+4)) dx &nbsp;(lineal + cuadrático)</option>
+                        <option value="impropia">∫ x/(x²+1) dx &nbsp;(numerador = derivada)</option>
                     </select>
                 </div>
 
                 <div class="control-group">
-                    <label for="param-a">Parámetro a:</label>
-                    <input type="number" id="param-a" value="1" step="0.1">
-                </div>
-
-                <div class="control-group">
-                    <label for="param-k">Coeficiente k del argumento (kx):</label>
+                    <label for="param-k">Parámetro k:</label>
                     <input type="number" id="param-k" value="1" step="0.1">
                 </div>
 
                 <div class="control-group">
-                    <label for="a">Límite inferior:</label>
-                    <input type="number" id="a" value="0" step="0.1">
+                    <label for="a">Límite inferior (a):</label>
+                    <input type="number" id="a" value="2" step="0.1">
                 </div>
 
                 <div class="control-group">
-                    <label for="b">Límite superior:</label>
-                    <input type="number" id="b" value="2" step="0.1">
+                    <label for="b">Límite superior (b):</label>
+                    <input type="number" id="b" value="4" step="0.1">
                 </div>
 
                 <button id="calcular" class="btn-calcular">🔄 Resolver Integral</button>
@@ -107,59 +103,40 @@
             <h2>📝 Ejemplos Resueltos Paso a Paso</h2>
 
             <div class="ejemplo">
-                <h3>Ejemplo 1: $\displaystyle \int \frac{dx}{\sqrt{4x^2+9}}$ &nbsp;(forma $\operatorname{arsinh}$)</h3>
+                <h3>Ejemplo 1: Factores lineales distintos $\displaystyle \int \frac{dx}{x^2-x-6}$</h3>
 
                 <div class="paso">
-                    <h4>Paso 1: Alinear la silueta $\sqrt{u^2+a^2}$</h4>
-                    <p>$$4x^2+9 = (2x)^2 + 3^2, \qquad u = 2x,\quad du = 2\,dx$$</p>
+                    <h4>Paso 1: Factorizar y plantear</h4>
+                    <p>$$x^2-x-6 = (x-3)(x+2) \qquad \frac{1}{(x-3)(x+2)} = \frac{A}{x-3} + \frac{B}{x+2}$$</p>
                 </div>
 
                 <div class="paso">
-                    <h4>Paso 2: Aplicar la fórmula canónica</h4>
-                    <p>$$\int \frac{dx}{\sqrt{(2x)^2+3^2}} = \frac{1}{2}\int \frac{du}{\sqrt{u^2+3^2}} = \frac{1}{2}\operatorname{arsinh}\!\left(\frac{u}{3}\right) + C = \frac{1}{2}\operatorname{arsinh}\!\left(\frac{2x}{3}\right) + C$$</p>
+                    <h4>Paso 2: Determinar coeficientes (evaluar en raíces)</h4>
+                    <p>$$1 = A(x+2)+B(x-3) \;\Rightarrow\; x=3: A=\tfrac{1}{5}; \qquad x=-2: B=-\tfrac{1}{5}$$</p>
                 </div>
 
                 <div class="paso">
-                    <h4>✔ Verificación</h4>
-                    <p>$$\frac{d}{dx}\left[\frac{1}{2}\operatorname{arsinh}\frac{2x}{3}\right] = \frac{1}{2}\cdot\frac{1}{\sqrt{1+\left(\frac{2x}{3}\right)^2}}\cdot\frac{2}{3} = \frac{1}{\sqrt{9+4x^2}} \quad ✓$$</p>
-                </div>
-            </div>
-
-            <div class="ejemplo">
-                <h3>Ejemplo 2: $\displaystyle \int \frac{dx}{9-x^2}$ &nbsp;(forma $\operatorname{artanh}$, también sale por fracciones parciales)</h3>
-
-                <div class="paso">
-                    <h4>Paso 1: Silueta $a^2 - x^2$ con $a = 3$</h4>
-                    <p>$$\int \frac{dx}{3^2-x^2} = \frac{1}{3}\operatorname{artanh}\!\left(\frac{x}{3}\right) + C, \qquad |x| &lt; 3$$</p>
-                </div>
-
-                <div class="paso">
-                    <h4>Paso 2: Equivalencia logarítmica (fracciones parciales)</h4>
-                    <p>$$\frac{1}{9-x^2} = \frac{1}{6}\left(\frac{1}{3-x} + \frac{1}{3+x}\right) \;\Rightarrow\; \frac{1}{6}\ln\left|\frac{3+x}{3-x}\right| + C = \frac{1}{3}\operatorname{artanh}\!\left(\frac{x}{3}\right) + C$$</p>
-                </div>
-
-                <div class="paso">
-                    <h4>✔ Observación</h4>
-                    <p>Para $|x|&gt;3$ la misma primitiva se escribe con $\operatorname{arcoth}$: $\displaystyle \int \frac{dx}{x^2-9} = -\frac{1}{3}\operatorname{arcoth}\!\left(\frac{x}{3}\right)+C$. ¡El dominio decide cuál usar!</p>
+                    <h4>Paso 3: Integrar cada parcial</h4>
+                    <p>$$\int \frac{dx}{x^2-x-6} = \frac{1}{5}\ln|x-3| - \frac{1}{5}\ln|x+2| + C = \frac{1}{5}\ln\left|\frac{x-3}{x+2}\right| + C$$</p>
                 </div>
             </div>
 
             <div class="ejemplo">
-                <h3>Ejemplo 3: $\displaystyle \int \operatorname{arcosh}(2x)\,dx$ &nbsp;(función inversa como integrando)</h3>
+                <h3>Ejemplo 2: Con cuadrático irreducible $\displaystyle \int \frac{dx}{x(x^2+4)}$</h3>
 
                 <div class="paso">
-                    <h4>Paso 1: Fórmula de integración de la inversa</h4>
-                    <p>$$\int \operatorname{arcosh}(u)\,du = u\,\operatorname{arcosh}(u) - \sqrt{u^2-1} + C$$</p>
+                    <h4>Paso 1: Plantilla correcta</h4>
+                    <p>$$\frac{1}{x(x^2+4)} = \frac{A}{x} + \frac{Bx+C}{x^2+4}$$</p>
                 </div>
 
                 <div class="paso">
-                    <h4>Paso 2: Ajuste de constante con $u = 2x$, $du = 2dx$</h4>
-                    <p>$$\int \operatorname{arcosh}(2x)\,dx = \frac{1}{2}\left[u\,\operatorname{arcosh}u - \sqrt{u^2-1}\right]_{u=2x} = x\,\operatorname{arcosh}(2x) - \frac{1}{2}\sqrt{4x^2-1} + C$$</p>
+                    <h4>Paso 2: Resolver el sistema</h4>
+                    <p>$$1 = A(x^2+4) + (Bx+C)x \;\Rightarrow\; A=\tfrac14,\; B=-\tfrac14,\; C=0$$</p>
                 </div>
 
                 <div class="paso">
-                    <h4>✔ Verificación</h4>
-                    <p>$$\frac{d}{dx}\left[x\,\operatorname{arcosh}(2x) - \frac{1}{2}\sqrt{4x^2-1}\right] = \operatorname{arcosh}(2x) + \frac{x}{\sqrt{4x^2-1}} - \frac{x}{\sqrt{4x^2-1}} = \operatorname{arcosh}(2x) \quad ✓$$</p>
+                    <h4>Paso 3: Integrar (logaritmo + logaritmo)</h4>
+                    <p>$$\int \frac{dx}{x(x^2+4)} = \frac{1}{4}\ln|x| - \frac{1}{8}\ln(x^2+4) + C$$</p>
                 </div>
             </div>
         </section>

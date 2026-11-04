@@ -1,4 +1,4 @@
-// ===== MÓDULO 15: INTEGRALES DE LA FORMA ax² + bx + c =====
+// ===== MÓDULO 12: SUSTITUCIÓN TRIGONOMÉTRICA (con menú de sustitución) =====
 
 document.addEventListener('DOMContentLoaded', function() {
 
@@ -13,190 +13,97 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     const selectIntegral = document.getElementById('integral');
-    const inputA2 = document.getElementById('coef-a');
-    const inputB2 = document.getElementById('coef-b');
-    const inputC2 = document.getElementById('coef-c');
-    const inputN = document.getElementById('coef-n');
-    const inputA = document.getElementById('a');
-    const inputB = document.getElementById('b');
+    const inputAParam = document.getElementById('param-k'); // parámetro a del radicando
+    const inputLimInf = document.getElementById('a');       // límite inferior
+    const inputLimSup = document.getElementById('b');       // límite superior
     const btnCalcular = document.getElementById('calcular');
-    const divResultados = document.getElementById('resultados-content');
+    const divResultados = document.getElementById('resultados');
 
-    // ----- utilidades de formato LaTeX -----
-    function fmt(v) {
-        const r = Math.round(v * 10000) / 10000;
-        return (Object.is(r, -0) ? 0 : r).toString();
+    // Menú de sustitución trigonométrica sugerida según el radicando
+    const MENU_SUSTITUCION = {
+        circulo: [
+            ['sen', 'x = a·sen θ'],
+            ['cos', 'x = a·cos θ']
+        ],
+        hiperbola: [
+            ['tan', 'x = a·tan θ'],
+            ['sinh', 'x = a·sinh t  (sustitución hiperbólica)']
+        ],
+        secante: [
+            ['sec', 'x = a·sec θ'],
+            ['cosh', 'x = a·cosh t  (sustitución hiperbólica)']
+        ]
+    };
+
+    // a = radio/parámetro. Claves: circulo, inversa, hiperbola, secante
+    function construirConfig(clave, a) {
+        const a2 = a * a;
+        const configs = {
+            circulo: {
+                dominioRaiz: [-a, a],
+                func: x => Math.sqrt(Math.max(a2 - x * x, 0)),
+                F: x => (a2 / 2) * Math.asin(Math.min(1, Math.max(-1, x / a))) + (x * Math.sqrt(Math.max(a2 - x * x, 0))) / 2,
+                resultadoTex: `\\int \\sqrt{${a2}-x^2}\\,dx = \\frac{${a2}}{2}\\arcsin\\left(\\frac{x}{${a}}\\right) + \\frac{x\\sqrt{${a2}-x^2}}{2} + C`,
+                pasos: [
+                    ['Paso 1 — Sustitución x = a·sen θ:', `x = ${a}\\sin\\theta,\\quad dx = ${a}\\cos\\theta\\,d\\theta,\\quad \\sqrt{${a2}-x^2} = ${a}\\cos\\theta`],
+                    ['Paso 2 — Integral trigonométrica:', `\\int ${a}\\cos\\theta \\cdot ${a}\\cos\\theta\\,d\\theta = ${a2}\\int\\cos^2\\theta\\,d\\theta = ${a2}\\left(\\frac{\\theta}{2}+\\frac{\\sin 2\\theta}{4}\\right)+C`],
+                    ['Paso 3 — Regresar con el triángulo (θ = sin⁻¹(x/a)):', `\\frac{${a2}}{2}\\arcsin\\left(\\frac{x}{${a}}\\right) + \\frac{x\\sqrt{${a2}-x^2}}{2} + C`]
+                ]
+            },
+            inversa: {
+                dominioRaiz: [-a, a],
+                func: x => x * x * Math.sqrt(Math.max(a2 - x * x, 0)),
+                F: x => {
+                    const t = Math.asin(Math.min(1, Math.max(-1, x / a)));
+                    return (a2 * a2 / 8) * (2 * t - Math.sin(4 * t) / 2 - Math.sin(2 * t));
+                },
+                extraTex: `\\text{Forma final: } \\frac{${a2 * a2}}{4}\\arcsin\\left(\\frac{x}{${a}}\\right) - \\frac{x(2x^2-a^2)\\sqrt{${a2}-x^2}}{8} + C`,
+                resultadoTex: `\\int x^2\\sqrt{${a2}-x^2}\\,dx = \\frac{${a2 * a2}}{4}\\arcsin\\left(\\frac{x}{${a}}\\right) - \\frac{x(2x^2-${a2})\\sqrt{${a2}-x^2}}{8} + C`,
+                pasos: [
+                    ['Paso 1 — Sustitución x = a·sen θ:', `x^2 = ${a2}\\sin^2\\theta,\\quad \\sqrt{${a2}-x^2}=${a}\\cos\\theta,\\quad dx=${a}\\cos\\theta\\,d\\theta`],
+                    ['Paso 2 — Potencias trigonométricas:', `${a2 * a2}\\int \\sin^2\\theta\\cos^2\\theta\\,d\\theta = ${a2 * a2}\\int \\frac{\\sin^2 2\\theta}{4}\\,d\\theta = \\frac{${a2 * a2}}{4}\\int\\frac{1-\\cos 4\\theta}{2}\\,d\\theta`],
+                    ['Paso 3 — Integrar y regresar con el triángulo:', `\\frac{${a2 * a2}}{8}\\left(2\\theta - \\frac{\\sin 4\\theta}{2}\\right)+C = \\frac{${a2 * a2}}{4}\\arcsin\\left(\\frac{x}{${a}}\\right) - \\frac{x(2x^2-${a2})\\sqrt{${a2}-x^2}}{8}+C`]
+                ]
+            },
+            hiperbola: {
+                dominioRaiz: null,
+                func: x => Math.sqrt(a2 + x * x),
+                F: x => (x * Math.sqrt(a2 + x * x)) / 2 + (a2 / 2) * Math.log(x + Math.sqrt(a2 + x * x)),
+                resultadoTex: `\\int \\sqrt{${a2}+x^2}\\,dx = \\frac{x\\sqrt{${a2}+x^2}}{2} + \\frac{${a2}}{2}\\ln\\left|x+\\sqrt{${a2}+x^2}\\right| + C`,
+                pasos: [
+                    ['Paso 1 — Sustitución x = a·tan θ:', `x = ${a}\\tan\\theta,\\quad dx = ${a}\\sec^2\\theta\\,d\\theta,\\quad \\sqrt{${a2}+x^2} = ${a}\\sec\\theta`],
+                    ['Paso 2 — Integral de sec³:', `${a2}\\int\\sec^3\\theta\\,d\\theta = ${a2}\\left(\\frac{\\sec\\theta\\tan\\theta}{2}+\\frac{\\ln|\\sec\\theta+\\tan\\theta|}{2}\\right)+C`],
+                    ['Paso 3 — Regresar (tan θ = x/a, sec θ = √(a²+x²)/a):', `\\frac{x\\sqrt{${a2}+x^2}}{2} + \\frac{${a2}}{2}\\ln\\left|x+\\sqrt{${a2}+x^2}\\right| + C`]
+                ]
+            },
+            secante: {
+                dominioRaiz: [a, Infinity],
+                func: x => Math.sqrt(Math.max(x * x - a2, 1e-12)),
+                F: x => {
+                    const ax = Math.abs(x);
+                    return (ax * Math.sqrt(ax * ax - a2)) / 2 - (a2 / 2) * Math.log(Math.abs(ax + Math.sqrt(ax * ax - a2)));
+                },
+                resultadoTex: `\\int \\sqrt{x^2-${a2}}\\,dx = \\frac{x\\sqrt{x^2-${a2}}}{2} - \\frac{${a2}}{2}\\ln\\left|x+\\sqrt{x^2-${a2}}\\right| + C`,
+                pasos: [
+                    ['Paso 1 — Sustitución x = a·sec θ:', `x = ${a}\\sec\\theta,\\quad dx = ${a}\\sec\\theta\\tan\\theta\\,d\\theta,\\quad \\sqrt{x^2-${a2}} = ${a}\\tan\\theta`],
+                    ['Paso 2 — Integral de tan²·sec:', `${a2}\\int \\tan^2\\theta\\sec\\theta\\,d\\theta = ${a2}\\int (\\sec^3\\theta - \\sec\\theta)\\,d\\theta`],
+                    ['Paso 3 — Integrar por partes (sec³) y regresar:', `\\frac{x\\sqrt{x^2-${a2}}}{2} - \\frac{${a2}}{2}\\ln\\left|x+\\sqrt{x^2-${a2}}\\right| + C`]
+                ]
+            }
+        };
+        return configs[clave];
     }
-    // u = x + h escrito con signo legible
-    function texShift(h) {
-        if (Math.abs(h) < 1e-12) return 'x';
-        return h > 0 ? `x+${fmt(h)}` : `x-${fmt(-h)}`;
-    }
-    // trinomio ax^2+bx+c con signos limpios (omite coeficientes 1 y términos nulos)
-    function texPoly(a, b, c) {
-        let s = (a === 1 ? 'x^2' : a === -1 ? '-x^2' : `${fmt(a)}x^2`);
-        if (b !== 0) s += (b > 0 ? '+' : '-') + (Math.abs(b) === 1 ? 'x' : `${fmt(Math.abs(b))}x`);
-        if (c !== 0) s += (c > 0 ? '+' : '-') + fmt(Math.abs(c));
-        return s;
-    }
-    // binomio mx+n con signos limpios
-    function texLineal(m, n) {
-        let s = (m === 1 ? 'x' : m === -1 ? '-x' : `${fmt(m)}x`);
-        if (n !== 0) s += (n > 0 ? '+' : '-') + fmt(Math.abs(n));
-        return s;
-    }
-    // prefactor "a[" o "" según si a==1
-    function prefA(a) { return a === 1 ? '' : fmt(a); }
-    // constante multiplicativa visible: omite el "1·"
-    function coefMul(v) { return v === 1 ? '' : fmt(v); }
 
-    function construirConfig(clave, a2, b2, c2, n) {
-        const h = b2 / (2 * a2);                 // desplazamiento: u = x + h
-        const kv = c2 - (b2 * b2) / (4 * a2);    // valor del vértice
-        const disc = b2 * b2 - 4 * a2 * c2;      // discriminante Δ
-        const f = x => a2 * x * x + b2 * x + c2;
-        const u = x => x + h;
-        const texU = texShift(h);
-        const texF2 = texPoly(a2, b2, c2);
-        const A = prefA(a2);
-
-        if (a2 === 0) {
-            return { error: 'Si a = 0 el trinomio deja de ser cuadrático. Usa módulos anteriores.' };
-        }
-
-        switch (clave) {
-
-            // ∫ dx/(ax²+bx+c), con a>0 y Δ<0 → arctangente
-            case 'rational-arctan': {
-                if (!(a2 > 0 && disc < 0)) {
-                    return { error: 'Esta familia necesita a > 0 y Δ = b² − 4ac < 0 (parábola siempre positiva). Prueba a=1, b=4, c=13.' };
-                }
-                const k = Math.sqrt(kv / a2);   // f(x) = a[(x+h)² + k²]
-                return {
-                    func: x => 1 / f(x),
-                    F: x => (1 / (a2 * k)) * Math.atan(u(x) / k),
-                    texF: `\\dfrac{1}{${fmt(a2 * k)}}\\arctan\\!\\left(\\dfrac{${texU}}{${fmt(k)}}\\right)`,
-                    resultadoTex: `\\int \\dfrac{dx}{${texF2}} = \\dfrac{1}{${fmt(a2 * k)}}\\arctan\\!\\left(\\dfrac{${texU}}{${fmt(k)}}\\right) + C`,
-                    pasos: [
-                        ['Paso 1 — Completar la cuadrada:', `${texF2} = ${A}\\left(${texU}\\right)^2 + ${fmt(kv)} = ${A === '' ? '' : A + '\\,'}\\left[\\left(${texU}\\right)^2 + ${fmt(k * k)}\\right]`],
-                        ['Paso 2 — Sustitución directa u = x + h:', `\\int \\dfrac{du}{${A === '' ? '' : A + '\\,'}(u^2 + ${fmt(k * k)})}`],
-                        ['Paso 3 — Forma canónica del arctangente:', `\\dfrac{1}{${fmt(a2 * k)}}\\arctan\\!\\left(\\dfrac{u}{${fmt(k)}}\\right) + C`]
-                    ]
-                };
-            }
-
-            // ∫ (mx+n)dx/(ax²+bx+c) → parte log + parte arctan
-            case 'rational-ln': {
-                if (!(a2 > 0 && disc < 0)) {
-                    return { error: 'Usa un denominador sin raíces reales: requiere a > 0 y Δ < 0 (ej. a=1, b=4, c=13).' };
-                }
-                const m = 1;                       // pendiente fija: el control extra aporta n
-                const lambda = m / (2 * a2);       // mx+n = λ(2ax+b) + μ
-                const mu = n - lambda * b2;
-                const k = Math.sqrt(kv / a2);
-                const texNum = texLineal(m, n);
-                const pasoArctan = mu === 0
-                    ? '\\text{el residuo } \\mu = 0\\text{: no hay parte arctan}'
-                    : `\\mu\\int \\dfrac{du}{${A === '' ? '' : A + '\\,'}\\left(u^2 + ${fmt(k * k)}\\right)} = \\dfrac{${fmt(mu)}}{${fmt(a2 * k)}}\\arctan\\!\\left(\\dfrac{u}{${fmt(k)}}\\right)`;
-                return {
-                    func: x => (m * x + n) / f(x),
-                    F: x => lambda * Math.log(f(x)) + (mu / (a2 * k)) * Math.atan(u(x) / k),
-                    texF: mu === 0
-                        ? `${fmt(lambda)}\\ln\\!\\left(${texF2}\\right)`
-                        : `${fmt(lambda)}\\ln\\!\\left(${texF2}\\right) + \\dfrac{${fmt(mu)}}{${fmt(a2 * k)}}\\arctan\\!\\left(\\dfrac{${texU}}{${fmt(k)}}\\right)`,
-                    resultadoTex: `\\int \\dfrac{${texNum}}{${texF2}}dx = ${mu === 0
-                        ? fmt(lambda) + '\\ln\\!\\left(' + texF2 + '\\right)'
-                        : fmt(lambda) + '\\ln\\!\\left(' + texF2 + '\\right) + \\dfrac{' + fmt(mu) + '}{' + fmt(a2 * k) + '}\\arctan\\!\\left(\\dfrac{' + texU + '}{' + fmt(k) + '}\\right)'} + C`,
-                    pasos: [
-                        ['Paso 1 — Separar la derivada del denominador:', `${texNum} = \\underbrace{${fmt(lambda)}}_{\\lambda}\\left(2${fmt(a2)}x ${b2 >= 0 ? '+' : '-'} ${fmt(Math.abs(b2))}\\right) + \\underbrace{${fmt(mu)}}_{\\mu}`],
-                        ['Paso 2 — Parte logarítmica (∫ f′/f):', `\\lambda\\int \\dfrac{f'(x)}{f(x)}\\,dx = ${fmt(lambda)}\\ln\\!\\left(${texF2}\\right) \;\;(\mathrm{positivo:}\ a>0,\ \Delta<0)`],
-                        ['Paso 3 — Parte restante con cuadrada completa:', pasoArctan],
-                        ['Paso 4 — Unir ambas piezas:', `\\text{Resultado} = \\text{parte } \\ln \\;+\\; \\text{parte } \\arctan \\;+\\; C`]
-                    ]
-                };
-            }
-
-            // ∫ dx/√(ax²+bx+c), a<0 y máximo positivo → arco seno (semicírculo)
-            case 'sqrt-circle': {
-                if (!(a2 < 0 && kv > 0)) {
-                    return { error: 'La raíz exige valores positivos del trinomio: esta familia necesita a < 0 y c − b²/(4a) > 0 (ej. a=−1, b=−4, c=5).' };
-                }
-                const R = Math.sqrt(kv / (-a2));   // f = |a|(R² − (x+h)²)
-                const sa = Math.sqrt(-a2);
-                return {
-                    func: x => (f(x) > 1e-12 ? 1 / Math.sqrt(f(x)) : NaN),
-                    F: x => (1 / sa) * Math.asin(Math.max(-1, Math.min(1, u(x) / R))),
-                    texF: `\\dfrac{1}{${fmt(sa)}}\\arcsin\\!\\left(\\dfrac{${texU}}{${fmt(R)}}\\right)`,
-                    resultadoTex: `\\int \\dfrac{dx}{\\sqrt{${texF2}}} = \\dfrac{1}{\\sqrt{${fmt(-a2)}}}\\arcsin\\!\\left(\\dfrac{${texU}}{${fmt(R)}}\\right) + C`,
-                    dominio: [-h - R, -h + R],
-                    pasos: [
-                        ['Paso 1 — Completar la cuadrada (a < 0):', `${texF2} = ${fmt(-a2)}\\left[${fmt(R * R)} - \\left(${texU}\\right)^2\\right]`],
-                        ['Paso 2 — Extraer la constante del radical:', `\\sqrt{${texF2}} = ${coefMul(sa)}\\sqrt{${fmt(R * R)} - \\left(${texU}\\right)^2}`],
-                        ['Paso 3 — Forma canónica del arco seno:', `\\dfrac{1}{\\sqrt{${fmt(-a2)}}}\\arcsin\\!\\left(\\dfrac{${texU}}{${fmt(R)}}\\right) + C`],
-                        ['Dominio (semicírculo de radio R):', `f(x) > 0 \\iff \\left(${texU}\\right)^2 < ${fmt(R * R)} \\iff ${fmt(-h - R)} < x < ${fmt(-h + R)}`]
-                    ]
-                };
-            }
-
-            // ∫ dx/√(ax²+bx+c), a>0 y Δ<0 → logaritmo (forma hiperbólica)
-            case 'sqrt-hyper': {
-                if (!(a2 > 0 && disc < 0)) {
-                    return { error: 'Esta familia pide a > 0 y Δ < 0 (radicando siempre positivo). Ej. a=1, b=0, c=1 o a=1, b=2, c=5.' };
-                }
-                const k = Math.sqrt(kv / a2);
-                const sa = Math.sqrt(a2);
-                return {
-                    func: x => 1 / Math.sqrt(f(x)),
-                    F: x => (1 / sa) * Math.log(sa * u(x) + Math.sqrt(f(x))),
-                    texF: `\\dfrac{1}{\\sqrt{${fmt(a2)}}}\\ln\\left|\\sqrt{${fmt(a2)}}\\left(${texU}\\right)+\\sqrt{${texF2}}\\right|`,
-                    resultadoTex: `\\int \\dfrac{dx}{\\sqrt{${texF2}}} = \\dfrac{1}{\\sqrt{${fmt(a2)}}}\\ln\\left|\\sqrt{${fmt(a2)}}\\left(${texU}\\right)+\\sqrt{${texF2}}\\right| + C`,
-                    pasos: [
-                        ['Paso 1 — Completar la cuadrada:', `${texF2} = ${A === '' ? '' : A + '\\,'}\\left[\\left(${texU}\\right)^2 + ${fmt(k * k)}\\right]`],
-                        ['Paso 2 — Forma canónica hiperbólica:', `\\int \\dfrac{du}{\\sqrt{u^2+k^2}} = \\ln\\left|u+\\sqrt{u^2+k^2}\\right| + C`],
-                        ['Paso 3 — Regresar a x (constantes absorbidas en C):', `\\dfrac{1}{\\sqrt{${fmt(a2)}}}\\ln\\left|\\sqrt{${fmt(a2)}}\\left(${texU}\\right)+\\sqrt{${texF2}}\\right| + C`]
-                    ]
-                };
-            }
-
-            // ∫ e^{-(ax²+bx+c)} dx → campana gaussiana desplazada (función erf)
-            case 'exp-square': {
-                if (a2 <= 0) {
-                    return { error: 'La campana e^{−(ax²+bx+c)} necesita a > 0 (parábola hacia arriba). Prueba a=1, b=0, c=0.' };
-                }
-                const s = Math.sqrt(a2);
-                const erfApprox = z => { // Abramowitz-Stegun 7.1.26 (|error| < 1.5e-7)
-                    const sign = z < 0 ? -1 : 1;
-                    const t = 1 / (1 + 0.3275911 * Math.abs(z));
-                    const y = 1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-z * z);
-                    return sign * y;
-                };
-                return {
-                    func: x => Math.exp(-kv) * Math.exp(-a2 * u(x) * u(x)),
-                    F: x => (Math.sqrt(Math.PI) / (2 * s)) * Math.exp(-kv) * erfApprox(s * u(x)),
-                    texF: `\\dfrac{\\sqrt{\\pi}\\,e^{-${fmt(kv)}}}{2\\sqrt{${fmt(a2)}}}\\operatorname{erf}\\!\\left(\\sqrt{${fmt(a2)}}\\left(${texU}\\right)\\right)`,
-                    resultadoTex: `\\int e^{-(${texF2})}dx = \\dfrac{\\sqrt{\\pi}\\,e^{-${fmt(kv)}}}{2\\sqrt{${fmt(a2)}}}\\operatorname{erf}\\!\\left(\\sqrt{${fmt(a2)}}\\left(${texU}\\right)\\right) + C`,
-                    pasos: [
-                        ['Paso 1 — Completar la cuadrada:', `${texF2} = ${fmt(a2)}\\left(${texU}\\right)^2 + ${fmt(kv)}`],
-                        ['Paso 2 — Factorizar la campana:', `e^{-(${texF2})} = e^{-${fmt(kv)}}\\, e^{-${fmt(a2)}\\left(${texU}\\right)^2}`],
-                        ['Paso 3 — Integral gaussiana tabulada:', `\\int e^{-c^2t^2}dt = \\dfrac{\\sqrt{\\pi}}{2c}\\operatorname{erf}(ct) + C,\\qquad c = \\sqrt{${fmt(a2)}}`],
-                        ['Paso 4 — Resultado (antiderivada no elemental):', `\\dfrac{\\sqrt{\\pi}\\,e^{-${fmt(kv)}}}{2\\sqrt{${fmt(a2)}}}\\operatorname{erf}\\!\\left(\\sqrt{${fmt(a2)}}\\left(${texU}\\right)\\right) + C`],
-                        ['Nota sobre erf:', `\\operatorname{erf}(z)=\\dfrac{2}{\\sqrt{\\pi}}\\int_0^z e^{-t^2}dt,\\qquad \\text{(la verificación numérica usa Simpson)}`]
-                    ]
-                };
-            }
-
-            default:
-                return { error: 'Familia desconocida.' };
-        }
+    // Mapea clave de integral -> grupo del menú de sustitución
+    function grupoSustitucion(clave) {
+        if (clave === 'circulo' || clave === 'inversa') return 'circulo';
+        if (clave === 'hiperbola') return 'hiperbola';
+        return 'secante';
     }
 
     function renderizarFormula(elemento, formula, displayMode = false) {
         if (typeof katex !== 'undefined') {
-            try {
-                katex.render(formula, elemento, { displayMode: displayMode, throwOnError: false });
-            } catch (e) {
-                elemento.textContent = formula;
-            }
+            katex.render(formula, elemento, { displayMode: displayMode, throwOnError: false });
         } else {
             elemento.textContent = formula;
         }
@@ -214,51 +121,42 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function crearPaso(titulo, nodos) {
         const paso = document.createElement('div');
-        paso.className = 'paso-resuelto';
+        paso.className = 'paso';
         const h = document.createElement('h4');
         h.textContent = titulo;
         paso.appendChild(h);
-        nodos.forEach(nd => paso.appendChild(nd));
+        nodos.forEach(n => paso.appendChild(n));
         return paso;
     }
 
-    function graficar(cfg, a, b, a2, b2, c2) {
+    function graficar(cfg, a, b, radio, clave) {
         const contenedor = document.getElementById('grafico');
-        const n = 400;
+        const n = 300;
         const xs = [], ys = [];
         for (let i = 0; i <= n; i++) {
             const x = a + (b - a) * i / n;
             xs.push(x);
-            const y = cfg.func(x);
-            ys.push(isFinite(y) ? y : null);
+            ys.push(cfg.func(x));
         }
-        const trazas = [{
-            x: xs, y: ys, mode: 'lines', name: 'integrando', connectgaps: false,
+
+        const trazaArea = {
+            x: xs, y: ys, mode: 'lines', name: 'Área bajo f(x)',
             line: { color: '#ea80fc', width: 3 }, fill: 'tozeroy',
             fillcolor: 'rgba(234,128,252,0.30)'
-        }];
+        };
+        const trazas = [trazaArea];
 
-        // Parábola auxiliar ax²+bx+c escalada para convivir con el integrando
-        const ps = [], py = [];
-        for (let i = 0; i <= n; i++) {
-            const x = a + (b - a) * i / n;
-            ps.push(x);
-            py.push(a2 * x * x + b2 * x + c2);
-        }
-        const maxParab = Math.max(...py.map(Math.abs), 1e-9);
-        const valsY = ys.filter(v => v !== null && isFinite(v)).map(Math.abs);
-        const escala = valsY.length ? Math.max(...valsY) / maxParab : 1;
-        trazas.push({
-            x: ps, y: py.map(v => v * escala), mode: 'lines', name: 'ax²+bx+c (escalada)',
-            line: { color: '#4dd0e1', width: 2, dash: 'dot' }
-        });
-
-        // Vértice de la parábola
-        const hV = -b2 / (2 * a2);
-        if (hV >= Math.min(a, b) && hV <= Math.max(a, b)) {
+        // Ayuda geométrica: círculo completo si aplica
+        if (clave === 'circulo' || clave === 'inversa') {
+            const cx = [], cy = [];
+            for (let i = 0; i <= 200; i++) {
+                const t = 2 * Math.PI * i / 200;
+                cx.push(radio * Math.cos(t));
+                cy.push(radio * Math.sin(t));
+            }
             trazas.push({
-                x: [hV], y: [(c2 - b2 * b2 / (4 * a2)) * escala], mode: 'markers',
-                name: 'vértice', marker: { color: '#ffd54f', size: 9, symbol: 'diamond' }
+                x: cx, y: cy, mode: 'lines', name: `Círculo x²+y²=${radio * radio}`,
+                line: { color: '#ffd54f', width: 1.5, dash: 'dash' }
             });
         }
 
@@ -266,7 +164,7 @@ document.addEventListener('DOMContentLoaded', function() {
             paper_bgcolor: 'rgba(0,0,0,0)',
             plot_bgcolor: '#1e1133',
             font: { color: '#ece6f5', family: "'Segoe UI', sans-serif" },
-            title: { text: 'Completar la cuadrada: el integrando (orquídea) sobre su trinomio (cian punteado)', font: { color: '#b388ff' } },
+            title: { text: 'El integrando con raíz... ¡es geometría circular!', font: { color: '#b388ff' } },
             xaxis: { title: 'x', gridcolor: '#3d2a66', zerolinecolor: '#4a3570', linecolor: '#3d2a66' },
             yaxis: { title: 'y', gridcolor: '#3d2a66', zerolinecolor: '#4a3570', linecolor: '#3d2a66' },
             showlegend: true,
@@ -277,27 +175,38 @@ document.addEventListener('DOMContentLoaded', function() {
         Plotly.newPlot(contenedor, trazas, layout, { responsive: true });
     }
 
-    function mostrarResultados(cfg, a, b) {
+    function mostrarResultados(cfg, a, b, clave) {
         divResultados.innerHTML = '';
+
+        // Menú de sustitución sugerida
+        const menuBox = document.createElement('div');
+        menuBox.className = 'formula-box';
+        const menuTitulo = document.createElement('p');
+        menuTitulo.innerHTML = '<strong>🧭 Menú de sustitución disponible para este radicando:</strong>';
+        menuBox.appendChild(menuTitulo);
+        const grupo = grupoSustitucion(clave);
+        MENU_SUSTITUCION[grupo].forEach(([nombre, expresion]) => {
+            menuBox.appendChild(parrafoConFormula(`• (${nombre})  `, expresion, ''));
+        });
+        divResultados.appendChild(menuBox);
 
         const valorExacto = cfg.F(b) - cfg.F(a);
 
-        const nS = 400, lo = Math.min(a, b), hi = Math.max(a, b), hStep = (hi - lo) / nS;
-        let suma = cfg.func(lo) + cfg.func(hi);
+        const nS = 400, h = (b - a) / nS;
+        let suma = cfg.func(a) + cfg.func(b);
         for (let i = 1; i < nS; i++) {
-            const y = cfg.func(lo + i * hStep);
-            suma += (i % 2 === 1 ? 4 : 2) * (isFinite(y) ? y : 0);
+            suma += (i % 2 === 1 ? 4 : 2) * cfg.func(a + i * h);
         }
-        suma *= hStep / 3;
+        suma *= h / 3;
 
         cfg.pasos.forEach(([titulo, latex]) => {
             divResultados.appendChild(crearPaso(titulo, [parrafoConFormula('', latex, '')]));
         });
 
         const pEval = parrafoConFormula('Evaluando con el TFC: ',
-            `\\left[ ${cfg.texF} \\right]_{${fmt(a)}}^{${fmt(b)}} = ${valorExacto.toFixed(6)}`, '');
+            `\\left[ F(x) \\right]_{${a}}^{${b}} = ${valorExacto.toFixed(6)}`, '');
         const pVer = document.createElement('p');
-        pVer.className = 'verificacion';
+        pVer.className = 'nota nota-cian';
         pVer.appendChild(document.createTextNode('✔ Verificación numérica (Simpson, n=' + nS + '): '));
         const spanVer = document.createElement('span');
         renderizarFormula(spanVer, `\\approx ${suma.toFixed(6)}`, false);
@@ -305,71 +214,62 @@ document.addEventListener('DOMContentLoaded', function() {
         divResultados.appendChild(crearPaso('Valor de la integral definida:', [pEval, pVer]));
 
         const finalBox = document.createElement('div');
-        finalBox.className = 'resultado-final';
-        const hFinal = document.createElement('h4');
-        hFinal.textContent = '🏁 Resultado general:';
-        finalBox.appendChild(hFinal);
+        finalBox.className = 'formula-box';
         const spanFinal = document.createElement('span');
         renderizarFormula(spanFinal, cfg.resultadoTex, true);
         finalBox.appendChild(spanFinal);
+        if (cfg.extraTex) {
+            const spanExtra = document.createElement('span');
+            renderizarFormula(spanExtra, cfg.extraTex, true);
+            finalBox.appendChild(spanExtra);
+        }
         divResultados.appendChild(finalBox);
 
         const nota = document.createElement('p');
-        nota.className = 'nota-educativa';
-        nota.textContent = '💡 Truco de comprobación: deriva tu F(x). Si vuelve a aparecer el integrando original, la cuadrada quedó bien completada. El término que suele fallar es el desplazamiento h = b/(2a): ¡conserva su signo!';
+        nota.className = 'nota';
+        nota.textContent = '💡 Siempre que veas √(a²−x²), √(a²+x²) o √(x²−a²), piensa en sen, tan y sec respectivamente: las identidades pitagóricas disuelven la raíz.';
         divResultados.appendChild(nota);
     }
 
     btnCalcular.addEventListener('click', function() {
         const clave = selectIntegral.value;
-        const a2 = parseFloat(inputA2.value);
-        const b2 = parseFloat(inputB2.value);
-        const c2 = parseFloat(inputC2.value);
-        const n = parseFloat(inputN.value);
-        const a = parseFloat(inputA.value);
-        const b = parseFloat(inputB.value);
+        const radio = parseFloat(inputAParam.value);
+        const limInf = parseFloat(inputLimInf.value);
+        const limSup = parseFloat(inputLimSup.value);
 
-        if ([a2, b2, c2, n, a, b].some(v => isNaN(v))) {
-            alert('Por favor, ingrese valores numéricos válidos en todos los campos.');
+        if (isNaN(limInf) || isNaN(limSup)) {
+            alert('Por favor, ingrese valores numéricos válidos para los límites.');
             return;
         }
-        if (a === b) {
+        if (limInf === limSup) {
             alert('Los límites de integración deben ser diferentes.');
             return;
         }
-
-        const cfg = construirConfig(clave, a2, b2, c2, n);
-        if (cfg.error) {
-            alert(cfg.error);
+        if (isNaN(radio) || radio <= 0) {
+            alert('El parámetro a debe ser un número positivo.');
             return;
         }
 
-        // Singularidades / dominio
-        const lo = Math.min(a, b), hi = Math.max(a, b);
-        const disc = b2 * b2 - 4 * a2 * c2;
-        if (disc >= 0 && (clave === 'rational-arctan' || clave === 'rational-ln')) {
-            const r1 = (-b2 - Math.sqrt(disc)) / (2 * a2), r2 = (-b2 + Math.sqrt(disc)) / (2 * a2);
-            const rMin = Math.min(r1, r2), rMax = Math.max(r1, r2);
-            if (rMin <= hi && rMax >= lo && !(rMax < lo || rMin > hi)) {
-                // alguna raíz cae dentro del intervalo
-                const raizDentro = (r1 >= lo && r1 <= hi) || (r2 >= lo && r2 <= hi);
-                if (raizDentro) {
-                    alert('El intervalo cruza una raíz real del denominador: hay asíntota vertical y la integral definida diverge.');
-                    return;
-                }
+        const cfg = construirConfig(clave, radio);
+
+        const lo = Math.min(limInf, limSup), hi = Math.max(limInf, limSup);
+        if (clave === 'circulo' || clave === 'inversa') {
+            if (lo < -radio || hi > radio) {
+                alert(`Para √(${radio * radio}−x²) el intervalo debe estar dentro de [−${radio}, ${radio}]. Ajusta los límites o aumenta a.`);
+                return;
             }
         }
-        if (cfg.dominio && (lo < cfg.dominio[0] || hi > cfg.dominio[1])) {
-            alert(`La raíz exige x ∈ (${fmt(cfg.dominio[0])}, ${fmt(cfg.dominio[1])}) — el semicírculo. Ajusta los límites.`);
-            return;
+        if (clave === 'secante') {
+            if (lo < radio && hi > -radio) {
+                alert(`Para √(x²−${radio * radio}) se requiere |x| ≥ ${radio}: usa un intervalo completamente fuera de (−${radio}, ${radio}).`);
+                return;
+            }
         }
 
-        graficar(cfg, a, b, a2, b2, c2);
-        mostrarResultados(cfg, a, b);
+        graficar(cfg, limInf, limSup, radio, clave);
+        mostrarResultados(cfg, limInf, limSup, clave);
     });
 
-    const cfgInicial = construirConfig(selectIntegral.value, parseFloat(inputA2.value), parseFloat(inputB2.value), parseFloat(inputC2.value), parseFloat(inputN.value));
-    if (!cfgInicial.error) {
-        graficar(cfgInicial, parseFloat(inputA.value), parseFloat(inputB.value), parseFloat(inputA2.value), parseFloat(inputB2.value), parseFloat(inputC2.value));
-    }
+    const cfgInicial = construirConfig(selectIntegral.value, parseFloat(inputAParam.value));
+    graficar(cfgInicial, parseFloat(inputLimInf.value), parseFloat(inputLimSup.value), parseFloat(inputAParam.value), selectIntegral.value);
 });

@@ -1,4 +1,4 @@
-// ===== MÓDULO 16: INTEGRALES CON FUNCIONES HIPERBÓLICAS INVERSAS =====
+// ===== MÓDULO 12: FRACCIONES PARCIALES =====
 
 document.addEventListener('DOMContentLoaded', function() {
 
@@ -13,140 +13,84 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     const selectIntegral = document.getElementById('integral');
-    const inputA = document.getElementById('param-a');
     const inputK = document.getElementById('param-k');
-    const inputLimInf = document.getElementById('a');
-    const inputLimSup = document.getElementById('b');
+    const inputA = document.getElementById('a');
+    const inputB = document.getElementById('b');
     const btnCalcular = document.getElementById('calcular');
     const divResultados = document.getElementById('resultados-content');
 
-    // ----- utilidades de formato LaTeX -----
-    function fmt(v) {
-        const r = Math.round(v * 10000) / 10000;
-        return (Object.is(r, -0) ? 0 : r).toString();
-    }
-    function texKX(k) {
-        if (k === 1) return 'x';
-        if (k === -1) return '-x';
-        return `${fmt(k)}x`;
-    }
-    function texSq(v) { return fmt(Math.round(v * v * 1e6) / 1e6); }
-
-    // Inversas hiperbólicas por su forma logarítmica (estables y sin dependencias)
-    const arsinh = z => Math.log(z + Math.sqrt(z * z + 1));
-    const arcosh = z => Math.log(z + Math.sqrt(z * z - 1));          // z >= 1
-    const artanh = z => 0.5 * Math.log((1 + z) / (1 - z));           // |z| < 1
-    const arcoth = z => 0.5 * Math.log((z + 1) / (z - 1));           // |z| > 1
-
-    function construirConfig(clave, a, k) {
-        if (a <= 0) return { error: 'El parámetro a debe ser positivo (define la escala de la curva).' };
-        if (k === 0) return { error: 'Con k = 0 el argumento kx es constante: usa k ≠ 0.' };
-        const sk = Math.abs(k);
-        const tKX = texKX(k);
-        const texAx = `\\dfrac{${tKX}}{${fmt(a)}}`;
-
-        switch (clave) {
-
-            // ∫ dx/√(k²x²+a²) → sgn(k)/|k|·arsinh(kx/a)   — definida en todo ℝ
-            case 'arsinh': {
-                return {
-                    func: x => 1 / Math.sqrt(k * k * x * x + a * a),
-                    F: x => (Math.sign(k) / sk) * arsinh(k * x / a),
-                    texF: `\\dfrac{${fmt(Math.sign(k))}}{${fmt(sk)}}\\operatorname{arsinh}\\!\\left(${texAx}\\right)`,
-                    resultadoTex: `\\int \\dfrac{dx}{\\sqrt{${fmt(k * k)}x^2 + ${texSq(a)}}} = \\dfrac{${fmt(Math.sign(k))}}{${fmt(sk)}}\\operatorname{arsinh}\\!\\left(${texAx}\\right) + C`,
-                    pasos: [
-                        ['Paso 1 — Reconocer la silueta:', `${fmt(k * k)}x^2 + ${texSq(a)} = (${tKX})^2 + ${fmt(a)}^2 \\;\\longrightarrow\\; \\sqrt{u^2+a^2}`],
-                        ['Paso 2 — Sustitución u = kx:', `du = ${fmt(k)}\\,dx \\;\\Rightarrow\\; \\int \\frac{dx}{\\sqrt{(kx)^2+a^2}} = \\frac{1}{|k|}\\int \\frac{du}{\\sqrt{u^2+a^2}}`],
-                        ['Paso 3 — Fórmula canónica (forma logarítmica):', `\\int \\frac{du}{\\sqrt{u^2+a^2}} = \\operatorname{arsinh}\\frac{u}{a} + C = \\ln\\left(u+\\sqrt{u^2+a^2}\\right) + C'`],
-                        ['Paso 4 — Regresar a x:', `\\dfrac{${fmt(Math.sign(k))}}{${fmt(sk)}}\\operatorname{arsinh}\\!\\left(${texAx}\\right) + C`]
-                    ]
-                };
+    // k es un multiplicador externo del integrando.
+    function construirConfig(clave, k) {
+        const configs = {
+            lineales: {
+                texIntegrando: `\\frac{${k}}{(x-1)(x+2)}`,
+                func: x => k / ((x - 1) * (x + 2)),
+                F: x => (k / 3) * Math.log(Math.abs(x - 1)) - (k / 3) * Math.log(Math.abs(x + 2)),
+                texF: `\\frac{${k}}{3}\\ln|x-1| - \\frac{${k}}{3}\\ln|x+2|`,
+                resultadoTex: `\\int \\frac{${k}}{(x-1)(x+2)}dx = \\frac{${k}}{3}\\ln\\left|\\frac{x-1}{x+2}\\right| + C`,
+                componentes: [
+                    { nombre: 'A/(x−1):', f: x => (k / 3) / (x - 1), color: '#4dd0e1' },
+                    { nombre: 'B/(x+2):', f: x => (-k / 3) / (x + 2), color: '#ffd54f' }
+                ],
+                singularidades: [1, -2],
+                pasos: [
+                    ['Paso 1 — Plantilla:', `\\frac{${k}}{(x-1)(x+2)} = \\frac{A}{x-1} + \\frac{B}{x+2}`],
+                    ['Paso 2 — Coeficientes (evaluar en raíces):', `${k} = A(x+2)+B(x-1) \\quad x=1 \\Rightarrow A=\\frac{${k}}{3}; \\quad x=-2 \\Rightarrow B=-\\frac{${k}}{3}`],
+                    ['Paso 3 — Integrar cada parcial:', `\\frac{${k}}{3}\\ln|x-1| - \\frac{${k}}{3}\\ln|x+2| + C`]
+                ]
+            },
+            repetido: {
+                texIntegrando: `\\frac{${k}}{(x+1)^2(x+3)}`,
+                func: x => k / ((x + 1) * (x + 1) * (x + 3)),
+                F: x => (-k / 4) / (x + 1) + (k / 4) * Math.log(Math.abs(x + 1)) - (k / 4) * Math.log(Math.abs(x + 3)),
+                texF: `-\\frac{${k}}{4(x+1)} + \\frac{${k}}{4}\\ln|x+1| - \\frac{${k}}{4}\\ln|x+3|`,
+                resultadoTex: `\\int \\frac{${k}}{(x+1)^2(x+3)}dx = -\\frac{${k}}{4(x+1)} + \\frac{${k}}{4}\\ln\\left|\\frac{x+1}{x+3}\\right| + C`,
+                componentes: [],
+                singularidades: [-1, -3],
+                pasos: [
+                    ['Paso 1 — Plantilla con factor repetido:', `\\frac{${k}}{(x+1)^2(x+3)} = \\frac{A}{x+1} + \\frac{B}{(x+1)^2} + \\frac{C}{x+3}`],
+                    ['Paso 2 — Coeficientes:', `${k} = A(x+1)(x+3)+B(x+3)+C(x+1)^2 \\Rightarrow A=\\frac{${k}}{4},\\; B=\\frac{${k}}{2},\\; C=-\\frac{${k}}{4}`],
+                    ['Paso 3 — Integrar (ojo: B da potencia −2):', `\\frac{${k}}{4}\\ln|x+1| - \\frac{${k}}{2(x+1)} - \\frac{${k}}{4}\\ln|x+3| + C`]
+                ]
+            },
+            cuadratico: {
+                texIntegrando: `\\frac{${k}}{x(x^2+4)}`,
+                func: x => k / (x * (x * x + 4)),
+                F: x => (k / 4) * Math.log(Math.abs(x)) - (k / 8) * Math.log(x * x + 4),
+                texF: `\\frac{${k}}{4}\\ln|x| - \\frac{${k}}{8}\\ln(x^2+4)`,
+                resultadoTex: `\\int \\frac{${k}}{x(x^2+4)}dx = \\frac{${k}}{4}\\ln|x| - \\frac{${k}}{8}\\ln(x^2+4) + C`,
+                componentes: [
+                    { nombre: 'A/x:', f: x => (k / 4) / x, color: '#4dd0e1' },
+                    { nombre: '(Bx+C)/(x²+4):', f: x => (-k / 4 * x) / (x * x + 4), color: '#ffd54f' }
+                ],
+                singularidades: [0],
+                pasos: [
+                    ['Paso 1 — Plantilla (cuadrático ⇒ numerador Ax+B):', `\\frac{${k}}{x(x^2+4)} = \\frac{A}{x} + \\frac{Bx+C}{x^2+4}`],
+                    ['Paso 2 — Sistema:', `${k} = A(x^2+4)+(Bx+C)x \\Rightarrow 4A=${k},\\; A+B=0,\\; C=0 \\Rightarrow A=\\frac{${k}}{4},\\; B=-\\frac{${k}}{4},\\; C=0`],
+                    ['Paso 3 — Integrar (el segundo es ln por ser derivada interna):', `\\frac{${k}}{4}\\ln|x| - \\frac{${k}}{8}\\ln(x^2+4) + C`]
+                ]
+            },
+            impropia: {
+                texIntegrando: `\\frac{${k}x}{x^2+1}`,
+                func: x => k * x / (x * x + 1),
+                F: x => (k / 2) * Math.log(x * x + 1),
+                texF: `\\frac{${k}}{2}\\ln(x^2+1)`,
+                resultadoTex: `\\int \\frac{${k}x}{x^2+1}dx = \\frac{${k}}{2}\\ln(x^2+1) + C`,
+                componentes: [],
+                singularidades: [],
+                pasos: [
+                    ['Paso 1 — Atajo: el numerador es (½)·derivada del denominador:', `u = x^2+1, \\quad du = 2x\\,dx \\quad\\Rightarrow\\quad \\frac{${k}}{2}\\int \\frac{du}{u}`],
+                    ['Paso 2 — Integrar directamente (sin fracciones parciales):', `\\frac{${k}}{2}\\ln|u| + C`],
+                    ['Paso 3 — Regresar:', `\\frac{${k}}{2}\\ln(x^2+1) + C \\qquad (x^2+1>0, no hace falta valor absoluto)`]
+                ]
             }
-
-            // ∫ dx/√(k²x²−a²) → (1/|k|)·arcosh(|kx|/a) — exige |kx| > a
-            case 'arcosh': {
-                return {
-                    func: x => (Math.abs(k * x) > a ? 1 / Math.sqrt(k * k * x * x - a * a) : NaN),
-                    F: x => (Math.abs(k * x) > a ? (1 / sk) * arcosh(Math.abs(k * x) / a) : NaN),
-                    texF: `\\dfrac{1}{${fmt(sk)}}\\operatorname{arcosh}\\!\\left(\\dfrac{|${tKX}|}{${fmt(a)}}\\right)`,
-                    resultadoTex: `\\int \\dfrac{dx}{\\sqrt{${fmt(k * k)}x^2 - ${texSq(a)}}} = \\dfrac{1}{${fmt(sk)}}\\operatorname{arcosh}\\!\\left(\\dfrac{|${tKX}|}{${fmt(a)}}\\right) + C, \\qquad |kx| &gt; ${fmt(a)}`,
-                    dominioExcluido: [-a / sk, a / sk],
-                    tipoDominio: 'exterior',
-                    pasos: [
-                        ['Paso 1 — Reconocer la silueta:', `${fmt(k * k)}x^2 - ${texSq(a)} = (${tKX})^2 - ${fmt(a)}^2 \\;\\longrightarrow\\; \\sqrt{u^2-a^2}`],
-                        ['Paso 2 — Sustitución u = kx:', `du = ${fmt(k)}\\,dx, \\qquad \\frac{1}{|k|}\\int \\frac{du}{\\sqrt{u^2-a^2}}`],
-                        ['Paso 3 — Fórmula canónica (forma logarítmica):', `\\int \\frac{du}{\\sqrt{u^2-a^2}} = \\operatorname{arcosh}\\frac{|u|}{a} + C = \\ln\\left(|u|+\\sqrt{u^2-a^2}\\right) + C'`],
-                        ['Paso 4 — Condición de existencia:', `|kx| &gt; ${fmt(a)} \\iff x \\in \\left(-\\infty, -\\tfrac{${fmt(a)}}{${fmt(sk)}}\\right) \\cup \\left(\\tfrac{${fmt(a)}}{${fmt(sk)}}, +\\infty\\right)`]
-                    ]
-                };
-            }
-
-            // ∫ dx/(a²−k²x²) → (1/(a|k|))·artanh(kx/a) — exige |kx| < a
-            case 'artanh': {
-                return {
-                    func: x => (Math.abs(k * x) < a ? 1 / (a * a - k * k * x * x) : NaN),
-                    F: x => (Math.abs(k * x) < a ? (1 / (a * sk)) * artanh(k * x / a) : NaN),
-                    texF: `\\dfrac{1}{${fmt(a * sk)}}\\operatorname{artanh}\\!\\left(${texAx}\\right)`,
-                    resultadoTex: `\\int \\dfrac{dx}{${texSq(a)} - ${fmt(k * k)}x^2} = \\dfrac{1}{${fmt(a * sk)}}\\operatorname{artanh}\\!\\left(${texAx}\\right) + C, \\qquad |kx| &lt; ${fmt(a)}`,
-                    dominioExcluido: [-a / sk, a / sk],
-                    tipoDominio: 'interior',
-                    pasos: [
-                        ['Paso 1 — Reconocer la silueta:', `${texSq(a)} - ${fmt(k * k)}x^2 = ${fmt(a)}^2 - (${tKX})^2 \\;\\longrightarrow\\; a^2-u^2`],
-                        ['Paso 2 — Factorizar y sustituir u = kx:', `\\frac{1}{|k|}\\int \\frac{du}{a^2-u^2}`],
-                        ['Paso 3 — Fórmula canónica (equivale a fracciones parciales):', `\\int \\frac{du}{a^2-u^2} = \\frac{1}{a}\\operatorname{artanh}\\frac{u}{a} + C = \\frac{1}{2a}\\ln\\left|\\frac{a+u}{a-u}\\right| + C`],
-                        ['Paso 4 — Regresar a x:', `\\dfrac{1}{${fmt(a * sk)}}\\operatorname{artanh}\\!\\left(${texAx}\\right) + C`]
-                    ]
-                };
-            }
-
-            // ∫ dx/(k²x²−a²) → −(1/(a|k|))·arcoth(kx/a) — exige |kx| > a
-            case 'arcoth': {
-                return {
-                    func: x => (Math.abs(k * x) > a ? 1 / (k * k * x * x - a * a) : NaN),
-                    F: x => (Math.abs(k * x) > a ? -(1 / (a * sk)) * arcoth(k * x / a) : NaN),
-                    texF: `-\\dfrac{1}{${fmt(a * sk)}}\\operatorname{arcoth}\\!\\left(${texAx}\\right)`,
-                    resultadoTex: `\\int \\dfrac{dx}{${fmt(k * k)}x^2 - ${texSq(a)}} = -\\dfrac{1}{${fmt(a * sk)}}\\operatorname{arcoth}\\!\\left(${texAx}\\right) + C, \\qquad |kx| &gt; ${fmt(a)}`,
-                    dominioExcluido: [-a / sk, a / sk],
-                    tipoDominio: 'exterior',
-                    pasos: [
-                        ['Paso 1 — Reconocer la silueta:', `${fmt(k * k)}x^2 - ${texSq(a)} = (${tKX})^2 - ${fmt(a)}^2 \\;\\longrightarrow\\; u^2-a^2`],
-                        ['Paso 2 — Fracciones parciales sobre las asíntotas ±a/|k|:', `\\frac{1}{u^2-a^2} = \\frac{1}{2a}\\left(\\frac{1}{u-a} - \\frac{1}{u+a}\\right)`],
-                        ['Paso 3 — Integrar (forma log / arcoth):', `\\int \\frac{du}{u^2-a^2} = \\frac{1}{2a}\\ln\\left|\\frac{u-a}{u+a}\\right| + C = -\\frac{1}{a}\\operatorname{arcoth}\\frac{u}{a} + C`],
-                        ['Paso 4 — Regresar a x con el factor 1/|k|:', `-\\dfrac{1}{${fmt(a * sk)}}\\operatorname{arcoth}\\!\\left(${texAx}\\right) + C`]
-                    ]
-                };
-            }
-
-            // ∫ arcosh(kx/a) dx = x·arcosh(kx/a) − √(k²x²−a²)/|k| + C   (rama kx/a ≥ 1)
-            case 'num-arcosh': {
-                return {
-                    func: x => (k * x / a >= 1 ? arcosh(k * x / a) : NaN),
-                    F: x => (k * x / a >= 1 ? x * arcosh(k * x / a) - Math.sqrt(k * k * x * x - a * a) / sk : NaN),
-                    texF: `x\\,\\operatorname{arcosh}\\!\\left(${texAx}\\right) - \\dfrac{\\sqrt{${fmt(k * k)}x^2 - ${texSq(a)}}}{${fmt(sk)}}`,
-                    resultadoTex: `\\int \\operatorname{arcosh}\\!\\left(${texAx}\\right)dx = x\\,\\operatorname{arcosh}\\!\\left(${texAx}\\right) - \\dfrac{\\sqrt{${fmt(k * k)}x^2 - ${texSq(a)}}}{${fmt(sk)}} + C, \\qquad \\tfrac{kx}{a} \\ge 1`,
-                    xMinValido: a / k,
-                    tipoDominio: 'rama-positiva',
-                    pasos: [
-                        ['Paso 1 — Fórmula patrón (se demuestra por partes):', `\\int \\operatorname{arcosh}(t)\\,dt = t\\,\\operatorname{arcosh}(t) - \\sqrt{t^2-1} + C`],
-                        ['Paso 2 — Cambio t = kx/a, dt = (k/a)dx:', `\\int \\operatorname{arcosh}\\!\\left(\\tfrac{kx}{a}\\right)dx = \\frac{a}{k}\\left[t\\,\\operatorname{arcosh}t - \\sqrt{t^2-1}\\right]`],
-                        ['Paso 3 — Expandir término a término:', `\\frac{a}{k}\\cdot t\\,\\operatorname{arcosh}t = x\\,\\operatorname{arcosh}\\!\\left(${texAx}\\right), \\qquad \\frac{a}{k}\\sqrt{t^2-1} = \\frac{\\sqrt{${fmt(k * k)}x^2 - ${texSq(a)}}}{${fmt(sk)}}`],
-                        ['Paso 4 — Resultado:', `x\\,\\operatorname{arcosh}\\!\\left(${texAx}\\right) - \\dfrac{\\sqrt{${fmt(k * k)}x^2 - ${texSq(a)}}}{${fmt(sk)}} + C`]
-                    ]
-                };
-            }
-
-            default:
-                return { error: 'Familia desconocida.' };
-        }
+        };
+        return configs[clave];
     }
 
     function renderizarFormula(elemento, formula, displayMode = false) {
         if (typeof katex !== 'undefined') {
-            try {
-                katex.render(formula, elemento, { displayMode: displayMode, throwOnError: false });
-            } catch (e) {
-                elemento.textContent = formula;
-            }
+            katex.render(formula, elemento, { displayMode: displayMode, throwOnError: false });
         } else {
             elemento.textContent = formula;
         }
@@ -168,62 +112,46 @@ document.addEventListener('DOMContentLoaded', function() {
         const h = document.createElement('h4');
         h.textContent = titulo;
         paso.appendChild(h);
-        nodos.forEach(nd => paso.appendChild(nd));
+        nodos.forEach(n => paso.appendChild(n));
         return paso;
     }
 
-    function graficar(cfg, lo, hi) {
+    function graficar(cfg, a, b) {
         const contenedor = document.getElementById('grafico');
-        const n = 400;
+        const n = 300;
         const xs = [], ys = [];
         for (let i = 0; i <= n; i++) {
-            const x = lo + (hi - lo) * i / n;
-            xs.push(x);
+            const x = a + (b - a) * i / n;
             const y = cfg.func(x);
+            xs.push(x);
             ys.push(isFinite(y) ? y : null);
         }
+
         const trazas = [{
-            x: xs, y: ys, mode: 'lines', name: 'f(x) integrando', connectgaps: false,
+            x: xs, y: ys, mode: 'lines', name: 'f(x) racional', connectgaps: false,
             line: { color: '#ea80fc', width: 3 }, fill: 'tozeroy',
             fillcolor: 'rgba(234,128,252,0.30)'
         }];
 
-        // Antiderivada F(x) trasladada verticalmente para convivir con f(x)
-        const valsY = ys.filter(v => v !== null && isFinite(v)).map(Math.abs);
-        const maxY = valsY.length ? Math.max(...valsY) : 1;
-        const base = cfg.F(lo);
-        const offset = isFinite(base) ? maxY * 0.25 - base : 0;
-        const Fs = xs.map(x => {
-            const v = cfg.F(x);
-            return isFinite(v) ? v + offset : null;
-        });
-        trazas.push({
-            x: xs, y: Fs, mode: 'lines', name: 'F(x) antiderivada (trasladada)', connectgaps: false,
-            line: { color: '#69f0ae', width: 2.5, dash: 'dash' }
-        });
-
-        // Límites de dominio como líneas verticales ámbar (solo si caen dentro)
-        const limites = [];
-        if (cfg.dominioExcluido) limites.push(...cfg.dominioExcluido);
-        if (cfg.xMinValido !== undefined) limites.push(cfg.xMinValido);
-        const todos = [...ys, ...Fs].filter(v => v !== null && isFinite(v));
-        const yLo = todos.length ? Math.min(...todos) : -1;
-        const yHi = todos.length ? Math.max(...todos) : 1;
-        for (const xa of limites) {
-            if (xa > lo && xa < hi) {
-                trazas.push({
-                    x: [xa, xa], y: [yLo, yHi], mode: 'lines',
-                    name: `límite x=${fmt(xa)}`,
-                    line: { color: '#ffd54f', width: 1.5, dash: 'dot' }
-                });
+        cfg.componentes.forEach(comp => {
+            const xc = [], yc = [];
+            for (let i = 0; i <= n; i++) {
+                const x = a + (b - a) * i / n;
+                const y = comp.f(x);
+                xc.push(x);
+                yc.push(isFinite(y) ? y : null);
             }
-        }
+            trazas.push({
+                x: xc, y: yc, mode: 'lines', name: comp.nombre, connectgaps: false,
+                line: { color: comp.color, width: 2, dash: 'dash' }
+            });
+        });
 
         const layout = {
             paper_bgcolor: 'rgba(0,0,0,0)',
             plot_bgcolor: '#1e1133',
             font: { color: '#ece6f5', family: "'Segoe UI', sans-serif" },
-            title: { text: 'Integrando (orquídea), antiderivada hiperbólica (verde punteada) y límites de dominio (ámbar)', font: { color: '#b388ff' } },
+            title: { text: 'La función racional (orquídea) y sus piezas parciales (punteadas)', font: { color: '#b388ff' } },
             xaxis: { title: 'x', gridcolor: '#3d2a66', zerolinecolor: '#4a3570', linecolor: '#3d2a66' },
             yaxis: { title: 'y', gridcolor: '#3d2a66', zerolinecolor: '#4a3570', linecolor: '#3d2a66' },
             showlegend: true,
@@ -234,25 +162,24 @@ document.addEventListener('DOMContentLoaded', function() {
         Plotly.newPlot(contenedor, trazas, layout, { responsive: true });
     }
 
-    function mostrarResultados(cfg, lo, hi) {
+    function mostrarResultados(cfg, a, b) {
         divResultados.innerHTML = '';
 
-        const valorExacto = cfg.F(hi) - cfg.F(lo);
+        const valorExacto = cfg.F(b) - cfg.F(a);
 
-        const nS = 400, hStep = (hi - lo) / nS;
-        let suma = (isFinite(cfg.func(lo)) ? cfg.func(lo) : 0) + (isFinite(cfg.func(hi)) ? cfg.func(hi) : 0);
+        const nS = 400, h = (b - a) / nS;
+        let suma = cfg.func(a) + cfg.func(b);
         for (let i = 1; i < nS; i++) {
-            const y = cfg.func(lo + i * hStep);
-            suma += (i % 2 === 1 ? 4 : 2) * (isFinite(y) ? y : 0);
+            suma += (i % 2 === 1 ? 4 : 2) * cfg.func(a + i * h);
         }
-        suma *= hStep / 3;
+        suma *= h / 3;
 
         cfg.pasos.forEach(([titulo, latex]) => {
             divResultados.appendChild(crearPaso(titulo, [parrafoConFormula('', latex, '')]));
         });
 
         const pEval = parrafoConFormula('Evaluando con el TFC: ',
-            `\\left[ ${cfg.texF} \\right]_{${fmt(lo)}}^{${fmt(hi)}} = ${valorExacto.toFixed(6)}`, '');
+            `\\left[ ${cfg.texF} \\right]_{${a}}^{${b}} = ${valorExacto.toFixed(6)}`, '');
         const pVer = document.createElement('p');
         pVer.className = 'verificacion';
         pVer.appendChild(document.createTextNode('✔ Verificación numérica (Simpson, n=' + nS + '): '));
@@ -273,61 +200,42 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const nota = document.createElement('p');
         nota.className = 'nota-educativa';
-        nota.textContent = '💡 Compruébalo tú mismo: cada inversa hiperbólica es un logaritmo disfrazado. Deriva la versión logarítmica de tu respuesta y debe devolver exactamente el integrando original.';
+        nota.textContent = '💡 Comprueba siempre tu descomposición sumando las parciales: deben reconstruir exactamente la fracción original.';
         divResultados.appendChild(nota);
     }
 
     btnCalcular.addEventListener('click', function() {
         const clave = selectIntegral.value;
-        const a = parseFloat(inputA.value);
         const k = parseFloat(inputK.value);
-        const lo = parseFloat(inputLimInf.value);
-        const hi = parseFloat(inputLimSup.value);
+        const a = parseFloat(inputA.value);
+        const b = parseFloat(inputB.value);
 
-        if ([a, k, lo, hi].some(v => isNaN(v))) {
-            alert('Por favor, ingrese valores numéricos válidos en todos los campos.');
+        if (isNaN(a) || isNaN(b)) {
+            alert('Por favor, ingrese valores numéricos válidos para los límites.');
             return;
         }
-        if (lo === hi) {
+        if (a === b) {
             alert('Los límites de integración deben ser diferentes.');
             return;
         }
-
-        const cfg = construirConfig(clave, a, k);
-        if (cfg.error) {
-            alert(cfg.error);
+        if (isNaN(k) || k === 0) {
+            alert('El parámetro k debe ser un número distinto de 0.');
             return;
         }
 
-        // Validación de dominio antes de calcular
-        const minL = Math.min(lo, hi), maxL = Math.max(lo, hi);
-        if (cfg.tipoDominio === 'interior') {
-            const [dLo, dHi] = cfg.dominioExcluido;
-            if (minL <= dLo || maxL >= dHi) {
-                alert(`La función artanh solo existe para |kx| < a = ${fmt(a)}, es decir x ∈ (${fmt(dLo)}, ${fmt(dHi)}). El intervalo cruza una asíntota vertical: ajusta los límites para quedarse dentro.`);
-                return;
-            }
-        } else if (cfg.tipoDominio === 'exterior') {
-            const [dLo, dHi] = cfg.dominioExcluido;
-            if (maxL > dLo && minL < dHi) {
-                alert(`Esta familia exige |kx| > ${fmt(a)}: el intervalo no puede tocar la franja (${fmt(dLo)}, ${fmt(dHi)}) donde el radicando es negativo. Prueba límites fuera de esa zona (ej. desde ${fmt(dHi + 0.5)}).`);
-                return;
-            }
-        } else if (cfg.tipoDominio === 'rama-positiva') {
-            if (k * minL / a < 1) {
-                alert(`arcosh exige su argumento ≥ 1: con k = ${fmt(k)} y a = ${fmt(a)} necesitas x ≥ ${fmt(a / k)}. Ajusta el límite inferior.`);
-                return;
-            }
+        const cfg = construirConfig(clave, k);
+
+        const lo = Math.min(a, b), hi = Math.max(a, b);
+        const cruza = (cfg.singularidades || []).some(s => lo <= s && s <= hi);
+        if (cruza) {
+            alert(`El intervalo cruza una asíntota vertical (${(cfg.singularidades).join(' o x = ')}). Cambia los límites.`);
+            return;
         }
 
-        graficar(cfg, minL, maxL);
-        mostrarResultados(cfg, minL, maxL);
+        graficar(cfg, a, b);
+        mostrarResultados(cfg, a, b);
     });
 
-    // Gráfica inicial con los valores por defecto
-    const cfgInicial = construirConfig(selectIntegral.value, parseFloat(inputA.value), parseFloat(inputK.value));
-    if (!cfgInicial.error) {
-        const lo = parseFloat(inputLimInf.value), hi = parseFloat(inputLimSup.value);
-        graficar(cfgInicial, Math.min(lo, hi), Math.max(lo, hi));
-    }
+    const cfgInicial = construirConfig(selectIntegral.value, parseFloat(inputK.value));
+    graficar(cfgInicial, parseFloat(inputA.value), parseFloat(inputB.value));
 });

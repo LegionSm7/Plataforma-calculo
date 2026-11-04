@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const p2 = document.createElement('p');
         p2.innerHTML = '<strong>Área Geométrica (Espacio físico):</strong> ';
         const span2 = document.createElement('span');
-        span2.textContent = `${areaGeometrica.toFixed(6)} unidades²`;
+        renderizarFormula(span2, `\\text{Área} = ${areaGeometrica.toFixed(6)} \\text{ unidades}^2`, false);
         p2.appendChild(span2);
         divResultados.appendChild(p2);
 
@@ -187,14 +187,14 @@ document.addEventListener('DOMContentLoaded', function() {
             renderizarFormula(formula1, 'a > b', false);
             p3.appendChild(formula1);
             
-            p3.innerHTML += '. Por la propiedad de la integral definida, el signo cambia: ';
+            p3.appendChild(document.createTextNode('. Por la propiedad de la integral definida, el signo cambia: '));
             
             // Fórmula: ∫_a^b f(x)dx = -∫_b^a f(x)dx
             const formula2 = document.createElement('span');
             renderizarFormula(formula2, `\\int_{${a}}^{${b}} f(x)\\,dx = -\\int_{${b}}^{${a}} f(x)\\,dx`, false);
             p3.appendChild(formula2);
             
-            p3.innerHTML += '. Por eso la integral es negativa, pero el área geométrica sigue siendo positiva.';
+            p3.appendChild(document.createTextNode('. Por eso la integral es negativa, pero el área geométrica sigue siendo positiva.'));
             
             divResultados.appendChild(p3);
         } else {

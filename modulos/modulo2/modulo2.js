@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
             case 'sqrt(x)': return Math.sqrt(x);
             case 'sin(x)': return Math.sin(x);
             case 'exp(x)': return Math.exp(x);
-            case '1/x': return 1 / x;
+            case '1/x': return x === 0 ? 0 : 1 / x; // Evita división por cero
             default: return x * x;
         }
     }
@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Actualizar la interfaz con los resultados
         divResultados.innerHTML = `
-            <p><strong>Aproximación (Tₙ):</strong> ${aproximacion.toFixed(6)}</p>
+            <p><strong>Aproximación ($T_n$):</strong> ${aproximacion.toFixed(6)}</p>
             <p><strong>Valor de referencia (n=10000):</strong> ${valorReferencia.toFixed(6)}</p>
             <p><strong>Error absoluto aproximado:</strong> ${error.toFixed(6)}</p>
             <p><em>💡 Tip: Aumenta el valor de "n" en el slider para ver cómo el error disminuye y los trapecios se ajustan mejor a la curva.</em></p>

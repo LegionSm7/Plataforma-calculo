@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
             case 'sqrt(x)': return Math.sqrt(x);
             case 'sin(x)': return Math.sin(x);
             case 'exp(x)': return Math.exp(x);
-            case '1/x': return 1 / x;
+            case '1/x': return x === 0 ? 0 : 1 / x; // Evita división por cero
             default: return x * x;
         }
     }

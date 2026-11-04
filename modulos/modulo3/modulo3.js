@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Actualizar la interfaz con los resultados
         divResultados.innerHTML = `
-            <p><strong>Aproximación (Mₙ):</strong> ${aproximacion.toFixed(6)}</p>
+            <p><strong>Aproximación ($M_n$):</strong> ${aproximacion.toFixed(6)}</p>
             <p><strong>Valor de referencia (n=10000):</strong> ${valorReferencia.toFixed(6)}</p>
             <p><strong>Error absoluto aproximado:</strong> ${error.toFixed(6)}</p>
             <p><em>💡 Tip: Observa los puntos rojos en la gráfica. Representan el punto medio exacto de cada subintervalo, que es lo que hace que este método sea tan preciso.</em></p>

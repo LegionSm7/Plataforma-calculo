@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Actualizar la interfaz con los resultados
         divResultados.innerHTML = `
-            <p><strong>Aproximación (Sₙ):</strong> ${aproximacion.toFixed(6)}</p>
+            <p><strong>Aproximación ($S_n$):</strong> ${aproximacion.toFixed(6)}</p>
             <p><strong>Valor de referencia (n=10000):</strong> ${valorReferencia.toFixed(6)}</p>
             <p><strong>Error absoluto aproximado:</strong> ${error.toFixed(6)}</p>
             <p><em>💡 Tip: Observa los puntos rojos en la gráfica. Simpson evalúa la función en TODOS los puntos (extremos y medios) y los pondera con el patrón 1, 4, 2, 4... 1.</em></p>

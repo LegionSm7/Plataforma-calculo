@@ -3,29 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Módulo X - Próximamente</title>
+    <title>Módulo 10 - Integrales Trigonométricas</title>
     <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="modulo10.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
 </head>
 <body>
     <header class="modulo-header">
         <div class="container">
             <a href="../../index.html" class="back-link">← Volver al inicio</a>
-            <h1>🔒 Módulo X: [Nombre del Módulo]</h1>
+            <h1>🌊 Módulo 10: Integrales Trigonométricas</h1>
+            <p>Potencias de sen/cos, identidades de reducción y funciones trigonométricas</p>
         </div>
     </header>
 
     <main class="container">
-        <section class="placeholder-section">
-            <div class="placeholder-content">
-                <h2>🚧 Próximamente - Fase 2/3</h2>
-                <p>Este módulo está en desarrollo y estará disponible en las siguientes fases del proyecto.</p>
-                <div class="fase-info">
-                    <p><strong>Fase prevista:</strong> [2 o 3]</p>
-                    <p><strong>Contenido:</strong> [Descripción del módulo]</p>
-                </div>
-                <a href="../../index.html" class="btn-volver">Volver al inicio</a>
+
+        <section class="teoria">
+            <h2>📖 Fundamento Teórico</h2>
+            <p>Las integrales trigonométricas se resuelven combinando las <strong>fórmulas básicas</strong> con <strong>identidades pitagóricas</strong> y de <strong>ángulo doble</strong> que transforman potencias en sumas integrables.</p>
+
+            <div class="formula-box">
+                <h3>Identidades Clave</h3>
+                <p>$$\sin^2 x = \frac{1-\cos 2x}{2} \qquad \cos^2 x = \frac{1+\cos 2x}{2}$$</p>
+                <p>$$\sin x\cos x = \frac{\sin 2x}{2} \qquad \sin^2 x + \cos^2 x = 1$$</p>
+                <p>$$\int \sin u\,du = -\cos u + C \qquad \int \cos u\,du = \sin u + C$$</p>
+            </div>
+
+            <div class="pasos-metodo">
+                <h3>🪜 Estrategia según el tipo</h3>
+                <ol>
+                    <li><strong>Potencias impares de sen o cos:</strong> separa un factor, convierte el resto con $\sin^2+\cos^2=1$ y sustituye ($u=\cos x$ o $u=\sin x$).</li>
+                    <li><strong>Potencias pares de ambas:</strong> aplica dos veces las identidades de ángulo doble para bajar potencias.</li>
+                    <li><strong>Productos sen·cos:</strong> usa la identidad del ángulo doble directamente.</li>
+                    <li><strong>sec², csc²:</strong> son derivadas directas: $\int \sec^2 u\,du = \tan u + C$.</li>
+                    <li><strong>sec·tan y csc·cot:</strong> $\int \sec u\tan u\,du = \sec u + C$, $\int \csc u\cot u\,du = -\csc u + C$.</li>
+                </ol>
+            </div>
+
+            <div class="nota">
+                <strong>💡 Truco memorable:</strong> "si sobra un sen o cos, guarda uno para el du y siembra el resto"; "si todos son pares, baja potencias con ángulo doble".
+            </div>
+
+            <div class="nota nota-cian">
+                <strong>⚠️ Potencias mixtas altas:</strong> para $\int \sin^m x \cos^n x\,dx$ con $m,n$ grandes conviene reducir recursivamente; aquí nos enfocamos en los casos clásicos de examen (m,n ≤ 4).
             </div>
         </section>
+
+        <section class="visualizador">
+            <h2>🎮 Visualizador Interactivo</h2>
+            <p>Selecciona una integral trigonométrica, ajusta los límites y observa la solución paso a paso junto con la gráfica del integrando y su antiderivada.</p>
+
+            <div class="controles">
+                <div class="control-group">
+                    <label for="integral">Integral a resolver $\displaystyle\int_a^b (\ldots)\,dx$:</label>
+                    <select id="integral">
+                        <option value="potencia-par">∫ sen²(x) dx &nbsp;(ángulo doble)</option>
+                        <option value="sen-impar">∫ sen³(x) dx &nbsp;(siembra y guarda)</option>
+                        <option value="producto">∫ sen(x)·cos(x) dx &nbsp;(ángulo doble directo)</option>
+                        <option value="sec2">∫ sec²(x) dx &nbsp;(derivada directa)</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="param-k">Parámetro k:</label>
+                    <input type="number" id="param-k" value="1" step="0.1">
+                </div>
+
+                <div class="control-group">
+                    <label for="a">Límite inferior (a):</label>
+                    <input type="number" id="a" value="0" step="0.1">
+                </div>
+
+                <div class="control-group">
+                    <label for="b">Límite superior (b):</label>
+                    <input type="number" id="b" value="3.14159" step="0.1">
+                </div>
+
+                <button id="calcular" class="btn-calcular">🔄 Resolver Integral</button>
+            </div>
+
+            <div id="grafico" class="grafico-container"></div>
+
+            <div class="resultados">
+                <h3>📊 Resultado del Cálculo:</h3>
+                <div id="resultados-content">
+                    <p>Haz clic en "Resolver" para ver el procedimiento paso a paso.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="ejemplos">
+            <h2>📝 Ejemplos Resueltos Paso a Paso</h2>
+
+            <div class="ejemplo">
+                <h3>Ejemplo 1: Potencia impar $\displaystyle \int \sin^3 x \, dx$</h3>
+
+                <div class="paso">
+                    <h4>Paso 1: Separar un factor sen x</h4>
+                    <p>$$\int \sin^3 x\,dx = \int \sin^2 x \cdot \sin x\,dx = \int (1-\cos^2 x)\,\sin x\,dx$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 2: Sustituir $u = \cos x$</h4>
+                    <p>$$du = -\sin x\,dx \quad\Rightarrow\quad -\int (1-u^2)\,du = -u + \frac{u^3}{3} + C$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 3: Regresar a $x$</h4>
+                    <p>$$\int \sin^3 x\,dx = -\cos x + \frac{\cos^3 x}{3} + C$$</p>
+                </div>
+            </div>
+
+            <div class="ejemplo">
+                <h3>Ejemplo 2: Potencia par $\displaystyle \int \sin^2 x \, dx$</h3>
+
+                <div class="paso">
+                    <h4>Paso 1: Identidad de ángulo doble</h4>
+                    <p>$$\int \frac{1-\cos 2x}{2}\,dx = \frac{1}{2}\int 1\,dx - \frac{1}{2}\int \cos 2x\,dx$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 2: Integrar término a término</h4>
+                    <p>$$= \frac{x}{2} - \frac{\sin 2x}{4} + C$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>✔ Caso notable</h4>
+                    <p>$$\int_0^{2\pi} \sin^2 x\,dx = \pi \qquad \text{(el promedio de } \sin^2 \text{ es } 1/2)$$</p>
+                </div>
+            </div>
+        </section>
+
     </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>© 2026 - Universidad Tecnológica de Pereira | Departamento de Matemáticas</p>
+            <p class="slogan">"Aquí construimos futuro" 🚀</p>
+        </div>
+    </footer>
+
+    <script src="modulo10.js"></script>
 </body>
 </html>

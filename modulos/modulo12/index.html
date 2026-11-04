@@ -3,29 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Módulo X - Próximamente</title>
+    <title>Módulo 12 - Fracciones Parciales</title>
     <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="modulo12.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
 </head>
 <body>
     <header class="modulo-header">
         <div class="container">
             <a href="../../index.html" class="back-link">← Volver al inicio</a>
-            <h1>🔒 Módulo X: [Nombre del Módulo]</h1>
+            <h1>🧩 Módulo 12: Integración por Fracciones Parciales</h1>
+            <p>Descomponer funciones racionales complejas en piezas simples integrables</p>
         </div>
     </header>
 
     <main class="container">
-        <section class="placeholder-section">
-            <div class="placeholder-content">
-                <h2>🚧 Próximamente - Fase 2/3</h2>
-                <p>Este módulo está en desarrollo y estará disponible en las siguientes fases del proyecto.</p>
-                <div class="fase-info">
-                    <p><strong>Fase prevista:</strong> [2 o 3]</p>
-                    <p><strong>Contenido:</strong> [Descripción del módulo]</p>
-                </div>
-                <a href="../../index.html" class="btn-volver">Volver al inicio</a>
+
+        <section class="teoria">
+            <h2>📖 Fundamento Teórico</h2>
+            <p>Toda función racional $\frac{P(x)}{Q(x)}$ (con grado de $P$ menor que el de $Q$) puede descomponerse en una suma de fracciones elementales que se integran con logaritmos y arctangentes.</p>
+
+            <div class="formula-box">
+                <h3>Los Cuatro Casos de Descomposición</h3>
+                <p>$$\text{Factor lineal simple: } \frac{A}{ax+b} \;\Rightarrow\; \int = \frac{A}{a}\ln|ax+b|$$</p>
+                <p>$$\text{Factor lineal repetido: } \frac{A_1}{(ax+b)} + \frac{A_2}{(ax+b)^2} + \cdots$$</p>
+                <p>$$\text{Factor cuadrático irred. simple: } \frac{Ax+B}{ax^2+bx+c} \;\Rightarrow\; \ln + \arctan$$</p>
+                <p>$$\text{Factor cuadrático repetido: } \frac{A_1x+B_1}{ax^2+bx+c} + \frac{A_2x+B_2}{(ax^2+bx+c)^2} + \cdots$$</p>
+            </div>
+
+            <div class="pasos-metodo">
+                <h3>🪜 Protocolo</h3>
+                <ol>
+                    <li><strong>Verificar propia:</strong> si grado($P$) ≥ grado($Q$), divide primero polinomialmente.</li>
+                    <li><strong>Factorizar $Q(x)$</strong> en factores lineales y cuadráticos irreducibles.</li>
+                    <li><strong>Escribir la plantilla</strong> con coeficientes desconocidos según los casos.</li>
+                    <li><strong>Determinar coeficientes:</strong> multiplica por $Q$, iguala potencias o sustituye raíces convenientes.</li>
+                    <li><strong>Integrar pieza por pieza</strong> ($\int \frac{dx}{ax+b}$ da logaritmo; completar cuadrado + arctan para lo demás).</li>
+                </ol>
+            </div>
+
+            <div class="nota">
+                <strong>💡 Atajo de la raíz:</strong> multiplica por el denominador común y evalúa en cada raíz: si $Q=(x-1)(x+2)$, entonces $A=\left.\frac{P}{x+2}\right|_{x=1}$. Rápido para factores lineales distintos.
+            </div>
+
+            <div class="nota nota-cian">
+                <strong>⚠️ Trampa común:</strong> olvidar que un numerador sobre cuadrático irreducible es $Ax+B$ (¡dos incógnitas!), no solo $A$.
             </div>
         </section>
+
+        <section class="visualizador">
+            <h2>🎮 Visualizador Interactivo</h2>
+            <p>Selecciona una función racional ya descompuesta, ajusta los límites y observa cómo cada parcial se integra por separado. La gráfica muestra la función original y sus componentes parciales.</p>
+
+            <div class="controles">
+                <div class="control-group">
+                    <label for="integral">Función racional $\displaystyle\int_a^b (\ldots)\,dx$:</label>
+                    <select id="integral">
+                        <option value="lineales">∫ 1/((x−1)(x+2)) dx &nbsp;(3 lineales)</option>
+                        <option value="repetido">∫ 1/((x+1)²(x+3)) dx &nbsp;(lineal repetido)</option>
+                        <option value="cuadratico">∫ 1/(x(x²+4)) dx &nbsp;(lineal + cuadrático)</option>
+                        <option value="impropia">∫ x/(x²+1) dx &nbsp;(numerador = derivada)</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="param-k">Parámetro k:</label>
+                    <input type="number" id="param-k" value="1" step="0.1">
+                </div>
+
+                <div class="control-group">
+                    <label for="a">Límite inferior (a):</label>
+                    <input type="number" id="a" value="2" step="0.1">
+                </div>
+
+                <div class="control-group">
+                    <label for="b">Límite superior (b):</label>
+                    <input type="number" id="b" value="4" step="0.1">
+                </div>
+
+                <button id="calcular" class="btn-calcular">🔄 Resolver Integral</button>
+            </div>
+
+            <div id="grafico" class="grafico-container"></div>
+
+            <div class="resultados">
+                <h3>📊 Resultado del Cálculo:</h3>
+                <div id="resultados-content">
+                    <p>Haz clic en "Resolver" para ver el procedimiento paso a paso.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="ejemplos">
+            <h2>📝 Ejemplos Resueltos Paso a Paso</h2>
+
+            <div class="ejemplo">
+                <h3>Ejemplo 1: Factores lineales distintos $\displaystyle \int \frac{dx}{x^2-x-6}$</h3>
+
+                <div class="paso">
+                    <h4>Paso 1: Factorizar y plantear</h4>
+                    <p>$$x^2-x-6 = (x-3)(x+2) \qquad \frac{1}{(x-3)(x+2)} = \frac{A}{x-3} + \frac{B}{x+2}$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 2: Determinar coeficientes (evaluar en raíces)</h4>
+                    <p>$$1 = A(x+2)+B(x-3) \;\Rightarrow\; x=3: A=\tfrac{1}{5}; \qquad x=-2: B=-\tfrac{1}{5}$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 3: Integrar cada parcial</h4>
+                    <p>$$\int \frac{dx}{x^2-x-6} = \frac{1}{5}\ln|x-3| - \frac{1}{5}\ln|x+2| + C = \frac{1}{5}\ln\left|\frac{x-3}{x+2}\right| + C$$</p>
+                </div>
+            </div>
+
+            <div class="ejemplo">
+                <h3>Ejemplo 2: Con cuadrático irreducible $\displaystyle \int \frac{dx}{x(x^2+4)}$</h3>
+
+                <div class="paso">
+                    <h4>Paso 1: Plantilla correcta</h4>
+                    <p>$$\frac{1}{x(x^2+4)} = \frac{A}{x} + \frac{Bx+C}{x^2+4}$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 2: Resolver el sistema</h4>
+                    <p>$$1 = A(x^2+4) + (Bx+C)x \;\Rightarrow\; A=\tfrac14,\; B=-\tfrac14,\; C=0$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 3: Integrar (logaritmo + logaritmo)</h4>
+                    <p>$$\int \frac{dx}{x(x^2+4)} = \frac{1}{4}\ln|x| - \frac{1}{8}\ln(x^2+4) + C$$</p>
+                </div>
+            </div>
+        </section>
+
     </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>© 2026 - Universidad Tecnológica de Pereira | Departamento de Matemáticas</p>
+            <p class="slogan">"Aquí construimos futuro" 🚀</p>
+        </div>
+    </footer>
+
+    <script src="modulo12.js"></script>
 </body>
 </html>

@@ -3,29 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Módulo X - Próximamente</title>
+    <title>Módulo 8 - Integrales Exponenciales</title>
+    <!-- Estilos globales y específicos del módulo -->
     <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="modulo8.css">
+
+    <!-- KaTeX para fórmulas matemáticas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Plotly.js para gráficas interactivas -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
 </head>
 <body>
+    <!-- ENCABEZADO DEL MÓDULO -->
     <header class="modulo-header">
         <div class="container">
             <a href="../../index.html" class="back-link">← Volver al inicio</a>
-            <h1>🔒 Módulo X: [Nombre del Módulo]</h1>
+            <h1>📈 Módulo 8: Integrales Exponenciales</h1>
+            <p>Integración de funciones exponenciales: eᵏˣ, eᵘ·u′ y sus aplicaciones</p>
         </div>
     </header>
 
     <main class="container">
-        <section class="placeholder-section">
-            <div class="placeholder-content">
-                <h2>🚧 Próximamente - Fase 2/3</h2>
-                <p>Este módulo está en desarrollo y estará disponible en las siguientes fases del proyecto.</p>
-                <div class="fase-info">
-                    <p><strong>Fase prevista:</strong> [2 o 3]</p>
-                    <p><strong>Contenido:</strong> [Descripción del módulo]</p>
-                </div>
-                <a href="../../index.html" class="btn-volver">Volver al inicio</a>
+
+        <!-- SECCIÓN 1: TEORÍA -->
+        <section class="teoria">
+            <h2>📖 Fundamento Teórico</h2>
+            <p>La función exponencial $e^x$ es su propia derivada, lo que la hace especialmente sencilla de integrar. La regla fundamental es:</p>
+
+            <div class="formula-box">
+                <h3>Fórmulas de Integración Exponencial</h3>
+                <p>$$\int e^{kx} \, dx = \frac{1}{k}e^{kx} + C \quad (k \neq 0)$$</p>
+                <p>$$\int e^{u} \cdot \frac{du}{dx} \, dx = e^{u} + C \qquad \text{(cadena inversa)}</p>
+                <p>$$\int a^{x} \, dx = \frac{a^{x}}{\ln a} + C \quad (a>0,\ a\neq 1)$$</p>
+            </div>
+
+            <div class="pasos-metodo">
+                <h3>🪜 Estrategia General</h3>
+                <ol>
+                    <li><strong>Identifica el exponente</strong> $u = g(x)$ de la exponencial.</li>
+                    <li><strong>Busca el factor $g'(x)$:</strong> si aparece (o es proporcional), la integral es directa: $\int e^{g(x)}g'(x)\,dx = e^{g(x)}+C$.</li>
+                    <li><strong>Ajusta constantes:</strong> si falta un factor, multiplica y divide por la constante necesaria.</li>
+                    <li><strong>Cuidado con $e^{x^2}$:</strong> su antiderivada <em>no</em> es elemental; no todo integrando exponencial se puede resolver a mano.</li>
+                </ol>
+            </div>
+
+            <div class="nota">
+                <strong>💡 Analogía útil:</strong> integrar $e^{g(x)}g'(x)$ es como "desandar" la regla de la cadena: la exponencial exterior queda intacta y solo hay que compensar la derivada interior.
+            </div>
+
+            <div class="nota nota-cian">
+                <strong>⚠️ Aplicación — decrecimiento exponencial:</strong> en modelos de enfriamiento, decaimiento radiactivo o crecimiento poblacional aparecen integrales como $\int_0^t k e^{-ks}\,ds = 1 - e^{-kt}$: el visualizador te deja explorar estas áreas definidas.
             </div>
         </section>
+
+        <!-- SECCIÓN 2: VISUALIZADOR INTERACTIVO -->
+        <section class="visualizador">
+            <h2>🎮 Visualizador Interactivo: Familias Exponenciales</h2>
+            <p>Explora cómo cambia el área bajo una curva exponencial al variar los parámetros. Elige una familia, ajusta el parámetro $k$ y los límites de integración. La gráfica muestra el integrando (morado), el área calculada (sombreada) y la antiderivada $F(x)$ (cian punteada).</p>
+
+            <div class="controles">
+                <div class="control-group">
+                    <label for="integral">Integral a resolver $\displaystyle\int_a^b (\ldots)\,dx$:</label>
+                    <select id="integral">
+                        <option value="simple">∫ eᵏˣ dx &nbsp;(k ajustable)</option>
+                        <option value="cadena">∫ 2x·e^(x²) dx &nbsp;(cadena: u = x²)</option>
+                        <option value="decaimiento">∫ k·e⁻ᵏˣ dx &nbsp;(decaimiento, u = −kx)</option>
+                        <option value="base-a">∫ 2ˣ dx &nbsp;(base a = 2)</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="param-k">Parámetro k:</label>
+                    <input type="number" id="param-k" value="1" step="0.1">
+                </div>
+
+                <div class="control-group">
+                    <label for="a">Límite inferior (a):</label>
+                    <input type="number" id="a" value="0" step="0.1">
+                </div>
+
+                <div class="control-group">
+                    <label for="b">Límite superior (b):</label>
+                    <input type="number" id="b" value="2" step="0.1">
+                </div>
+
+                <button id="calcular" class="btn-calcular">🔄 Resolver Integral</button>
+            </div>
+
+            <div id="grafico" class="grafico-container"></div>
+
+            <div class="resultados">
+                <h3>📊 Resultado del Cálculo:</h3>
+                <div id="resultados-content">
+                    <p>Haz clic en "Resolver" para ver el procedimiento paso a paso.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: EJEMPLOS RESUELTOS -->
+        <section class="ejemplos">
+            <h2>📝 Ejemplos Resueltos Paso a Paso</h2>
+
+            <div class="ejemplo">
+                <h3>Ejemplo 1: Exponencial con cadena $\displaystyle \int x\,e^{x^2} \, dx$</h3>
+
+                <div class="paso">
+                    <h4>Paso 1: Identificar la sustitución</h4>
+                    <p>El exponente es $u = x^2$, cuya derivada $2x$ aparece salvo una constante:</p>
+                    <p>$$u = x^2 \quad \Rightarrow \quad du = 2x\,dx \quad \Rightarrow \quad x\,dx = \frac{du}{2}$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 2: Sustituir e integrar</h4>
+                    <p>$$\int e^{u}\,\frac{du}{2} = \frac{1}{2}e^{u} + C$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 3: Regresar a $x$</h4>
+                    <p>$$\int x\,e^{x^2}\,dx = \frac{1}{2}e^{x^2} + C$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>✔ Verificación (derivando)</h4>
+                    <p>$$\frac{d}{dx}\left[\frac{1}{2}e^{x^2}\right] = \frac{1}{2}\cdot 2x\,e^{x^2} = x\,e^{x^2} \quad ✓$$</p>
+                </div>
+            </div>
+
+            <div class="ejemplo">
+                <h3>Ejemplo 2: Integral definida de decaimiento $\displaystyle \int_0^{\infty} 2e^{-2x} \, dx$</h3>
+
+                <div class="paso">
+                    <h4>Paso 1: Antiderivada</h4>
+                    <p>Con $u=-2x$, $du=-2dx$: $$\int 2e^{-2x}\,dx = -e^{-2x} + C$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 2: Evaluar como límite impropio</h4>
+                    <p>$$\int_0^{b} 2e^{-2x}\,dx = \left[-e^{-2x}\right]_0^b = 1 - e^{-2b}$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 3: Tomar el límite</h4>
+                    <p>$$\lim_{b\to\infty}\left(1 - e^{-2b}\right) = 1$$</p>
+                    <p>La curva $2e^{-2x}$ encierra un área total finita igual a $1$ sobre $[0,\infty)$: es la densidad de probabilidad exponencial con tasa $\lambda = 2$.</p>
+                </div>
+            </div>
+        </section>
+
     </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>© 2026 - Universidad Tecnológica de Pereira | Departamento de Matemáticas</p>
+            <p class="slogan">"Aquí construimos futuro" 🚀</p>
+        </div>
+    </footer>
+
+    <script src="modulo8.js"></script>
 </body>
 </html>

@@ -1,7 +1,21 @@
 /* ===== MÓDULO 16: Integrales con Funciones Hiperbólicas Inversas ===== */
 
 .modulo-header {
-    background: linear-gradient(135deg, #4a148c 0%, #7b1fa2 50%, #ea80fc 100%);
+    background: linear-gradient(135deg, #2a1245 0%, #7c4dff 60%, #4527a0 100%);
+    color: #ece6f5;
+    padding: 2rem 0;
+    text-align: center;
+}
+
+.modulo-header h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .modulo-header h1 {
+        font-size: 1.5rem;
+    }
 }
 
 .formula-box {

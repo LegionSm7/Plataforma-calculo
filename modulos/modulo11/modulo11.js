@@ -1,4 +1,4 @@
-// ===== MÓDULO 11: SUSTITUCIÓN TRIGONOMÉTRICA =====
+// ===== MÓDULO 11: INTEGRALES TRIGONOMÉTRICAS INVERSAS =====
 
 document.addEventListener('DOMContentLoaded', function() {
 
@@ -13,54 +13,47 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     const selectIntegral = document.getElementById('integral');
-    const inputAParam = document.getElementById('param-k'); // parámetro a del radicando
+    const inputAParam = document.getElementById('param-k'); // parámetro a
     const inputLimInf = document.getElementById('a');       // límite inferior
     const inputLimSup = document.getElementById('b');       // límite superior
     const btnCalcular = document.getElementById('calcular');
-    const divResultados = document.getElementById('resultados-content');
+    const divResultados = document.getElementById('resultados');
 
-    // a = radio/parámetro. Claves: circulo, inversa, hiperbola
+    // Claves: arctan, arcsin, arcsec
     function construirConfig(clave, a) {
         const a2 = a * a;
         const configs = {
-            circulo: {
-                dominioRaiz: [-a, a],
-                func: x => Math.sqrt(Math.max(a2 - x * x, 0)),
-                F: x => (a2 / 2) * Math.asin(Math.min(1, Math.max(-1, x / a))) + (x * Math.sqrt(Math.max(a2 - x * x, 0))) / 2,
-                texF: `\\frac{${a2}}{2}\\arcsin\\left(\\frac{x}{${a}}\\right) + \\frac{x\\sqrt{${a2}-x^2}}{2}`,
-                resultadoTex: `\\int \\sqrt{${a2}-x^2}\\,dx = \\frac{${a2}}{2}\\arcsin\\left(\\frac{x}{${a}}\\right) + \\frac{x\\sqrt{${a2}-x^2}}{2} + C`,
-                pasos: [
-                    ['Paso 1 — Sustitución x = a·sen θ:', `x = ${a}\\sin\\theta,\\quad dx = ${a}\\cos\\theta\\,d\\theta,\\quad \\sqrt{${a2}-x^2} = ${a}\\cos\\theta`],
-                    ['Paso 2 — Integral trigonométrica:', `\\int ${a}\\cos\\theta \\cdot ${a}\\cos\\theta\\,d\\theta = ${a2}\\int\\cos^2\\theta\\,d\\theta = ${a2}\\left(\\frac{\\theta}{2}+\\frac{\\sin 2\\theta}{4}\\right)+C`],
-                    ['Paso 3 — Regresar con el triángulo (θ = sin⁻¹(x/a)):', `\\frac{${a2}}{2}\\arcsin\\left(\\frac{x}{${a}}\\right) + \\frac{x\\sqrt{${a2}-x^2}}{2} + C`]
-                ]
-            },
-            inversa: {
-                dominioRaiz: [-a, a],
-                func: x => x * x * Math.sqrt(Math.max(a2 - x * x, 0)),
-                F: x => {
-                    const t = Math.asin(Math.min(1, Math.max(-1, x / a)));
-                    return (a2 * a2 / 8) * (2 * t - Math.sin(4 * t) / 2 - Math.sin(2 * t));
-                },
-                texF: `\\frac{${a2 * a2}}{8}\\left(2\\theta - \\frac{\\sin 4\\theta}{2} - \\sin 2\\theta\\right)`,
-                resultadoTex: `\\int x^2\\sqrt{${a2}-x^2}\\,dx = \\frac{${a2 * a2}}{8}\\left(2\\arcsin\\tfrac{x}{${a}} - \\frac{x\\sqrt{${a2}-x^2}\,(2x^2-a^2)}{...}\\right)` ,
-                extraTex: `\\text{Forma final: } \\frac{${a2 * a2}}{4}\\arcsin\\left(\\frac{x}{${a}}\\right) - \\frac{x(2x^2-a^2)\\sqrt{${a2}-x^2}}{8} + C`,
-                pasos: [
-                    ['Paso 1 — Sustitución x = a·sen θ:', `x^2 = ${a2}\\sin^2\\theta,\\quad \\sqrt{${a2}-x^2}=${a}\\cos\\theta,\\quad dx=${a}\\cos\\theta\\,d\\theta`],
-                    ['Paso 2 — Potencias trigonométricas:', `${a2 * a2}\\int \\sin^2\\theta\\cos^2\\theta\\,d\\theta = ${a2 * a2}\\int \\frac{\\sin^2 2\\theta}{4}\\,d\\theta = \\frac{${a2 * a2}}{4}\\int\\frac{1-\\cos 4\\theta}{2}\\,d\\theta`],
-                    ['Paso 3 — Integrar y regresar con el triángulo:', `\\frac{${a2 * a2}}{8}\\left(2\\theta - \\frac{\\sin 4\\theta}{2}\\right)+C = \\frac{${a2 * a2}}{4}\\arcsin\\left(\\frac{x}{${a}}\\right) - \\frac{x(2x^2-${a2})\\sqrt{${a2}-x^2}}{8}+C`]
-                ]
-            },
-            hiperbola: {
+            arctan: {
                 dominioRaiz: null,
-                func: x => Math.sqrt(a2 + x * x),
-                F: x => (x * Math.sqrt(a2 + x * x)) / 2 + (a2 / 2) * Math.log(x + Math.sqrt(a2 + x * x)),
-                texF: `\\frac{x\\sqrt{${a2}+x^2}}{2} + \\frac{${a2}}{2}\\ln\\left|x+\\sqrt{${a2}+x^2}\\right|`,
-                resultadoTex: `\\int \\sqrt{${a2}+x^2}\\,dx = \\frac{x\\sqrt{${a2}+x^2}}{2} + \\frac{${a2}}{2}\\ln\\left|x+\\sqrt{${a2}+x^2}\\right| + C`,
+                func: x => 1 / (a2 + x * x),
+                F: x => (1 / a) * Math.atan(x / a),
+                resultadoTex: `\\int \\frac{dx}{${a2}+x^2} = \\frac{1}{${a}}\\arctan\\left(\\frac{x}{${a}}\\right) + C`,
                 pasos: [
-                    ['Paso 1 — Sustitución x = a·tan θ:', `x = ${a}\\tan\\theta,\\quad dx = ${a}\\sec^2\\theta\\,d\\theta,\\quad \\sqrt{${a2}+x^2} = ${a}\\sec\\theta`],
-                    ['Paso 2 — Integral de sec³:', `${a2}\\int\\sec^3\\theta\\,d\\theta = ${a2}\\left(\\frac{\\sec\\theta\\tan\\theta}{2}+\\frac{\\ln|\\sec\\theta+\\tan\\theta|}{2}\\right)+C`],
-                    ['Paso 3 — Regresar (tan θ = x/a, sec θ = √(a²+x²)/a):', `\\frac{x\\sqrt{${a2}+x^2}}{2} + \\frac{${a2}}{2}\\ln\\left|x+\\sqrt{${a2}+x^2}\\right| + C`]
+                    ['Paso 1 — Identificar la plantilla:', `f(x) = \\frac{1}{a^2+x^2}\\quad \\text{con} \\quad a = ${a}, \\quad a^2 = ${a2}`],
+                    ['Paso 2 — Aplicar la fórmula de arctangente:', `\\int \\frac{dx}{a^2+x^2} = \\frac{1}{a}\\arctan\\left(\\frac{x}{a}\\right)+C`],
+                    ['Paso 3 — Sustituir a = ' + a + ':', `\\int \\frac{dx}{${a2}+x^2} = \\frac{1}{${a}}\\arctan\\left(\\frac{x}{${a}}\\right)+C`]
+                ]
+            },
+            arcsin: {
+                dominioRaiz: [-a, a],
+                func: x => 1 / Math.sqrt(Math.max(a2 - x * x, 1e-12)),
+                F: x => Math.asin(Math.min(1, Math.max(-1, x / a))),
+                resultadoTex: `\\int \\frac{dx}{\\sqrt{${a2}-x^2}} = \\arcsin\\left(\\frac{x}{${a}}\\right) + C`,
+                pasos: [
+                    ['Paso 1 — Identificar la plantilla:', `f(x) = \\frac{1}{\\sqrt{a^2-x^2}}\\quad \\text{con} \\quad a = ${a}`],
+                    ['Paso 2 — Aplicar la fórmula del arcseno:', `\\int \\frac{dx}{\\sqrt{a^2-x^2}} = \\arcsin\\left(\\frac{x}{a}\\right)+C`],
+                    ['Paso 3 — Sustituir a = ' + a + ':', `\\int \\frac{dx}{\\sqrt{${a2}-x^2}} = \\arcsin\\left(\\frac{x}{${a}}\\right)+C`]
+                ]
+            },
+            arcsec: {
+                dominioRaiz: [a, Infinity],
+                func: x => 1 / (Math.abs(x) * Math.sqrt(Math.max(x * x - a2, 1e-12))),
+                F: x => (1 / a) * Math.acos(Math.min(1, Math.max(-1, a / Math.abs(x)))), // = (1/a)·arcsec(|x|/a)
+                resultadoTex: `\\int \\frac{dx}{x\\sqrt{x^2-${a2}}} = \\frac{1}{${a}}\\,\\arcsec\\left(\\frac{|x|}{${a}}\\right) + C`,
+                pasos: [
+                    ['Paso 1 — Identificar la plantilla:', `f(x) = \\frac{1}{x\\sqrt{x^2-a^2}}\\quad \\text{con} \\quad a = ${a}`],
+                    ['Paso 2 — Aplicar la fórmula de la arcosecante:', `\\int \\frac{dx}{x\\sqrt{x^2-a^2}} = \\frac{1}{a}\\,\\arcsec\\left(\\frac{|x|}{a}\\right)+C`],
+                    ['Paso 3 — Sustituir a = ' + a + ':', `\\int \\frac{dx}{x\\sqrt{x^2-${a2}}} = \\frac{1}{${a}}\\,\\arcsec\\left(\\frac{|x|}{${a}}\\right)+C`]
                 ]
             }
         };
@@ -87,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function crearPaso(titulo, nodos) {
         const paso = document.createElement('div');
-        paso.className = 'paso-resuelto';
+        paso.className = 'paso';
         const h = document.createElement('h4');
         h.textContent = titulo;
         paso.appendChild(h);
@@ -106,33 +99,26 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         const trazaArea = {
-            x: xs, y: ys, mode: 'lines', name: 'Área bajo f(x)',
+            x: xs, y: ys, mode: 'lines', name: 'f(x) — integrando',
             line: { color: '#ea80fc', width: 3 }, fill: 'tozeroy',
             fillcolor: 'rgba(234,128,252,0.30)'
         };
-        const trazas = [trazaArea];
 
-        // Ayuda geométrica: círculo completo si aplica
-        if (clave !== 'hiperbola') {
-            const th = [], cx = [], cy = [];
-            for (let i = 0; i <= 200; i++) {
-                const t = 2 * Math.PI * i / 200;
-                th.push(t);
-                cx.push(radio * Math.cos(t));
-                cy.push(radio * Math.sin(t));
-            }
-            trazas.push({
-                x: cx, y: cy, mode: 'lines', name: `Círculo x²+y²=${radio * radio}`,
-                line: { color: '#ffd54f', width: 1.5, dash: 'dash' }
-            });
-        }
+        // Antiderivada F(x) (verde punteada), centrada en el límite inferior
+        const Fs = xs.map(x => cfg.F(x) - cfg.F(a));
+        const trazaF = {
+            x: xs, y: Fs, mode: 'lines', name: 'F(x) — antiderivada',
+            line: { color: '#69f0ae', width: 2.5, dash: 'dot' }
+        };
+
+        const trazas = [trazaArea, trazaF];
 
         const layout = {
             paper_bgcolor: 'rgba(0,0,0,0)',
             plot_bgcolor: '#1e1133',
             font: { color: '#ece6f5', family: "'Segoe UI', sans-serif" },
-            title: { text: 'El integrando con raíz... ¡es geometría circular!', font: { color: '#b388ff' } },
-            xaxis: { title: 'x', gridcolor: '#3d2a66', zerolinecolor: '#4a3570', linecolor: '#3d2a66', scaleanchor: 'y' },
+            title: { text: 'Integrando… ¡está naciendo una función trigonométrica inversa!', font: { color: '#b388ff' } },
+            xaxis: { title: 'x', gridcolor: '#3d2a66', zerolinecolor: '#4a3570', linecolor: '#3d2a66' },
             yaxis: { title: 'y', gridcolor: '#3d2a66', zerolinecolor: '#4a3570', linecolor: '#3d2a66' },
             showlegend: true,
             legend: { x: 0.02, y: 0.98, bgcolor: 'rgba(30,17,51,0.8)', font: { size: 11 } },
@@ -161,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const pEval = parrafoConFormula('Evaluando con el TFC: ',
             `\\left[ F(x) \\right]_{${a}}^{${b}} = ${valorExacto.toFixed(6)}`, '');
         const pVer = document.createElement('p');
-        pVer.className = 'verificacion';
+        pVer.className = 'nota nota-cian';
         pVer.appendChild(document.createTextNode('✔ Verificación numérica (Simpson, n=' + nS + '): '));
         const spanVer = document.createElement('span');
         renderizarFormula(spanVer, `\\approx ${suma.toFixed(6)}`, false);
@@ -169,23 +155,15 @@ document.addEventListener('DOMContentLoaded', function() {
         divResultados.appendChild(crearPaso('Valor de la integral definida:', [pEval, pVer]));
 
         const finalBox = document.createElement('div');
-        finalBox.className = 'resultado-final';
-        const hFinal = document.createElement('h4');
-        hFinal.textContent = '🏁 Resultado general:';
-        finalBox.appendChild(hFinal);
+        finalBox.className = 'formula-box';
         const spanFinal = document.createElement('span');
-        renderizarFormula(spanFinal, cfg.resultadoTex.replace('...', '\\sqrt{}'), true);
+        renderizarFormula(spanFinal, cfg.resultadoTex, true);
         finalBox.appendChild(spanFinal);
-        if (cfg.extraTex) {
-            const spanExtra = document.createElement('span');
-            renderizarFormula(spanExtra, cfg.extraTex, true);
-            finalBox.appendChild(spanExtra);
-        }
         divResultados.appendChild(finalBox);
 
         const nota = document.createElement('p');
-        nota.className = 'nota-educativa';
-        nota.textContent = '💡 Siempre que veas √(a²−x²), √(a²+x²) o √(x²−a²), piensa en sen, tan y sec respectivamente: las identidades pitagóricas disuelven la raíz.';
+        nota.className = 'nota';
+        nota.textContent = '💡 Señales para reconocer estas integrales: denominador con suma de cuadrados → arctan; raíz de diferencia sin factor extra → arcsen; raíz de diferencia con x afuera → arcsec. Y no olvides el factor 1/a.';
         divResultados.appendChild(nota);
     }
 
@@ -210,10 +188,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const cfg = construirConfig(clave, radio);
 
+        // Validaciones de dominio según la plantilla
+        const lo = Math.min(limInf, limSup), hi = Math.max(limInf, limSup);
         if (cfg.dominioRaiz) {
-            const lo = Math.min(limInf, limSup), hi = Math.max(limInf, limSup);
-            if (lo < -radio || hi > radio) {
+            if (clave === 'arcsin' && (lo < -radio || hi > radio)) {
                 alert(`Para √(${radio * radio}−x²) el intervalo debe estar dentro de [−${radio}, ${radio}]. Ajusta los límites o aumenta a.`);
+                return;
+            }
+            if (clave === 'arcsec' && lo < radio && hi > -radio) {
+                alert(`La plantilla arcsec exige |x| ≥ a = ${radio}: usa un intervalo completamente fuera de (−${radio}, ${radio}), por ejemplo [${radio}, ${radio + 2}].`);
                 return;
             }
         }

@@ -42,9 +42,9 @@ plataforma-calculo-fase1/
     ├── modulo8/                  # ✅ Integrales Exponenciales (Fase 2)
     ├── modulo9/                  # ✅ Integrales Logarítmicas (Fase 2)
     ├── modulo10/                 # ✅ Integrales Trigonométricas (Fase 2)
-    ├── modulo11/                 # ✅ Sustitución Trigonométrica (Fase 3)
-    ├── modulo12/                 # ✅ Fracciones Parciales (Fase 3)
-    ├── modulo13/                 # ✅ Tabla de Integrales (Fase 3)
+    ├── modulo11/                 # ✅ Integrales Trigonométricas Inversas (Fase 3)
+    ├── modulo12/                 # ✅ Sustitución Trigonométrica (Fase 3)
+    ├── modulo13/                 # ✅ Fracciones Parciales (Fase 3)
     └── modulo14/                 # ✅ Integración por Partes (Fase 3)
 ```
 

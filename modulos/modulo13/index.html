@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Módulo 13 - Tabla de Integrales</title>
+    <title>Módulo 13 - Fracciones Parciales</title>
     <link rel="stylesheet" href="../../css/styles.css">
     <link rel="stylesheet" href="modulo13.css">
 
@@ -17,111 +17,126 @@
     <header class="modulo-header">
         <div class="container">
             <a href="../../index.html" class="back-link">← Volver al inicio</a>
-            <h1>📚 Módulo 13: Tabla de Integrales</h1>
-            <p>Tu biblioteca de referencia: consulta, verifica y visualiza las fórmulas esenciales</p>
+            <h1>🧩 Módulo 13: Integración por Fracciones Parciales</h1>
+            <p>Descomponer funciones racionales complejas en piezas simples integrables</p>
         </div>
     </header>
 
     <main class="container">
 
         <section class="teoria">
-            <h2>📖 Cómo Usar Esta Tabla</h2>
-            <p>La tabla de integrales es para la integración lo que la tabla de derivadas es para la diferenciación: un repertorio de patrones reconocibles. En los exámenes suele permitirse una tabla — pero <strong>saber usarla exige saber reconocer formas</strong>.</p>
+            <h2>📖 Fundamento Teórico</h2>
+            <p>Toda función racional $\frac{P(x)}{Q(x)}$ (con grado de $P$ menor que el de $Q$) puede descomponerse en una suma de fracciones elementales que se integran con logaritmos y arctangentes.</p>
+
+            <div class="formula-box">
+                <h3>Los Cuatro Casos de Descomposición</h3>
+                <p>$$\text{Factor lineal simple: } \frac{A}{ax+b} \;\Rightarrow\; \int = \frac{A}{a}\ln|ax+b|$$</p>
+                <p>$$\text{Factor lineal repetido: } \frac{A_1}{(ax+b)} + \frac{A_2}{(ax+b)^2} + \cdots$$</p>
+                <p>$$\text{Factor cuadrático irred. simple: } \frac{Ax+B}{ax^2+bx+c} \;\Rightarrow\; \ln + \arctan$$</p>
+                <p>$$\text{Factor cuadrático repetido: } \frac{A_1x+B_1}{ax^2+bx+c} + \frac{A_2x+B_2}{(ax^2+bx+c)^2} + \cdots$$</p>
+            </div>
 
             <div class="pasos-metodo">
-                <h3>🪜 Estrategia de Consulta</h3>
+                <h3>🪜 Protocolo</h3>
                 <ol>
-                    <li><strong>Identifica la estructura</strong> del integrando: ¿polinomio, racional, exponencial, trigonométrico, con raíz?</li>
-                    <li><strong>Normaliza:</strong> lleva la expresión a la forma de la tabla mediante álgebra (factoriza constantes, completa cuadrados).</li>
-                    <li><strong>Busca por familia</strong> usando el filtro; usa el buscador si recuerdas parte de la fórmula.</li>
-                    <li><strong>Verifica siempre:</strong> deriva tu resultado; debe devolver el integrando original.</li>
+                    <li><strong>Verificar propia:</strong> si grado($P$) ≥ grado($Q$), divide primero polinomialmente.</li>
+                    <li><strong>Factorizar $Q(x)$</strong> en factores lineales y cuadráticos irreducibles.</li>
+                    <li><strong>Escribir la plantilla</strong> con coeficientes desconocidos según los casos.</li>
+                    <li><strong>Determinar coeficientes:</strong> multiplica por $Q$, iguala potencias o sustituye raíces convenientes.</li>
+                    <li><strong>Integrar pieza por pieza</strong> ($\int \frac{dx}{ax+b}$ da logaritmo; completar cuadrado + arctan para lo demás).</li>
                 </ol>
             </div>
 
             <div class="nota">
-                <strong>💡 Consejo:</strong> haz clic en cualquier fila de la tabla para graficar la integral y comprobar numéricamente la fórmula con límites que tú elijas.
+                <strong>💡 Atajo de la raíz:</strong> multiplica por el denominador común y evalúa en cada raíz: si $Q=(x-1)(x+2)$, entonces $A=\left.\frac{P}{x+2}\right|_{x=1}$. Rápido para factores lineales distintos.
+            </div>
+
+            <div class="nota nota-cian">
+                <strong>⚠️ Trampa común:</strong> olvidar que un numerador sobre cuadrático irreducible es $Ax+B$ (¡dos incógnitas!), no solo $A$.
             </div>
         </section>
 
-        <!-- BUSCADOR Y FILTROS -->
         <section class="visualizador">
-            <h2>🔍 Explorador de la Tabla</h2>
+            <h2>🎮 Visualizador Interactivo</h2>
+            <p>Selecciona una función racional ya descompuesta, ajusta los límites y observa cómo cada parcial se integra por separado. La gráfica muestra la función original y sus componentes parciales.</p>
 
             <div class="controles">
                 <div class="control-group">
-                    <label for="buscador">Buscar fórmula:</label>
-                    <input type="text" id="buscador" placeholder="ej: ln, sen, x²...">
+                    <label for="integral">Función racional $\displaystyle\int_a^b (\ldots)\,dx$:</label>
+                    <select id="integral">
+                        <option value="lineales">∫ 1/((x−1)(x+2)) dx &nbsp;(3 lineales)</option>
+                        <option value="repetido">∫ 1/((x+1)²(x+3)) dx &nbsp;(lineal repetido)</option>
+                        <option value="cuadratico">∫ 1/(x(x²+4)) dx &nbsp;(lineal + cuadrático)</option>
+                        <option value="impropia">∫ x/(x²+1) dx &nbsp;(numerador = derivada)</option>
+                    </select>
                 </div>
 
                 <div class="control-group">
-                    <label for="filtro-categoria">Categoría:</label>
-                    <select id="filtro-categoria">
-                        <option value="todas">Todas</option>
-                        <option value="basicas">Básicas</option>
-                        <option value="racionales">Racionales</option>
-                        <option value="trigonometricas">Trigonométricas</option>
-                        <option value="exponenciales">Exponenciales y Log</option>
-                        <option value="raices">Con raíces</option>
-                    </select>
+                    <label for="param-k">Parámetro k:</label>
+                    <input type="number" id="param-k" value="1" step="0.1">
                 </div>
+
+                <div class="control-group">
+                    <label for="a">Límite inferior (a):</label>
+                    <input type="number" id="a" value="2" step="0.1">
+                </div>
+
+                <div class="control-group">
+                    <label for="b">Límite superior (b):</label>
+                    <input type="number" id="b" value="4" step="0.1">
+                </div>
+
+                <button id="calcular" class="btn-calcular">🔄 Resolver Integral</button>
             </div>
 
-            <div class="tabla-wrapper">
-                <table class="tabla-integrales" id="tabla-integrales">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Integral</th>
-                            <th>Resultado</th>
-                            <th>Condición</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabla-body"></tbody>
-                </table>
-            </div>
+            <div id="grafico" class="grafico-container"></div>
 
-            <div id="panel-verificador" class="panel-verificador" style="display:none;">
-                <h3 id="verificador-titulo">✅ Verificador Visual</h3>
-                <div class="controles">
-                    <div class="control-group">
-                        <label for="v-a">Límite inferior:</label>
-                        <input type="number" id="v-a" value="1" step="0.1">
-                    </div>
-                    <div class="control-group">
-                        <label for="v-b">Límite superior:</label>
-                        <input type="number" id="v-b" value="2" step="0.1">
-                    </div>
-                    <button id="v-calcular" class="btn-calcular">🔄 Verificar Fórmula</button>
-                    <button id="v-cerrar" class="btn-calcular btn-cerrar">✖ Cerrar</button>
-                </div>
-                <div id="v-grafico" class="grafico-container"></div>
-                <div id="v-resultado" class="resultados" style="display:none;">
-                    <h3>Comprobación:</h3>
-                    <div id="v-resultado-content"></div>
+            <div class="resultados">
+                <h3>📊 Resultado del Cálculo:</h3>
+                <div id="resultados-content">
+                    <p>Haz clic en "Resolver" para ver el procedimiento paso a paso.</p>
                 </div>
             </div>
         </section>
 
         <section class="ejemplos">
-            <h2>📝 Ejemplo de Uso de la Tabla</h2>
+            <h2>📝 Ejemplos Resueltos Paso a Paso</h2>
 
             <div class="ejemplo">
-                <h3>Calcular $\displaystyle \int \frac{dx}{4-x^2}$</h3>
+                <h3>Ejemplo 1: Factores lineales distintos $\displaystyle \int \frac{dx}{x^2-x-6}$</h3>
 
                 <div class="paso">
-                    <h4>Paso 1: Reconocer la forma tabular</h4>
-                    <p>Es $\int \frac{du}{a^2-u^2}$ con $u=x$ y $a=2$ (fila "Racionales").</p>
+                    <h4>Paso 1: Factorizar y plantear</h4>
+                    <p>$$x^2-x-6 = (x-3)(x+2) \qquad \frac{1}{(x-3)(x+2)} = \frac{A}{x-3} + \frac{B}{x+2}$$</p>
                 </div>
 
                 <div class="paso">
-                    <h4>Paso 2: Aplicar la fórmula</h4>
-                    <p>$$\int \frac{du}{a^2-u^2} = \frac{1}{2a}\ln\left|\frac{a+u}{a-u}\right| + C \;\Rightarrow\; \frac{1}{4}\ln\left|\frac{2+x}{2-x}\right| + C$$</p>
+                    <h4>Paso 2: Determinar coeficientes (evaluar en raíces)</h4>
+                    <p>$$1 = A(x+2)+B(x-3) \;\Rightarrow\; x=3: A=\tfrac{1}{5}; \qquad x=-2: B=-\tfrac{1}{5}$$</p>
                 </div>
 
                 <div class="paso">
-                    <h4>✔ Paso 3: Verificar derivando</h4>
-                    <p>$$\frac{d}{dx}\left[\frac{1}{4}(\ln|2+x|-\ln|2-x|)\right] = \frac{1}{4}\left(\frac{1}{2+x}+\frac{1}{2-x}\right) = \frac{1}{4-x^2} \quad ✓$$</p>
+                    <h4>Paso 3: Integrar cada parcial</h4>
+                    <p>$$\int \frac{dx}{x^2-x-6} = \frac{1}{5}\ln|x-3| - \frac{1}{5}\ln|x+2| + C = \frac{1}{5}\ln\left|\frac{x-3}{x+2}\right| + C$$</p>
+                </div>
+            </div>
+
+            <div class="ejemplo">
+                <h3>Ejemplo 2: Con cuadrático irreducible $\displaystyle \int \frac{dx}{x(x^2+4)}$</h3>
+
+                <div class="paso">
+                    <h4>Paso 1: Plantilla correcta</h4>
+                    <p>$$\frac{1}{x(x^2+4)} = \frac{A}{x} + \frac{Bx+C}{x^2+4}$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 2: Resolver el sistema</h4>
+                    <p>$$1 = A(x^2+4) + (Bx+C)x \;\Rightarrow\; A=\tfrac14,\; B=-\tfrac14,\; C=0$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 3: Integrar (logaritmo + logaritmo)</h4>
+                    <p>$$\int \frac{dx}{x(x^2+4)} = \frac{1}{4}\ln|x| - \frac{1}{8}\ln(x^2+4) + C$$</p>
                 </div>
             </div>
         </section>

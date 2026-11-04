@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Módulo 12 - Fracciones Parciales</title>
+    <title>Módulo 12 - Sustitución Trigonométrica</title>
     <link rel="stylesheet" href="../../css/styles.css">
     <link rel="stylesheet" href="modulo12.css">
 
@@ -17,8 +17,8 @@
     <header class="modulo-header">
         <div class="container">
             <a href="../../index.html" class="back-link">← Volver al inicio</a>
-            <h1>🧩 Módulo 12: Integración por Fracciones Parciales</h1>
-            <p>Descomponer funciones racionales complejas en piezas simples integrables</p>
+            <h1>⛰️ Módulo 12: Sustitución Trigonométrica</h1>
+            <p>Raíces de la forma √(a²−x²), √(a²+x²) y √(x²−a²): el triángulo rectángulo como herramienta</p>
         </div>
     </header>
 
@@ -26,64 +26,62 @@
 
         <section class="teoria">
             <h2>📖 Fundamento Teórico</h2>
-            <p>Toda función racional $\frac{P(x)}{Q(x)}$ (con grado de $P$ menor que el de $Q$) puede descomponerse en una suma de fracciones elementales que se integran con logaritmos y arctangentes.</p>
+            <p>Cuando el integrando contiene raíces cuadradas de trinomios cuadráticos, una sustitución trigonométrica basada en las identidades pitagóricas <em>elimina la raíz</em>:</p>
 
             <div class="formula-box">
-                <h3>Los Cuatro Casos de Descomposición</h3>
-                <p>$$\text{Factor lineal simple: } \frac{A}{ax+b} \;\Rightarrow\; \int = \frac{A}{a}\ln|ax+b|$$</p>
-                <p>$$\text{Factor lineal repetido: } \frac{A_1}{(ax+b)} + \frac{A_2}{(ax+b)^2} + \cdots$$</p>
-                <p>$$\text{Factor cuadrático irred. simple: } \frac{Ax+B}{ax^2+bx+c} \;\Rightarrow\; \ln + \arctan$$</p>
-                <p>$$\text{Factor cuadrático repetido: } \frac{A_1x+B_1}{ax^2+bx+c} + \frac{A_2x+B_2}{(ax^2+bx+c)^2} + \cdots$$</p>
+                <h3>Las Tres Sustituciones Clásicas</h3>
+                <p>$$\sqrt{a^2-x^2} \;\Rightarrow\; x = a\sin\theta,\quad dx = a\cos\theta\,d\theta \qquad (\sqrt{a^2-a^2\sin^2\theta}=a\cos\theta)$$</p>
+                <p>$$\sqrt{a^2+x^2} \;\Rightarrow\; x = a\tan\theta,\quad dx = a\sec^2\theta\,d\theta \qquad (\sqrt{a^2+a^2\tan^2\theta}=a\sec\theta)$$</p>
+                <p>$$\sqrt{x^2-a^2} \;\Rightarrow\; x = a\sec\theta,\quad dx = a\sec\theta\tan\theta\,d\theta \qquad (\sqrt{a^2\sec^2\theta-a^2}=a\tan\theta)$$</p>
             </div>
 
             <div class="pasos-metodo">
-                <h3>🪜 Protocolo</h3>
+                <h3>🪜 Protocolo de Solución</h3>
                 <ol>
-                    <li><strong>Verificar propia:</strong> si grado($P$) ≥ grado($Q$), divide primero polinomialmente.</li>
-                    <li><strong>Factorizar $Q(x)$</strong> en factores lineales y cuadráticos irreducibles.</li>
-                    <li><strong>Escribir la plantilla</strong> con coeficientes desconocidos según los casos.</li>
-                    <li><strong>Determinar coeficientes:</strong> multiplica por $Q$, iguala potencias o sustituye raíces convenientes.</li>
-                    <li><strong>Integrar pieza por pieza</strong> ($\int \frac{dx}{ax+b}$ da logaritmo; completar cuadrado + arctan para lo demás).</li>
+                    <li><strong>Reconoce la forma</strong> del radicando e identifica $a$.</li>
+                    <li><strong>Sustituye</strong> $x$ y $dx$ por su expresión trigonométrica; la raíz se simplifica usando la identidad pitagórica.</li>
+                    <li><strong>Integra</strong> la expresión trigonométrica resultante (Módulo 10).</li>
+                    <li><strong>Regresa a $x$</strong> con un triángulo rectángulo auxiliar: lee sen, tan o sec del ángulo y deduce las demás funciones.</li>
                 </ol>
             </div>
 
             <div class="nota">
-                <strong>💡 Atajo de la raíz:</strong> multiplica por el denominador común y evalúa en cada raíz: si $Q=(x-1)(x+2)$, entonces $A=\left.\frac{P}{x+2}\right|_{x=1}$. Rápido para factores lineales distintos.
+                <strong>💡 El triángulo auxiliar:</strong> si $x=a\sin\theta$, dibuja un triángulo con cateto opuesto $x$, hipotenusa $a$ y cateto adyacente $\sqrt{a^2-x^2}$; entonces $\cos\theta=\frac{\sqrt{a^2-x^2}}{a}$ sin despejar ángulos.
             </div>
 
             <div class="nota nota-cian">
-                <strong>⚠️ Trampa común:</strong> olvidar que un numerador sobre cuadrático irreducible es $Ax+B$ (¡dos incógnitas!), no solo $A$.
+                <strong>⚠️ Geometría oculta:</strong> $\int_0^{a}\sqrt{a^2-x^2}\,dx$ es el área de un cuarto de círculo de radio $a$, que debe dar $\pi a^2/4$. ¡Verifícalo en el visualizador!
             </div>
         </section>
 
         <section class="visualizador">
             <h2>🎮 Visualizador Interactivo</h2>
-            <p>Selecciona una función racional ya descompuesta, ajusta los límites y observa cómo cada parcial se integra por separado. La gráfica muestra la función original y sus componentes parciales.</p>
+            <p>Ajusta el parámetro $a$ (radio) y los límites $[0,b]$ con $b \le a$. La gráfica compara el integrando con la semicircunferencia $y=\sqrt{a^2-x^2}$ y muestra el procedimiento con $x=a\sin\theta$.</p>
 
             <div class="controles">
                 <div class="control-group">
-                    <label for="integral">Función racional $\displaystyle\int_a^b (\ldots)\,dx$:</label>
+                    <label for="integral">Forma del radicando:</label>
                     <select id="integral">
-                        <option value="lineales">∫ 1/((x−1)(x+2)) dx &nbsp;(3 lineales)</option>
-                        <option value="repetido">∫ 1/((x+1)²(x+3)) dx &nbsp;(lineal repetido)</option>
-                        <option value="cuadratico">∫ 1/(x(x²+4)) dx &nbsp;(lineal + cuadrático)</option>
-                        <option value="impropia">∫ x/(x²+1) dx &nbsp;(numerador = derivada)</option>
+                        <option value="circulo">√(a² − x²) → x = a·sen(θ)</option>
+                        <option value="inversa">x²·√(a² − x²) → x = a·sen(θ)</option>
+                        <option value="hiperbola">√(a² + x²) → x = a·tan(θ)</option>
+                        <option value="secante">√(x² − a²) → x = a·sec(θ)</option>
                     </select>
                 </div>
 
                 <div class="control-group">
-                    <label for="param-k">Parámetro k:</label>
-                    <input type="number" id="param-k" value="1" step="0.1">
+                    <label for="param-k">Parámetro a:</label>
+                    <input type="number" id="param-k" value="3" step="0.5" min="0.5">
                 </div>
 
                 <div class="control-group">
                     <label for="a">Límite inferior (a):</label>
-                    <input type="number" id="a" value="2" step="0.1">
+                    <input type="number" id="a" value="0" step="0.1">
                 </div>
 
                 <div class="control-group">
                     <label for="b">Límite superior (b):</label>
-                    <input type="number" id="b" value="4" step="0.1">
+                    <input type="number" id="b" value="3" step="0.1">
                 </div>
 
                 <button id="calcular" class="btn-calcular">🔄 Resolver Integral</button>
@@ -103,40 +101,45 @@
             <h2>📝 Ejemplos Resueltos Paso a Paso</h2>
 
             <div class="ejemplo">
-                <h3>Ejemplo 1: Factores lineales distintos $\displaystyle \int \frac{dx}{x^2-x-6}$</h3>
+                <h3>Ejemplo 1: $\displaystyle \int \sqrt{9-x^2} \, dx$</h3>
 
                 <div class="paso">
-                    <h4>Paso 1: Factorizar y plantear</h4>
-                    <p>$$x^2-x-6 = (x-3)(x+2) \qquad \frac{1}{(x-3)(x+2)} = \frac{A}{x-3} + \frac{B}{x+2}$$</p>
+                    <h4>Paso 1: Sustitución con $a=3$</h4>
+                    <p>$$x = 3\sin\theta,\quad dx = 3\cos\theta\,d\theta,\quad \sqrt{9-x^2} = 3\cos\theta$$</p>
                 </div>
 
                 <div class="paso">
-                    <h4>Paso 2: Determinar coeficientes (evaluar en raíces)</h4>
-                    <p>$$1 = A(x+2)+B(x-3) \;\Rightarrow\; x=3: A=\tfrac{1}{5}; \qquad x=-2: B=-\tfrac{1}{5}$$</p>
+                    <h4>Paso 2: Integral trigonométrica</h4>
+                    <p>$$\int 3\cos\theta \cdot 3\cos\theta\,d\theta = 9\int\cos^2\theta\,d\theta = 9\left(\frac{\theta}{2} + \frac{\sin 2\theta}{4}\right) + C$$</p>
                 </div>
 
                 <div class="paso">
-                    <h4>Paso 3: Integrar cada parcial</h4>
-                    <p>$$\int \frac{dx}{x^2-x-6} = \frac{1}{5}\ln|x-3| - \frac{1}{5}\ln|x+2| + C = \frac{1}{5}\ln\left|\frac{x-3}{x+2}\right| + C$$</p>
+                    <h4>Paso 3: Regresar con el triángulo ($\theta=\arcsin(x/3)$, $\sin\theta = x/3$)</h4>
+                    <p>$$\int \sqrt{9-x^2}\,dx = \frac{9}{2}\arcsin\!\left(\frac{x}{3}\right) + \frac{x\sqrt{9-x^2}}{2} + C$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>✔ Verificación geométrica</h4>
+                    <p>$$\int_0^3 \sqrt{9-x^2}\,dx = \frac{9\pi}{4} \approx 7.0686 \qquad \text{(¡cuarto de círculo de radio 3!)}$$</p>
                 </div>
             </div>
 
             <div class="ejemplo">
-                <h3>Ejemplo 2: Con cuadrático irreducible $\displaystyle \int \frac{dx}{x(x^2+4)}$</h3>
+                <h3>Ejemplo 2: $\displaystyle \int \frac{dx}{\sqrt{4+x^2}}$</h3>
 
                 <div class="paso">
-                    <h4>Paso 1: Plantilla correcta</h4>
-                    <p>$$\frac{1}{x(x^2+4)} = \frac{A}{x} + \frac{Bx+C}{x^2+4}$$</p>
+                    <h4>Paso 1: Forma $a^2+x^2$ con $a=2$: tangente</h4>
+                    <p>$$x = 2\tan\theta,\quad dx = 2\sec^2\theta\,d\theta,\quad \sqrt{4+x^2} = 2\sec\theta$$</p>
                 </div>
 
                 <div class="paso">
-                    <h4>Paso 2: Resolver el sistema</h4>
-                    <p>$$1 = A(x^2+4) + (Bx+C)x \;\Rightarrow\; A=\tfrac14,\; B=-\tfrac14,\; C=0$$</p>
+                    <h4>Paso 2: Simplificar e integrar</h4>
+                    <p>$$\int \frac{2\sec^2\theta}{2\sec\theta}\,d\theta = \int \sec\theta\,d\theta = \ln|\sec\theta + \tan\theta| + C$$</p>
                 </div>
 
                 <div class="paso">
-                    <h4>Paso 3: Integrar (logaritmo + logaritmo)</h4>
-                    <p>$$\int \frac{dx}{x(x^2+4)} = \frac{1}{4}\ln|x| - \frac{1}{8}\ln(x^2+4) + C$$</p>
+                    <h4>Paso 3: Triángulo auxiliar ($\tan\theta = x/2$, $\sec\theta = \frac{\sqrt{4+x^2}}{2}$)</h4>
+                    <p>$$\int \frac{dx}{\sqrt{4+x^2}} = \ln\left|x + \sqrt{4+x^2}\right| + C$$</p>
                 </div>
             </div>
         </section>

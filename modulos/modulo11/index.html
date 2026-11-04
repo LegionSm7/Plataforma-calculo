@@ -65,30 +65,34 @@
 
             <div class="controles">
                 <div class="control-grupo">
-                    <label for="selForma">Plantilla de integral:</label>
-                    <select id="selForma">
-                        <option value="arcsin">∫ du/√(a²−u²) → arcsin</option>
-                        <option value="arctan" selected>∫ du/(a²+u²) → arctan</option>
-                        <option value="arcsec">∫ du/(u√(u²−a²)) → arcsec</option>
+                    <label for="integral">Plantilla de integral:</label>
+                    <select id="integral">
+                        <option value="arctan" selected>∫ dx/(a²+x²) → arctan</option>
+                        <option value="arcsin">∫ dx/√(a²−x²) → arcsin</option>
+                        <option value="arcsec">∫ dx/(x√(x²−a²)) → arcsec</option>
                     </select>
                 </div>
-                <div class="control-grupo slider-grupo">
-                    <label for="valA">Valor de a: <span id="lblA">2</span></label>
-                    <input type="range" id="valA" min="0.5" max="4" step="0.5" value="2">
+                <div class="control-grupo">
+                    <label for="param-k">Parámetro a:</label>
+                    <input type="number" id="param-k" min="0.5" max="10" step="0.5" value="2">
                 </div>
-                <div class="control-grupo slider-grupo">
-                    <label for="valN">Subintervalos n: <span id="lblN">20</span></label>
-                    <input type="range" id="valN" min="4" max="100" step="2" value="20">
+                <div class="control-grupo">
+                    <label for="a">Límite inferior:</label>
+                    <input type="number" id="a" step="0.5" value="0">
+                </div>
+                <div class="control-grupo">
+                    <label for="b">Límite superior:</label>
+                    <input type="number" id="b" step="0.5" value="3">
                 </div>
             </div>
 
-            <div id="graficaTrigInv" class="grafica-container"></div>
+            <div id="grafico" class="grafica-container"></div>
 
-            <div id="resultadoTrigInv" class="resultado-box">
-                <p>Selecciona una plantilla y pulsa <strong>Graficar</strong>.</p>
+            <div id="resultados" class="resultado-box">
+                <p>Selecciona una plantilla, ajusta los valores y pulsa <strong>Calcular</strong>.</p>
             </div>
 
-            <button id="btnGraficar" class="btn-principal">🎨 Graficar</button>
+            <button id="calcular" class="btn-principal">🎨 Calcular</button>
         </section>
 
         <!-- EJEMPLOS -->

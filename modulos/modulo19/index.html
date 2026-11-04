@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 19 - Sustitución Universal t = tan(x/2)</title>
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="modulo19.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+</head>
+<body>
+    <header class="modulo-header">
+        <div class="container">
+            <a href="../../index.html" class="back-link">← Volver al inicio</a>
+            <h1>🔁 Módulo 19: Sustitución Universal (Z)</h1>
+            <p>El cambio $t = \tan\frac{x}{2}$ que convierte toda integral trigonométrica en una fracción parcial racional</p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <section class="teoria">
+            <h2>📖 Fundamento Teórico</h2>
+            <p>Toda función racional de $\sin x$ y $\cos x$, es decir $R(\sin x, \cos x)$, puede integrarse mediante el <strong>cambio tangencial</strong> (también llamado sustitución universal de Weierstrass o "substitución Z"):</p>
+
+            <div class="formula-box">
+                <h3>Las Fórmulas de Euler-Tangente</h3>
+                <p>$$t = \tan\frac{x}{2} \qquad \sin x = \frac{2t}{1+t^2}, \qquad \cos x = \frac{1-t^2}{1+t^2}, \qquad dx = \frac{2\,dt}{1+t^2}$$</p>
+            </div>
+
+            <div class="pasos-metodo">
+                <h3>🪜 Protocolo de Resolución</h3>
+                <ol>
+                    <li><strong>Sustituir</strong> $\sin x$, $\cos x$ y $dx$ por sus expresiones racionales en $t$: la integral se transforma en $\int P(t)/Q(t)\,dt$ con $Q$ a lo más cuadrático.</li>
+                    <li><strong>Integrar la parte racional</strong> con las herramientas del módulo de fracciones parciales: división polinomial, factorización de $Q(t)$ y desglose en componentes simples.</li>
+                    <li><strong>Regresar</strong> con $t = \tan(x/2)$ para expresar la antiderivada en la variable original.</li>
+                    <li><strong>Cuidado con el dominio:</strong> $\tan(x/2)$ no está definida en $x = \pi + 2k\pi$. El intervalo de integración debe quedar dentro de un mismo arco de longitud $2\pi$ que no cruce esos puntos.</li>
+                </ol>
+            </div>
+
+            <div class="nota">
+                <strong>💡 ¿Por qué "universal"?</strong> Porque garantiza éxito teórico: cualquier integral de una función racional de seno y coseno se reduce a fracciones parciales. La contrapartida es que suele ser el camino <em>más lento</em>: si hay una sustitución simple ($u=\sin x$, ángulo doble, etc.), conviene usarla primero.
+            </div>
+
+            <div class="nota nota-cian">
+                <strong>⚠️ Trampa común:</strong> al integrar $\int \frac{2\,dt}{At^2+Bt+C}$ debes distinguir el signo del discriminante $\Delta = B^2 - 4AC$: si $\Delta &lt; 0$ aparece $\arctan$; si $\Delta &gt; 0$ aparecen logaritmos (o el artanh hiperbólico inverso); si $\Delta = 0$ sale una potencia $-1$.
+            </div>
+        </section>
+
+        <section class="visualizador">
+            <h2>🎮 Visualizador Interactivo</h2>
+            <p>Selecciona una familia, ajusta los coeficientes y observa cómo el cambio $t=\tan(x/2)$ racionaliza la integral, paso a paso y con verificación numérica.</p>
+
+            <div class="controles">
+                <div class="control-group">
+                    <label for="integral">Integral a resolver:</label>
+                    <select id="integral">
+                        <option value="sen">∫ dx / (a + sen(k·x))</option>
+                        <option value="cos">∫ dx / (a + cos(k·x))</option>
+                        <option value="mixta">∫ dx / (a + b·sen(k·x) + c·cos(k·x))</option>
+                        <option value="unomas">∫ dx / (1 + sen(k·x))</option>
+                        <option value="unomenos">∫ dx / (1 − sen(k·x))</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="param-a">Coeficiente a:</label>
+                    <input type="number" id="param-a" value="2" step="0.5">
+                </div>
+
+                <div class="control-group">
+                    <label for="param-b">Coeficiente b:</label>
+                    <input type="number" id="param-b" value="1" step="0.5">
+                </div>
+
+                <div class="control-group">
+                    <label for="param-c">Coeficiente c:</label>
+                    <input type="number" id="param-c" value="0" step="0.5">
+                </div>
+
+                <div class="control-group">
+                    <label for="param-k">Parámetro k:</label>
+                    <input type="number" id="param-k" value="1" step="0.1">
+                </div>
+
+                <div class="control-group">
+                    <label for="a">Límite inferior (a):</label>
+                    <input type="number" id="a" value="-1" step="0.1">
+                </div>
+
+                <div class="control-group">
+                    <label for="b">Límite superior (b):</label>
+                    <input type="number" id="b" value="1" step="0.1">
+                </div>
+
+                <button id="calcular" class="btn-calcular">🔄 Resolver Integral</button>
+            </div>
+
+            <div id="grafico" class="grafico-container"></div>
+
+            <div class="resultados">
+                <h3>📊 Resultado del Cálculo:</h3>
+                <div id="resultados-content">
+                    <p>Haz clic en "Resolver" para ver la racionalización en $t$ y el procedimiento paso a paso.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="ejemplos">
+            <h2>📝 Ejemplos Resueltos Paso a Paso</h2>
+
+            <div class="ejemplo">
+                <h3>Ejemplo 1: $\displaystyle \int \frac{dx}{2+\sin x}$</h3>
+
+                <div class="paso">
+                    <h4>Paso 1: Aplicar el cambio tangencial</h4>
+                    <p>$$\int \frac{dx}{2+\sin x} = \int \frac{\dfrac{2\,dt}{1+t^2}}{2+\dfrac{2t}{1+t^2}} = \int \frac{2\,dt}{t^2+2t+2}$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 2: Completar el cuadrado ($\Delta = 4-8 &lt; 0$)</h4>
+                    <p>$$\int \frac{2\,dt}{(t+1)^2+1} = 2\arctan(t+1)+C$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 3: Regresar con $t=\tan\frac{x}{2}$</h4>
+                    <p>$$\int \frac{dx}{2+\sin x} = 2\arctan\!\left(\tan\frac{x}{2}+1\right)+C$$</p>
+                </div>
+            </div>
+
+            <div class="ejemplo">
+                <h3>Ejemplo 2: $\displaystyle \int \frac{dx}{1+\cos x}$</h3>
+
+                <div class="paso">
+                    <h4>Paso 1: Racionalizar</h4>
+                    <p>$$\int \frac{\dfrac{2\,dt}{1+t^2}}{1+\dfrac{1-t^2}{1+t^2}} = \int \frac{2\,dt}{2} = \int dt$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 2: Integrar y regresar</h4>
+                    <p>$$\int \frac{dx}{1+\cos x} = t + C = \tan\frac{x}{2}+C$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Nota: atajo</h4>
+                    <p>Con $1+\cos x = 2\cos^2\frac{x}{2}$ el resultado es directamente $\int \tfrac12 \sec^2\frac{x}{2}\,dx = \tan\frac{x}{2}$. La sustitución universal siempre llega, pero no siempre es el camino más corto.</p>
+                </div>
+            </div>
+
+            <div class="ejemplo">
+                <h3>Ejemplo 3: $\displaystyle \int \frac{dx}{1-\sin x}$</h3>
+
+                <div class="paso">
+                    <h4>Paso 1: Cambio tangencial</h4>
+                    <p>$$\int \frac{\dfrac{2\,dt}{1+t^2}}{1-\dfrac{2t}{1+t^2}} = \int \frac{2\,dt}{t^2-2t+1} = \int \frac{2\,dt}{(t-1)^2}$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 2: Discriminante nulo → potencia</h4>
+                    <p>$$\int \frac{2\,dt}{(t-1)^2} = -\frac{2}{t-1}+C$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 3: Regresar</h4>
+                    <p>$$\int \frac{dx}{1-\sin x} = -\frac{2}{\tan\frac{x}{2}-1}+C$$</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Curso de Integrales · Módulo 19: Sustitución Universal (Z) 🔁</p>
+        </div>
+    </footer>
+
+    <script src="modulo19.js"></script>
+</body>
+</html>

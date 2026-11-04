@@ -49,7 +49,8 @@ Plataforma-calculo/
     ├── modulo15/                 # ✅ Sustitución Trigonométrica
     ├── modulo16/                 # ✅ Fracciones Parciales
     ├── modulo17/                 # ✅ Fracciones Irracionales
-    └── modulo18/                 # ✅ Productos de Seno y Coseno
+    ├── modulo18/                 # ✅ Productos de Seno y Coseno
+    └── modulo19/                 # ✅ Sustitución Universal (Z)
 ```
 
 ---

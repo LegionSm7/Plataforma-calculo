@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 21 - Volumen de Sólidos de Revolución</title>
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="modulo21.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+</head>
+<body>
+    <header class="modulo-header">
+        <div class="container">
+            <a href="../../index.html" class="back-link">← Volver al inicio</a>
+            <h1>🌀 Módulo 21: Volumen de Sólidos de Revolución</h1>
+            <p>Visualización 3D y cálculo mediante el método de Discos y Arandelas alrededor del eje X</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="teoria">
+            <h2>📖 Fundamento Teórico</h2>
+            <p>Cuando una región del plano se gira alrededor de un eje (en este caso, el eje $x$), se genera un sólido de revolución. El volumen se calcula integrando el área de las secciones transversales circulares.</p>
+            
+            <div class="tipos-sumas">
+                <div class="tipo">
+                    <h3>💿 Método de Discos</h3>
+                    <p>Cuando la región toca el eje de revolución. El radio es $R(x) = f(x)$.</p>
+                    <p>$$V = \pi \int_{a}^{b} [f(x)]^2 \, dx$$</p>
+                </div>
+                <div class="tipo">
+                    <h3>🥯 Método de Arandelas</h3>
+                    <p>Cuando hay un espacio entre la región y el eje. Radio exterior $R(x)$, radio interior $r(x)$.</p>
+                    <p>$$V = \pi \int_{a}^{b} \left( [R(x)]^2 - [r(x)]^2 \right) \, dx$$</p>
+                </div>
+            </div>
+
+            <div class="nota">
+                <strong>💡 Nota 3D:</strong> La gráfica interactiva genera un modelo tridimensional real del sólido de revolución, mostrando cómo la región plana se rota $360°$ alrededor del eje $X$ para formar el sólido.
+            </div>
+        </section>
+
+        <section class="visualizador">
+            <h2>🎮 Calculadora Interactiva 3D</h2>
+            <p>Define la región acotada y observa el volumen del sólido generado al rotar alrededor del eje $x$:</p>
+
+            <div class="controles">
+                <div class="control-group">
+                    <label for="f_x">Función superior $R(x)$:</label>
+                    <select id="f_x">
+                        <option value="4-x^2">4 - x²</option>
+                        <option value="sqrt(x)">√x</option>
+                        <option value="sin(x)">sin(x)</option>
+                        <option value="x^2">x²</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="g_x">Función inferior $r(x)$:</label>
+                    <select id="g_x">
+                        <option value="0">0 (Eje X - Disco)</option>
+                        <option value="x">x</option>
+                        <option value="x^2">x²</option>
+                        <option value="1">1</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="a">Límite inferior (a):</label>
+                    <input type="number" id="a" value="0" step="0.1">
+                </div>
+
+                <div class="control-group">
+                    <label for="b">Límite superior (b):</label>
+                    <input type="number" id="b" value="2" step="0.1">
+                </div>
+
+                <button id="calcular" class="btn-calcular">🔄 Generar Sólido 3D y Calcular</button>
+            </div>
+
+            <div id="grafico" class="grafico-container"></div>
+
+            <div class="resultados">
+                <h3>📊 Resultados:</h3>
+                <div id="resultados-content"></div>
+            </div>
+        </section>
+
+        <section class="ejemplos">
+            <h2>📝 Ejemplo Resuelto Paso a Paso</h2>
+            <div class="ejemplo">
+                <h3>Problema: Hallar el volumen del sólido generado al girar la región acotada por $f(x) = \sqrt{x}$ y $g(x) = x^2$ en $[0, 1]$ alrededor del eje $x$.</h3>
+                
+                <div class="paso">
+                    <h4>Paso 1: Identificar radios exterior e interior</h4>
+                    <p>En el intervalo $[0, 1]$, $\sqrt{x} \geq x^2$. Por lo tanto:</p>
+                    <p>Radio exterior: $R(x) = \sqrt{x}$</p>
+                    <p>Radio interior: $r(x) = x^2$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 2: Plantear la integral (Método de Arandelas)</h4>
+                    <p>$$V = \pi \int_{0}^{1} \left( [\sqrt{x}]^2 - [x^2]^2 \right) \, dx = \pi \int_{0}^{1} (x - x^4) \, dx$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 3: Resolver la integral</h4>
+                    <p>$$V = \pi \left[ \frac{x^2}{2} - \frac{x^5}{5} \right]_{0}^{1}$$</p>
+                    <p>$$V = \pi \left( \left(\frac{1}{2} - \frac{1}{5}\right) - (0 - 0) \right) = \pi \left( \frac{5 - 2}{10} \right) = \frac{3\pi}{10}$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Conclusión:</h4>
+                    <p>El volumen del sólido es <strong>$\frac{3\pi}{10} \approx 0.9425$ unidades cúbicas</strong>.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>© 2026 - UTP | Cálculo Integral - Módulo 21</p>
+        </div>
+    </footer>
+
+    <script src="modulo21.js"></script>
+</body>
+</html>

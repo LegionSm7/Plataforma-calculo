@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 20 - Volumen de Sólidos con Sección Conocida</title>
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="modulo20.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+</head>
+<body>
+    <header class="modulo-header">
+        <div class="container">
+            <a href="../../index.html" class="back-link">← Volver al inicio</a>
+            <h1>🧊 Módulo 20: Volumen de Sólidos con Sección Transversal Conocida</h1>
+            <p>Visualización 3D y cálculo del volumen mediante la integración del área de la sección transversal $A(x)$</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="teoria">
+            <h2>📖 Fundamento Teórico</h2>
+            <p>Si conocemos el área de la sección transversal $A(x)$ de un sólido, perpendicular al eje $x$, en cualquier punto $x$ del intervalo $[a, b]$, el volumen $V$ del sólido se calcula mediante la integral definida:</p>
+            
+            <div class="formula-box">
+                <h3>Fórmula del Volumen:</h3>
+                <p>$$V = \int_{a}^{b} A(x) \, dx$$</p>
+            </div>
+
+            <div class="tipos-sumas">
+                <div class="tipo">
+                    <h3>🟩 Secciones Cuadradas</h3>
+                    <p>Si la base es un segmento de longitud $L = f(x)$, el área es:</p>
+                    <p>$$A(x) = [f(x)]^2$$</p>
+                </div>
+                <div class="tipo">
+                    <h3>🌗 Secciones Semicirculares</h3>
+                    <p>Si el diámetro es $d = f(x)$, el radio es $r = f(x)/2$. El área es:</p>
+                    <p>$$A(x) = \frac{1}{2} \pi r^2 = \frac{\pi}{8} [f(x)]^2$$</p>
+                </div>
+                <div class="tipo">
+                    <h3>🔺 Secciones Triangulares Equiláteras</h3>
+                    <p>Si la base del triángulo es $b = f(x)$, el área es:</p>
+                    <p>$$A(x) = \frac{\sqrt{3}}{4} [f(x)]^2$$</p>
+                </div>
+            </div>
+
+            <div class="nota">
+                <strong>💡 Nota 3D:</strong> La gráfica interactiva genera un modelo tridimensional real del sólido, mostrando cómo la forma de la sección transversal se extruye a lo largo del eje X siguiendo la curva $f(x)$.
+            </div>
+        </section>
+
+        <section class="visualizador">
+            <h2>🎮 Calculadora Interactiva 3D</h2>
+            <p>Selecciona la función base, el intervalo y el tipo de sección transversal para generar y calcular el sólido:</p>
+
+            <div class="controles">
+                <div class="control-group">
+                    <label for="funcion">Función base $f(x)$:</label>
+                    <select id="funcion">
+                        <option value="x^2">x²</option>
+                        <option value="sqrt(x)">√x</option>
+                        <option value="sin(x)">sin(x)</option>
+                        <option value="1-x^2">1 - x²</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="a">Límite inferior (a):</label>
+                    <input type="number" id="a" value="0" step="0.1">
+                </div>
+
+                <div class="control-group">
+                    <label for="b">Límite superior (b):</label>
+                    <input type="number" id="b" value="1" step="0.1">
+                </div>
+
+                <div class="control-group">
+                    <label for="tipo">Tipo de sección transversal:</label>
+                    <select id="tipo">
+                        <option value="cuadrado">Cuadrados</option>
+                        <option value="semicirculo">Semicírculos</option>
+                        <option value="triangulo">Triángulos equiláteros</option>
+                    </select>
+                </div>
+
+                <button id="calcular" class="btn-calcular">🔄 Generar Sólido 3D y Calcular</button>
+            </div>
+
+            <div id="grafico" class="grafico-container"></div>
+
+            <div class="resultados">
+                <h3>📊 Resultados:</h3>
+                <div id="resultados-content"></div>
+            </div>
+        </section>
+
+        <section class="ejemplos">
+            <h2>📝 Ejemplo Resuelto Paso a Paso</h2>
+            <div class="ejemplo">
+                <h3>Problema: La base de un sólido es la región acotada por $f(x) = \sqrt{x}$ y $y = 0$ en $[0, 4]$. Las secciones transversales perpendiculares al eje $x$ son <strong>cuadrados</strong>.</h3>
+                
+                <div class="paso">
+                    <h4>Paso 1: Identificar el área de la sección transversal $A(x)$</h4>
+                    <p>Como las secciones son cuadradas, la longitud del lado es $s = f(x) = \sqrt{x}$.</p>
+                    <p>$$A(x) = s^2 = (\sqrt{x})^2 = x$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 2: Plantear la integral del volumen</h4>
+                    <p>$$V = \int_{0}^{4} A(x) \, dx = \int_{0}^{4} x \, dx$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Paso 3: Resolver la integral</h4>
+                    <p>$$V = \left[ \frac{x^2}{2} \right]_{0}^{4} = \frac{4^2}{2} - \frac{0^2}{2} = \frac{16}{2} = 8$$</p>
+                </div>
+
+                <div class="paso">
+                    <h4>Conclusión:</h4>
+                    <p>El volumen del sólido es <strong>8 unidades cúbicas</strong>.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>© 2026 - UTP | Cálculo Integral - Módulo 20</p>
+        </div>
+    </footer>
+
+    <script src="modulo20.js"></script>
+</body>
+</html>

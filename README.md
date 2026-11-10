@@ -17,40 +17,37 @@ Esta plataforma web interactiva está diseñada para la enseñanza y visualizaci
 ```text
 Plataforma-calculo/
 │
-├── index.html                    # Página principal con navegación a 17 módulos
+├── index.html                    # Página principal con navegación a 21 módulos
 ├── README.md                     # Documentación técnica del proyecto
 │
 ├── css/
-│   └── styles.css                # Estilos globales (diseño responsive)
+│   └── styles.css                # Estilos globales (diseño responsive, tema oscuro)
 │
 ├── js/
-│   └── main.js                   # Lógica JavaScript global
+│   └── main.js                   # Lógica JavaScript global (navegación, utilidades)
 │
 └── modulos/
     ├── modulo1/                  # ✅ Sumas de Riemann
-    │   ├── index.html
-    │   ├── modulo1.css
-    │   └── modulo1.js
-    │
     ├── modulo2/                  # ✅ Regla del Trapecio
     ├── modulo3/                  # ✅ Regla del Punto Medio
     ├── modulo4/                  # ✅ Regla de Simpson
     ├── modulo5/                  # ✅ Integral Definida y Área
     ├── modulo6/                  # ✅ Integración Directa
-    │
-    ├── modulo7/                  # ✅ Sustitución/Potencias
+    ├── modulo7/                  # ✅ Sustitución / Potencias
     ├── modulo8/                  # ✅ Integrales Exponenciales
     ├── modulo9/                  # ✅ Integrales Logarítmicas
     ├── modulo10/                 # ✅ Integrales Trigonométricas
     ├── modulo11/                 # ✅ Integrales Trigonométricas Inversas
     ├── modulo12/                 # ✅ Funciones Hiperbólicas Inversas
     ├── modulo13/                 # ✅ Integración por Partes
-    ├── modulo14/                 # ✅ Integrales con ax²+bx+c (completar la cuadrada)
+    ├── modulo14/                 # ✅ Integrales con ax²+bx+c (completar cuadrado)
     ├── modulo15/                 # ✅ Sustitución Trigonométrica
     ├── modulo16/                 # ✅ Fracciones Parciales
     ├── modulo17/                 # ✅ Fracciones Irracionales
     ├── modulo18/                 # ✅ Productos de Seno y Coseno
-    └── modulo19/                 # ✅ Sustitución Universal (Z)
+    ├── modulo19/                 # ✅ Sustitución Universal (Weierstrass)
+    ├── modulo20/                 # ✅ Volumen de Sólidos con Sección Transversal Conocida
+    └── modulo21/                 # ✅ Volumen de Sólidos de Revolución (Discos/Arandelas)
 ```
 
 ---

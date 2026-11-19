@@ -198,24 +198,44 @@ document.addEventListener('DOMContentLoaded', function() {
             { etiqueta: 'Volumen calculado', valor: `${volumen.toFixed(6)} u³`, color: '#ea80fc' }
         ];
 
-        let html = '<div class="resumen-tarjetas">';
+        resultadosDiv.innerHTML = '';
+
+        const resumenTarjetas = document.createElement('div');
+        resumenTarjetas.className = 'resumen-tarjetas';
+
         tarjetas.forEach(t => {
-            html += `
-                <div class="resumen-tarjeta" style="--acento: ${t.color}">
-                    <span class="resumen-etiqueta">${t.etiqueta}</span>
-                    <span class="resumen-valor">${t.valor}</span>
-                </div>`;
+            const tarjeta = document.createElement('div');
+            tarjeta.className = 'resumen-tarjeta';
+            tarjeta.style.setProperty('--acento', t.color);
+
+            const etiqueta = document.createElement('span');
+            etiqueta.className = 'resumen-etiqueta';
+            etiqueta.textContent = t.etiqueta;
+
+            const valor = document.createElement('span');
+            valor.className = 'resumen-valor';
+            valor.textContent = t.valor;
+
+            tarjeta.appendChild(etiqueta);
+            tarjeta.appendChild(valor);
+            resumenTarjetas.appendChild(tarjeta);
         });
-        html += '</div>';
 
-        html += `
-            <div class="paso" style="margin-top: 1.5rem;">
-                <h4>🧮 Expresión Integral:</h4>
-                <p>$$V = \\int_{${a}}^{${b}} A(x) \\, dx \\approx ${volumen.toFixed(6)}$$</p>
-            </div>
-        `;
+        const paso = document.createElement('div');
+        paso.className = 'paso';
+        paso.style.marginTop = '1.5rem';
 
-        resultadosDiv.innerHTML = html;
+        const titulo = document.createElement('h4');
+        titulo.textContent = '🧮 Expresión Integral:';
+
+        const parrafo = document.createElement('p');
+        parrafo.textContent = `$$V = \\int_{${a}}^{${b}} A(x) \\, dx \\approx ${volumen.toFixed(6)}$$`;
+
+        paso.appendChild(titulo);
+        paso.appendChild(parrafo);
+
+        resultadosDiv.appendChild(resumenTarjetas);
+        resultadosDiv.appendChild(paso);
         
         // Esperar a que el DOM se actualice y luego renderizar KaTeX
         setTimeout(() => {

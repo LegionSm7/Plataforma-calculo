@@ -194,16 +194,32 @@ document.addEventListener('DOMContentLoaded', function() {
         const esDisco = (gStr === '0');
         const tipoMetodo = esDisco ? 'Discos' : 'Arandelas';
 
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        const safeFStr = escapeHtml(fStr);
+        const safeGStr = escapeHtml(gStr);
+        const safeA = escapeHtml(a);
+        const safeB = escapeHtml(b);
+        const safeTipoMetodo = escapeHtml(tipoMetodo);
+        const safeVolumen = escapeHtml(volumen.toFixed(6));
+
         const integrando = esDisco 
-            ? `$$V = \\pi \\int_{${a}}^{${b}} [${fStr}]^2 \\, dx$$`
-            : `$$V = \\pi \\int_{${a}}^{${b}} \\left( [${fStr}]^2 - [${gStr}]^2 \\right) \\, dx$$`;
+            ? `$$V = \\pi \\int_{${safeA}}^{${safeB}} [${safeFStr}]^2 \\, dx$$`
+            : `$$V = \\pi \\int_{${safeA}}^{${safeB}} \\left( [${safeFStr}]^2 - [${safeGStr}]^2 \\right) \\, dx$$`;
 
         const tarjetas = [
-            { etiqueta: 'Método', valor: tipoMetodo, color: '#ffd54f' },
-            { etiqueta: 'Radio exterior R(x)', valor: fStr, color: '#69f0ae' },
-            { etiqueta: 'Radio interior r(x)', valor: gStr, color: '#4dd0e1' },
-            { etiqueta: 'Intervalo', valor: `[${a}, ${b}]`, color: '#b388ff' },
-            { etiqueta: 'Volumen calculado', valor: `${volumen.toFixed(6)} u³`, color: '#ea80fc' }
+            { etiqueta: 'Método', valor: safeTipoMetodo, color: '#ffd54f' },
+            { etiqueta: 'Radio exterior R(x)', valor: safeFStr, color: '#69f0ae' },
+            { etiqueta: 'Radio interior r(x)', valor: safeGStr, color: '#4dd0e1' },
+            { etiqueta: 'Intervalo', valor: `[${safeA}, ${safeB}]`, color: '#b388ff' },
+            { etiqueta: 'Volumen calculado', valor: `${safeVolumen} u³`, color: '#ea80fc' }
         ];
 
         let html = '<div class="resumen-tarjetas">';
@@ -220,7 +236,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="paso" style="margin-top: 1.5rem;">
                 <h4>🧮 Expresión Integral:</h4>
                 ${integrando}
-                <p style="margin-top: 1rem;">$$V \\approx ${volumen.toFixed(6)} \\text{ u}^3$$</p>
+                <p style="margin-top: 1rem;">$$V \\approx ${safeVolumen} \\text{ u}^3$$</p>
             </div>
         `;
 

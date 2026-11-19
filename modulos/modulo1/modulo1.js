@@ -138,6 +138,15 @@ document.addEventListener('DOMContentLoaded', function() {
         Plotly.newPlot('grafico', traces, layout, { responsive: true });
     }
 
+    function escapeHtml(value) {
+        return String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
     // Mostrar resultados (tarjetas organizadas + tabla resumen)
     function mostrarResultados(func, a, b, n, tipo) {
         const resultadosDiv = document.getElementById('resultados-content');
@@ -167,9 +176,9 @@ document.addEventListener('DOMContentLoaded', function() {
         let html = '<div class="resumen-tarjetas">';
         tarjetas.forEach(t => {
             html += `
-                <div class="resumen-tarjeta" style="--acento: ${t.color}">
-                    <span class="resumen-etiqueta">${t.etiqueta}</span>
-                    <span class="resumen-valor">${t.valor}</span>
+                <div class="resumen-tarjeta" style="--acento: ${escapeHtml(t.color)}">
+                    <span class="resumen-etiqueta">${escapeHtml(t.etiqueta)}</span>
+                    <span class="resumen-valor">${escapeHtml(t.valor)}</span>
                 </div>`;
         });
         html += '</div>';
@@ -188,9 +197,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const activo = t === tipo ? ' clase="activo"' : '';
             html += `
                 <tr${activo}>
-                    <td><span class="punto-color" style="background:${colores[t]}"></span>${nombres[t]}</td>
-                    <td class="num">${r.suma.toFixed(6)}</td>
-                    <td class="num">${e.toFixed(6)}</td>
+                    <td><span class="punto-color" style="background:${escapeHtml(colores[t])}"></span>${escapeHtml(nombres[t])}</td>
+                    <td class="num">${escapeHtml(r.suma.toFixed(6))}</td>
+                    <td class="num">${escapeHtml(e.toFixed(6))}</td>
                 </tr>`;
         });
 
